@@ -33,7 +33,6 @@ public class SnakeBoard extends JPanel implements ActionListener {
     private final int y[] = new int[Environment.MAX_DOTS];
 
     private int dots;
-    private int shift;
     private boolean leftDirection = false;
     private boolean rightDirection = false;
     private final boolean inGame = true;
@@ -154,7 +153,6 @@ public class SnakeBoard extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (inGame) {
-
             move();
         }
         repaint();
