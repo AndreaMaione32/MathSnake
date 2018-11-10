@@ -15,8 +15,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-
-
 public class SnakeBoard extends JPanel implements ActionListener {
     // costanti utilizzate nel gioco
     
@@ -35,6 +33,7 @@ public class SnakeBoard extends JPanel implements ActionListener {
     public SnakeBoard() {
         
         initSnakeBoard();
+        
     }
     
     private void initSnakeBoard() {
@@ -46,14 +45,15 @@ public class SnakeBoard extends JPanel implements ActionListener {
         setPreferredSize(new Dimension(Environment.JP_WIDTH, Environment.JP_HEIGHT));
         loadImages();
         initGame();
+        
     }
    
     private void loadImages() {
         //Carico le immagini..\\..\\..\\
-        ImageIcon iid = new ImageIcon("../MathSnake/src/images/dot.png");
+        ImageIcon iid = new ImageIcon("images/dot.png");
         ball = iid.getImage();
 
-        ImageIcon iih = new ImageIcon("../MathSnake/src/images/head.png");
+        ImageIcon iih = new ImageIcon("images/head.png");
         head = iih.getImage();
     }
 
@@ -115,11 +115,12 @@ public class SnakeBoard extends JPanel implements ActionListener {
         } 
         int shift = Environment.DOT_SIZE + 10;
         if (leftDirection) {
-            if (x[0]- shift < 0){
+            if (x[0]- shift < 0) {
                 for (int z = 0; z < dots; z++) { 
                 x[z] = 0;
                 }
-            }else{
+            }
+            else {
                 for (int z = 0; z < dots; z++) { 
                     x[z] -= shift;
                 }
@@ -127,11 +128,12 @@ public class SnakeBoard extends JPanel implements ActionListener {
             leftDirection = false;
         }
         if (rightDirection) {
-            if (x[0]+shift >= Environment.JP_WIDTH){
+            if (x[0]+shift >= Environment.JP_WIDTH) {
                 for (int z = 0; z < dots; z++) { 
                 x[z] = Environment.JP_WIDTH-10;
                 }
-            }else{
+            }
+            else {
                 for (int z = 0; z < dots; z++) { 
                     x[z] += shift;
                 }

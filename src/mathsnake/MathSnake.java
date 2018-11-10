@@ -1,4 +1,3 @@
-
 package mathsnake;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -14,7 +13,7 @@ public class MathSnake extends JFrame {
         
         add(new SnakeBoard());
         pack();
-        setTitle("Snake");
+        setTitle("Math Snake");
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
