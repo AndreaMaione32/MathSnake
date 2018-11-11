@@ -22,9 +22,9 @@ public class Snake {
     private boolean rightDirection = false;
     
     public Snake(int n){
-        dots = n;
-
-        for (int z = 0; z < dots; z++) {
+        this.setDots(n);
+    
+        for (int z = 0; z < this.getDots(); z++) {
             x[z] = 400;
             y[z] = 400-z;
             //System.out.print("Points of snake " + x [z] + "\n");
@@ -64,16 +64,15 @@ public class Snake {
         this.rightDirection = movingRight;
     }
 
-    public int getDots() {
+    public final int getDots() {
         return this.dots;
     }
 
-    public void setDots(int j) {
+    private void setDots(int j) {
         this.dots = j;
     }
     
     public Image loadImage(String PATH) {
-        //Carico le immagini..\\..\\..\\
         ImageIcon iid = new ImageIcon(PATH);
         Image icon = iid.getImage();
         return icon;
