@@ -39,6 +39,18 @@ public class SnakeBoard extends JPanel implements ActionListener {
     public SnakeBoard() {
         initSnakeBoard();
     }
+
+    public Image getBall() {
+        return ball;
+    }
+
+    public Image getHead() {
+        return head;
+    }
+
+    public Snake getSnake() {
+        return snake;
+    }
     
     private void initSnakeBoard() {
         
@@ -56,7 +68,7 @@ public class SnakeBoard extends JPanel implements ActionListener {
     }
     
     private void initGame() {
-        // INIZIALIZZO IL GIOCO 
+        // Viene inizializzato il timer necessario per i repaint
         timer = new Timer(Environment.DELAY, this);
         timer.start();
     }
