@@ -7,69 +7,71 @@ package mathsnake;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
-import java.util.concurrent.TimeUnit;
 
-/**
- *
- * @author antonino
- */
 public class Snake {
-    private final int x[] = new int[Environment.MAX_DOTS];// memorizzano le coordinate x e y del serpente
-    private final int y[] = new int[Environment.MAX_DOTS];
-
-    private int dots = 11;
+    private int x; // La coordinata x dello snake è univoca per tutti i dot che lo costituiscono ed può assumere valori compresti fra 0 e JP_WIDTH
+    private int[] y; // Ogni dot che costituisce lo snake ha coordinata y differente e fissata in quanto lo snake ha altezza fissa
+    
+    private final int dots; // Numero di dots che costituiscono lo snake
     private boolean leftDirection = false;
     private boolean rightDirection = false;
     
-    public Snake(int n){
-        this.setDots(n);
-    
-        for (int z = 0; z < this.getDots(); z++) {
-            x[z] = 400;
-            y[z] = 400-z;
-            //System.out.print("Points of snake " + x [z] + "\n");
-        }
+    // Costruttore con paramtetro di deafult di dots
+    public Snake() {
+        dots = 10;
         
+        int snakeStartPoint = Environment.JP_WIDTH / 2; // Lo snake viene creato al centro della finestra
+        x = snakeStartPoint;
+        
+        y = new int[dots]; // Il vettore delle coordinate y viene settatto a dimensione uguale al valore dots di default (a ogni elemento corrisponde una coordinata di un dot)
+        for (int z = 0; z < dots; z++) {
+            y[z] = 500 - (z * 10); // Poichè la dimensione di ogni dot è di 10 px la differenza fra due coordinate adiacenti nel vettore è pari a 10, il primo elemento del vettore è il primo dot della coda, mentre l'ultimo è la testa dello snake; il primo dot ha y = JP_WIDTH, il secondo JP_WIDTH - 10 e così via 
+        }
     }
     
-    public int getSnakeX(int index) {
-        return x[index];
+    // Costruttore con parametro opzionale di dots
+    public Snake(int dots) {
+        this.dots = dots;
+        
+        int snakeStartPoint = Environment.JP_WIDTH / 2; // Lo snake viene creato al centro della finestra
+        x = snakeStartPoint;
+        
+        y = new int[dots]; // Il vettore delle coordinate y viene settatto a dimensione uguale al valore dots opzionale (a ogni elemento corrisponde una coordinata di un dot)
+        for (int z = 0; z < dots; z++) {
+            y[z] = 500 - (z * 10); // Poichè la dimensione di ogni dot è di 10 px la differenza fra due coordinate adiacenti nel vettore è pari a 10, il primo elemento del vettore è il primo dot della coda, mentre l'ultimo è la testa dello snake; il primo dot ha y = JP_WIDTH, il secondo JP_WIDTH - 10 e così via 
+        }
     }
 
-    public int getSnakeY(int index) {
-        return y[index];
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
     }
     
-    public void setSnakeX(int i) {
-        x[0] = i;
+    public int[] getY() {
+        return y;
     }
 
-    public void setSnakeY(int i) {
-        y[0] = i;
+    public int getDots() {
+        return dots;
     }
 
     public boolean isMovingLeft() {
         return leftDirection;
     }
 
-    public void setMovingLeft(boolean movingLeft) {
-        this.leftDirection = movingLeft;
+    public void setLeftDirection(boolean leftDirection) {
+        this.leftDirection = leftDirection;
     }
 
     public boolean isMovingRight() {
         return rightDirection;
     }
 
-    public void setMovingRight(boolean movingRight) {
-        this.rightDirection = movingRight;
-    }
-
-    public final int getDots() {
-        return this.dots;
-    }
-
-    private void setDots(int j) {
-        this.dots = j;
+    public void setRightDirection(boolean rightDirection) {
+        this.rightDirection = rightDirection;
     }
     
     public Image loadImage(String PATH) {
@@ -78,37 +80,20 @@ public class Snake {
         return icon;
     }
     
-    public void move() throws InterruptedException{
-        for (int z = 0; z < dots; z++) { 
-            System.out.print("Points of snake [" + x [z] +"|"+ y[z] + "]" + "\n"); 
-        } 
+    public void move() throws InterruptedException {
         int shift = Environment.DOT_SIZE + 10;
         if (leftDirection) {
-            if (x[0]- shift < 0){
-                for (int z = 0; z < dots; z++) { 
-                x[z] = 0;
-                }
-            }else{
-                for (int z = 0; z < dots; z++) { 
-                    
-                    x[z] -= shift;
-                    //TimeUnit.MILLISECONDS.sleep(150);
-                }
-            }
+            if (x - shift < 0)
+                x = 0;
+            else
+                x -= shift;
             leftDirection = false;
         }
         if (rightDirection) {
-            if (x[0]+shift >= Environment.JP_WIDTH){
-                for (int z = 0; z < dots; z++) { 
-                x[z] = Environment.JP_WIDTH-10;
-                }
-            }else{
-                for (int z = 0; z < dots; z++) { 
-                    
-                    x[z] += shift;
-                    //TimeUnit.MILLISECONDS.sleep(150);
-                }
-            }
+            if (x + shift >= Environment.JP_WIDTH)
+                x = Environment.JP_WIDTH - 10; 
+            else    
+                x += shift;
             rightDirection = false;
         }
     }

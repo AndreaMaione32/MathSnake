@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/Users/edoardocossentino/NetBeansProjects/MathSnake/src/mathsnake/MathSnake.java</file>
-=======
             <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/MathSnake.java</file>
             <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/Environment.java</file>
             <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/SnakeBoard.java</file>
->>>>>>> 3ccb419d1577cbe0f68b029346262a55ef25b68f
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/Snake.java</file>
         </group>
     </open-files>
 </project-private>

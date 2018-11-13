@@ -28,15 +28,13 @@ import javax.swing.Timer;
 
 
 public class SnakeBoard extends JPanel implements ActionListener {
-    // costanti utilizzate nel gioco
     
-    
-    private final boolean inGame = true;
+    private boolean inGame = true;
     
     private Timer timer;
     private Image ball;
     private Image head;
-    private final Snake snake = new Snake(12);
+    private final Snake snake = new Snake();
 
     public SnakeBoard() {
         initSnakeBoard();
@@ -47,18 +45,16 @@ public class SnakeBoard extends JPanel implements ActionListener {
         addKeyListener(new TAdapter());
         setBackground(Color.WHITE);
         setFocusable(true);
-
         setPreferredSize(new Dimension(Environment.JP_WIDTH, Environment.JP_HEIGHT));
         loadImages();
         initGame();
     }
    
     private void loadImages() {
-        //Carico le immagini..\\..\\..\\
         ball = snake.loadImage(Environment.PATHIMAGES + "smiling.png");
         head = snake.loadImage(Environment.PATHIMAGES + "incazzato.png");
     }
-
+    
     private void initGame() {
         // INIZIALIZZO IL GIOCO 
         timer = new Timer(Environment.DELAY, this);
@@ -73,16 +69,14 @@ public class SnakeBoard extends JPanel implements ActionListener {
     }
     
     private void doDrawing(Graphics g) {
+        int numDots = snake.getDots();
+        int x = snake.getX();
+        int[] yVector = snake.getY();
         
         if (inGame) {
-            for (int z = 0; z < snake.getDots(); z++) {
-                if (z == 0) {
-                    g.drawImage(head, snake.getSnakeX(z), snake.getSnakeY(z), this);
-                } else {
-                    g.drawImage(ball, snake.getSnakeX(z), snake.getSnakeY(z)+z*11, this);
-                }
-            }
-
+            for (int z = 0; z < numDots - 1; z++)
+                g.drawImage(ball, x, yVector[z], this);
+            g.drawImage(head, x, yVector[numDots - 1], this);
             Toolkit.getDefaultToolkit().sync();
 
         } else {
@@ -123,13 +117,13 @@ public class SnakeBoard extends JPanel implements ActionListener {
         int key = e.getKeyCode();
         
         if ((key == KeyEvent.VK_LEFT) && (!snake.isMovingRight())) {
-            snake.setMovingLeft(true);
-            snake.setMovingRight(false);
+            snake.setLeftDirection(true);
+            snake.setRightDirection(false);
             }
 
         if ((key == KeyEvent.VK_RIGHT) && (!snake.isMovingLeft())) {
-            snake.setMovingLeft(false);
-            snake.setMovingRight(true);
+            snake.setLeftDirection(false);
+            snake.setRightDirection(true);
             }
         }
     }
