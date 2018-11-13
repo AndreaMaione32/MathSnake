@@ -18,7 +18,7 @@ public class Snake {
     
     // Costruttore con paramtetro di deafult di dots
     public Snake() {
-        dots = 10;
+        dots = Environment.DOT_SIZE;
         
         int snakeStartPoint = Environment.JP_WIDTH / 2; // Lo snake viene creato al centro della finestra
         x = snakeStartPoint;
