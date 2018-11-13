@@ -28,19 +28,6 @@ public class Snake {
             y[z] = Environment.JP_HEIGHT - (z * Environment.DOT_SIZE); // Poichè la dimensione di ogni dot è DOT_SIZE px la differenza fra due coordinate adiacenti nel vettore è pari a 10, il primo elemento del vettore è il primo dot della coda, mentre l'ultimo è la testa dello snake; il primo dot ha y = JP_WIDTH, il secondo JP_WIDTH - 10 e così via 
         }
     }
-    
-    // Costruttore con parametro opzionale di dots
-    public Snake(int dots) {
-        this.dots = dots;
-        
-        int snakeStartPoint = Environment.JP_WIDTH / 2; // Lo snake viene creato al centro della finestra
-        x = snakeStartPoint;
-        
-        y = new int[dots]; // Il vettore delle coordinate y viene settatto a dimensione uguale al valore dots opzionale (a ogni elemento corrisponde una coordinata di un dot)
-        for (int z = 0; z < dots; z++) {
-            y[z] = 500 - (z * 10); // Poichè la dimensione di ogni dot è di 10 px la differenza fra due coordinate adiacenti nel vettore è pari a 10, il primo elemento del vettore è il primo dot della coda, mentre l'ultimo è la testa dello snake; il primo dot ha y = JP_WIDTH, il secondo JP_WIDTH - 10 e così via 
-        }
-    }
 
     public int getX() {
         return x;
