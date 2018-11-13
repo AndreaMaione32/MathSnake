@@ -2,15 +2,9 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-<<<<<<< HEAD
-        <group/>
-=======
         <group>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/MathSnake.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/Environment.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/SnakeBoard.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/Snake.java</file>
+            <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/MathSnake.java</file>
+            <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/SnakeBoard.java</file>
         </group>
->>>>>>> 5f9993d1518bd8c9a2cf2e65cd4499b1518dc38b
     </open-files>
 </project-private>
