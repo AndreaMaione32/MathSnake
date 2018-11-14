@@ -1,5 +1,14 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package mathsnake;
 
+/**
+ *
+ * @author antonino
+ */
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -11,29 +20,36 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.ImageIcon;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class SnakeBoard extends JPanel implements ActionListener {
-    // costanti utilizzate nel gioco
-    
-    private final int x[] = new int[Environment.MAX_DOTS];// memorizzano le coordinate x e y del serpente
-    private final int y[] = new int[Environment.MAX_DOTS];
 
-    private int dots;
-    private boolean leftDirection = false;
-    private boolean rightDirection = false;
-    private final boolean inGame = true;
+
+public class SnakeBoard extends JPanel implements ActionListener {
+    
+    private boolean inGame = true;
     
     private Timer timer;
     private Image ball;
     private Image head;
+    private final Snake snake = new Snake();
 
     public SnakeBoard() {
-        
         initSnakeBoard();
-        
+    }
+
+    public Image getBall() {
+        return ball;
+    }
+
+    public Image getHead() {
+        return head;
+    }
+
+    public Snake getSnake() {
+        return snake;
     }
     
     private void initSnakeBoard() {
@@ -41,32 +57,18 @@ public class SnakeBoard extends JPanel implements ActionListener {
         addKeyListener(new TAdapter());
         setBackground(Color.WHITE);
         setFocusable(true);
-
         setPreferredSize(new Dimension(Environment.JP_WIDTH, Environment.JP_HEIGHT));
         loadImages();
         initGame();
-        
     }
    
     private void loadImages() {
-        //Carico le immagini..\\..\\..\\
-        ImageIcon iid = new ImageIcon("images/dot.png");
-        ball = iid.getImage();
-
-        ImageIcon iih = new ImageIcon("images/head.png");
-        head = iih.getImage();
+        ball = snake.loadImage(Environment.PATHIMAGES + "smiling.png");
+        head = snake.loadImage(Environment.PATHIMAGES + "incazzato.png");
     }
-
+    
     private void initGame() {
-        // INIZIALIZZO IL GIOCO 
-
-        dots = 11;
-
-        for (int z = 0; z < dots; z++) {
-            x[z] = 400 - z * 10;
-            y[z] = 400;
-            System.out.print("Points of snake " + x [z] + "\n");
-        }
+        // Viene inizializzato il timer necessario per i repaint
         timer = new Timer(Environment.DELAY, this);
         timer.start();
     }
@@ -79,16 +81,14 @@ public class SnakeBoard extends JPanel implements ActionListener {
     }
     
     private void doDrawing(Graphics g) {
+        int numDots = snake.getDots();
+        int x = snake.getX();
+        int[] yVector = snake.getY();
         
         if (inGame) {
-            for (int z = 0; z < dots; z++) {
-                if (z == 0) {
-                    g.drawImage(head, x[0], y[z], this);
-                } else {
-                    g.drawImage(ball, x[0], y[z]+z*10, this);
-                }
-            }
-
+            for (int z = 0; z < numDots - 1; z++)
+                g.drawImage(ball, x, yVector[z], this);
+            g.drawImage(head, x, yVector[numDots - 1], this);
             Toolkit.getDefaultToolkit().sync();
 
         } else {
@@ -107,46 +107,16 @@ public class SnakeBoard extends JPanel implements ActionListener {
         g.setFont(small);
         g.drawString(msg, (Environment.JP_WIDTH - metr.stringWidth(msg)) / 2, Environment.JP_HEIGHT / 2);
     }
-
-    private void move() {
-
-        for (int z = 0; z < dots; z++) { 
-            System.out.print("Points of snake " + x [z] + "\n"); 
-        } 
-        int shift = Environment.DOT_SIZE + 10;
-        if (leftDirection) {
-            if (x[0]- shift < 0) {
-                for (int z = 0; z < dots; z++) { 
-                x[z] = 0;
-                }
-            }
-            else {
-                for (int z = 0; z < dots; z++) { 
-                    x[z] -= shift;
-                }
-            }
-            leftDirection = false;
-        }
-        if (rightDirection) {
-            if (x[0]+shift >= Environment.JP_WIDTH) {
-                for (int z = 0; z < dots; z++) { 
-                x[z] = Environment.JP_WIDTH-10;
-                }
-            }
-            else {
-                for (int z = 0; z < dots; z++) { 
-                    x[z] += shift;
-                }
-            }
-            rightDirection = false;
-        }
-    }
     
     @Override
     public void actionPerformed(ActionEvent e) {
 
         if (inGame) {
-            move();
+            try {
+                snake.move();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(SnakeBoard.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         repaint();
     }
@@ -154,19 +124,18 @@ public class SnakeBoard extends JPanel implements ActionListener {
     
     private class TAdapter extends KeyAdapter {
 
-        
         @Override
         public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         
-        if ((key == KeyEvent.VK_LEFT) && (!rightDirection)) {
-            leftDirection = true;
-            rightDirection = false;
+        if ((key == KeyEvent.VK_LEFT) && (!snake.isMovingRight())) {
+            snake.setLeftDirection(true);
+            snake.setRightDirection(false);
             }
 
-        if ((key == KeyEvent.VK_RIGHT) && (!leftDirection)) {
-            rightDirection = true;
-            leftDirection = false;    
+        if ((key == KeyEvent.VK_RIGHT) && (!snake.isMovingLeft())) {
+            snake.setLeftDirection(false);
+            snake.setRightDirection(true);
             }
         }
     }
