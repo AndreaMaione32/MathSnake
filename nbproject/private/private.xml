@@ -5,10 +5,12 @@
         <group>
             <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/mathsnake/TestUtils.java</file>
             <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/BlockTest.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/Block.java</file>
             <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/mathsnake/SnakeTest.java</file>
             <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/mathsnake/SnakeBoardTest.java</file>
             <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/SnakeBoard.java</file>
             <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/Snake.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/mathsnake/BlockTest.java</file>
         </group>
     </open-files>
 </project-private>

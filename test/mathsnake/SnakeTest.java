@@ -7,7 +7,6 @@ package mathsnake;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
-import mathsnake.Snake;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -34,14 +33,14 @@ public class SnakeTest {
      * Test of move method, of class Snake.
      */
     @Test
-    public void testMove() throws Exception {
+    public void testMove() throws InterruptedException {
         Snake instance = new Snake();
         instance.setLeftDirection(true);
         instance.move();
-        assertEquals(instance.getX(), 230);
+        assertEquals(instance.getX(), Environment.JP_WIDTH / 2 - 20);
         instance.setRightDirection(true);
         instance.move();
-        assertEquals(instance.getX(), 250);
+        assertEquals(instance.getX(), Environment.JP_WIDTH / 2);
     }
     
 }
