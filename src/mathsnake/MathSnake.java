@@ -20,7 +20,7 @@ public class MathSnake extends JFrame {
     }
     
     private void initUI() {
-        
+       
         add(new SnakeBoard());
         pack();
         setTitle("Math Snake");
