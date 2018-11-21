@@ -23,12 +23,14 @@ public class SnakeTest {
     @Test
     public void testMove() throws Exception {
         Snake instance = new Snake();
+        int oldX = instance.getX();
         instance.setLeftDirection(true);
         instance.move();
-        assertEquals(instance.getX(), 230);
+        assertFalse(instance.getX() == oldX);
+        oldX = instance.getX();
         instance.setRightDirection(true);
         instance.move();
-        assertEquals(instance.getX(), 250);
+        assertFalse(instance.getX() == oldX);
     }
     
     /**
