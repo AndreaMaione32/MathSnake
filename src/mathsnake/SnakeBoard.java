@@ -1,29 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mathsnake;
 
-/**
- *
- * @author antonino
- */
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.util.List;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -31,9 +24,12 @@ import javax.swing.Timer;
 
 public class SnakeBoard extends JPanel implements ActionListener {
     
-    private boolean inGame = true;
+    private STATE state = STATE.COUNTDOWN;
     
     private Timer timer;
+    private Timer countdownTimer;
+    private int secondsLeft = 3;
+    private JLabel countdown = new JLabel(Integer.toString(secondsLeft));
     private Image ball;
     private Image head;
     private final Snake snake = new Snake();
@@ -60,13 +56,14 @@ public class SnakeBoard extends JPanel implements ActionListener {
     }
     
     private void initSnakeBoard() {
-        
-        addKeyListener(new TAdapter());
         setBackground(Color.WHITE);
         setFocusable(true);
         setPreferredSize(new Dimension(Environment.JP_WIDTH, Environment.JP_HEIGHT));
+        setLayout(new GridBagLayout());
         loadImages();
         initGame();
+        countdown();
+        addListeners();
     }
    
     private void loadImages() {
@@ -96,41 +93,49 @@ public class SnakeBoard extends JPanel implements ActionListener {
         int numDots = snake.getDots();
         int x = snake.getX();
         int[] yVector = snake.getY();
-        
-        if (inGame) {            
-            //DRAWING BLOCK
-            BlocksManager blocksManager = BlocksManager.getInstance();
-            int numBlocks = blocksManager.numBlocks();
-            for(int i = 0; i < numBlocks; i++){
-                Block b = blocksManager.getBlock(i);
-                b.printBlock(g);
-            }
+     
+        switch (state) {
+            case COUNTDOWN:
+                countdown.setText(Integer.toString(secondsLeft));
+                checkCountdown();
+                break;
+            case IN_GAME:
+                //DRAWING BLOCK
+                BlocksManager blocksManager = BlocksManager.getInstance();
+                int numBlocks = blocksManager.numBlocks();
+                for(int i = 0; i < numBlocks; i++){
+                    Block b = blocksManager.getBlock(i);
+                    b.printBlock(g);
+                }
 
-            for (int z = 0; z < numDots - 1; z++){
-                g.drawImage(ball, x, yVector[z], this);
-            }
-            g.drawImage(head, x, yVector[numDots - 1], this);
-               
-            g.setColor(Color.black);
-            g.drawString(Integer.toString(snake.getLife()), x + 15, yVector[numDots - 1] + 10);
-            
-            
-            Font font = new Font("Arial", Font.BOLD, 14);
-            FontMetrics metrics = g.getFontMetrics(font);
-            g.setFont(font);
-            g.setColor(Color.black);
-            String text = "CURRENT BEST : NULL"; //Dovrà mostrare il miglior punteggio della Scoreboard
-            g.drawString("CURRENT BEST : NULL", Environment.JP_WIDTH - (10 + metrics.stringWidth(text)), 20); 
-            
-            text = "GAME BEST : " + Integer.toString(gameBest);
-            g.setFont(font);
-            g.setColor(Color.black);
-            g.drawString("GAME BEST : " + Integer.toString(gameBest), Environment.JP_WIDTH - (10 + metrics.stringWidth(text)), 20 + metrics.getHeight()); 
-            
-        } else {
-            //da implementare
-            gameOver(g);
-        }        
+                for (int z = 0; z < numDots - 1; z++){
+                    g.drawImage(ball, x, yVector[z], this);
+                }
+                g.drawImage(head, x, yVector[numDots - 1], this);
+
+                g.setColor(Color.black);
+                g.drawString(Integer.toString(snake.getLife()), x + 15, yVector[numDots - 1] + 10);
+
+
+                Font font = new Font("Arial", Font.BOLD, 14);
+                FontMetrics metrics = g.getFontMetrics(font);
+                g.setFont(font);
+                g.setColor(Color.black);
+                String text = "CURRENT BEST : NULL"; //Dovrà mostrare il miglior punteggio della Scoreboard
+                g.drawString("CURRENT BEST : NULL", Environment.JP_WIDTH - (10 + metrics.stringWidth(text)), 20); 
+
+                text = "GAME BEST : " + Integer.toString(gameBest);
+                g.setFont(font);
+                g.setColor(Color.black);
+                g.drawString("GAME BEST : " + Integer.toString(gameBest), Environment.JP_WIDTH - (10 + metrics.stringWidth(text)), 20 + metrics.getHeight());
+                break;
+            case GAMEOVER:
+                //da implementare
+                gameOver(g);
+                break;
+            default:
+                break;
+        }
     }
 
     private void gameOver(Graphics g) {
@@ -144,51 +149,65 @@ public class SnakeBoard extends JPanel implements ActionListener {
         g.drawString(msg, (Environment.JP_WIDTH - metr.stringWidth(msg)) / 2, Environment.JP_HEIGHT / 2);
     }
     
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    private void addListeners() {
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if ((key == KeyEvent.VK_LEFT) && (!snake.isMovingRight()) && state == STATE.IN_GAME) {
+                    snake.setLeftDirection(true);
+                    snake.setRightDirection(false);
+                }
 
-        if (inGame) {
-            try {
-                snake.move();
-                
-                checkCollision();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(SnakeBoard.class.getName()).log(Level.SEVERE, null, ex);
+                if ((key == KeyEvent.VK_RIGHT) && (!snake.isMovingLeft()) && state == STATE.IN_GAME) {
+                    snake.setLeftDirection(false);
+                    snake.setRightDirection(true);
+                }
+                if (key == KeyEvent.VK_P)
+                    if(state == STATE.IN_GAME) {
+                        state = STATE.PAUSE;
+                        timer.stop();
+                    }
+                    else if(state == STATE.PAUSE) {
+                        state = STATE.IN_GAME;
+                        timer.start();
+                    }
             }
-        }
-        repaint();
+        });
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                requestFocusInWindow();
+            }
+        });
     }
-
     
-    private class TAdapter extends KeyAdapter {
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-        int key = e.getKeyCode();
-        
-        if ((key == KeyEvent.VK_LEFT) && (!snake.isMovingRight())) {
-            snake.setLeftDirection(true);
-            snake.setRightDirection(false);
+    private void countdown() {
+        countdown.setFont(new Font("Arial", Font.BOLD, 100));
+        countdown.setForeground(Color.BLACK);
+        add(countdown);
+        countdownTimer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                secondsLeft--;
             }
-
-        if ((key == KeyEvent.VK_RIGHT) && (!snake.isMovingLeft())) {
-            snake.setLeftDirection(false);
-            snake.setRightDirection(true);
-            }
+        });
+    }
+    
+    private void checkCountdown() {
+        if (secondsLeft == 0) {
+            remove(countdown);
+            countdownTimer.stop();
+            state = STATE.IN_GAME;
         }
     }
     
     private void checkCollision(){
-        int numDots = snake.getDots();
-        int x = snake.getX();
-        int[] yVector = snake.getY();
-        int xBlock;
-        int yBlock;
         BlocksManager blocksManager = BlocksManager.getInstance();
         int numBlocks = blocksManager.numBlocks();
         Block b;
            
-        if (inGame){
+        if (state == STATE.IN_GAME){
             for(int y=0; y<numBlocks; y++){
                 b = blocksManager.getBlock(y);
                 if(snake.collide(b.getAssociatedRectangle())){     //check if snake's head collide with block's rectangle
@@ -228,5 +247,29 @@ public class SnakeBoard extends JPanel implements ActionListener {
         }
         
     }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (hasFocus()) {
+            if(!countdownTimer.isRunning()) {
+                countdownTimer.start();
+            }
+        }
+        if (state == STATE.IN_GAME) {
+            try {
+                snake.move();
+                checkCollision();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(SnakeBoard.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        repaint();
+    }
      
+    private enum STATE {
+        COUNTDOWN,
+        IN_GAME,
+        PAUSE,
+        GAMEOVER
+    }
 }

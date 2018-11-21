@@ -36,8 +36,7 @@ public class UpdaterBlockThread implements Runnable {
     public void run() {
         while(!stop){
             BlocksManager blocksManager = BlocksManager.getInstance();
-            int numBlocks = blocksManager.numBlocks();
-            for(int i = 0; i < numBlocks; i++){                  //for any blocks modify y in order to move down block 
+            for(int i = 0; i < blocksManager.numBlocks(); i++){                  //for any blocks modify y in order to move down block 
                 Block b = blocksManager.getBlock(i);
                 if((snake.getLife()/Environment.LIFEINCREASING) > (Environment.MAXBLOCKSHIFT)){
                     b.setY(b.getY() + (Environment.MAXBLOCKSHIFT + Environment.BLOCKSHIFT));
