@@ -78,7 +78,6 @@ public class SnakeBoard extends JPanel implements ActionListener {
         //Start threads
         new Thread(constructorBlockThread).start();
         new Thread(updaterBlockThread).start();
-        //new Thread(destroyerBlockThread).start();
     }
 
     @Override
