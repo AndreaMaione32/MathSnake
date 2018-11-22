@@ -37,7 +37,6 @@ public class SnakeBoard extends JPanel implements ActionListener {
     private int gameBest = Environment.STARTLIFEPOINTS;
     private Runnable constructorBlockThread = new ConstructorBlockThread(snake);
     private Runnable updaterBlockThread = new UpdaterBlockThread(snake);
-    private Runnable destroyerBlockThread = new DestroyerBlockThread();
 
     public SnakeBoard() {
         initSnakeBoard();
@@ -79,7 +78,7 @@ public class SnakeBoard extends JPanel implements ActionListener {
         //Start threads
         new Thread(constructorBlockThread).start();
         new Thread(updaterBlockThread).start();
-        new Thread(destroyerBlockThread).start();
+        //new Thread(destroyerBlockThread).start();
     }
 
     @Override
@@ -212,7 +211,11 @@ public class SnakeBoard extends JPanel implements ActionListener {
                     changeLife(b.getStrOp(), b.getValue(), snake);
                     blocksManager.removeBlock(b);
                     y--; //decrease y by one because when a block is eliminated the other blocks in list are shifted by one to left, so the next element to check is y again
-                } 
+                }
+                if(b.getY() > Environment.JP_HEIGHT){   //check if the block is visibile on the screen, if is not the block is removed
+                    blocksManager.removeBlock(b);
+                    y--;
+                }
             }
         }        
     }
