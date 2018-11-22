@@ -102,8 +102,7 @@ public class SnakeBoard extends JPanel implements ActionListener {
             case IN_GAME:
                 //DRAWING BLOCK
                 BlocksManager blocksManager = BlocksManager.getInstance();
-                int numBlocks = blocksManager.numBlocks();
-                for(int i = 0; i < numBlocks; i++){
+                for(int i = 0; i < blocksManager.numBlocks(); i++){
                     Block b = blocksManager.getBlock(i);
                     b.printBlock(g);
                 }
@@ -204,17 +203,15 @@ public class SnakeBoard extends JPanel implements ActionListener {
     
     private void checkCollision(){
         BlocksManager blocksManager = BlocksManager.getInstance();
-        int numBlocks = blocksManager.numBlocks();
         Block b;
            
         if (state == STATE.IN_GAME){
-            for(int y=0; y<numBlocks; y++){
+            for(int y=0; y<blocksManager.numBlocks(); y++){
                 b = blocksManager.getBlock(y);
                 if(snake.collide(b.getAssociatedRectangle())){     //check if snake's head collide with block's rectangle
                     changeLife(b.getStrOp(), b.getValue(), snake);
                     blocksManager.removeBlock(b);
                     y--; //decrease y by one because when a block is eliminated the other blocks in list are shifted by one to left, so the next element to check is y again
-                    numBlocks = blocksManager.numBlocks();
                 } 
             }
         }        
