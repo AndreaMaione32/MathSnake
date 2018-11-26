@@ -26,7 +26,7 @@ public class SnakeBoard extends JPanel implements ActionListener {
     
     private STATE state = STATE.COUNTDOWN;
     
-    private Timer timer;
+    private Timer repaintTimer = new Timer(Environment.DELAY, this);
     private Timer countdownTimer;
     private int secondsLeft = 3;
     private JLabel countdown = new JLabel(Integer.toString(secondsLeft));
@@ -35,8 +35,10 @@ public class SnakeBoard extends JPanel implements ActionListener {
     private final Snake snake = new Snake();
     
     private int gameBest = Environment.STARTLIFEPOINTS;
-    private Runnable constructorBlockThread = new ConstructorBlockThread(snake);
-    private Runnable updaterBlockThread = new UpdaterBlockThread(snake);
+    private ConstructorBlockThread constructorBlockThread = new ConstructorBlockThread(snake);
+    private UpdaterBlockThread updaterBlockThread = new UpdaterBlockThread(snake);
+    private Thread CBThread = new Thread(constructorBlockThread);
+    private Thread UBThread = new Thread(updaterBlockThread);
 
     public SnakeBoard() {
         initSnakeBoard();
@@ -72,12 +74,8 @@ public class SnakeBoard extends JPanel implements ActionListener {
     
     private void initGame() {
         // Viene inizializzato il timer necessario per i repaint
-        timer = new Timer(Environment.DELAY, this);
-        
-        timer.start();
-        //Start threads
-        new Thread(constructorBlockThread).start();
-        new Thread(updaterBlockThread).start();
+        repaintTimer = new Timer(Environment.DELAY, this);
+        repaintTimer.start();
     }
 
     @Override
@@ -146,39 +144,6 @@ public class SnakeBoard extends JPanel implements ActionListener {
         g.drawString(msg, (Environment.JP_WIDTH - metr.stringWidth(msg)) / 2, Environment.JP_HEIGHT / 2);
     }
     
-    private void addListeners() {
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                int key = e.getKeyCode();
-                if ((key == KeyEvent.VK_LEFT) && (!snake.isMovingRight()) && state == STATE.IN_GAME) {
-                    snake.setLeftDirection(true);
-                    snake.setRightDirection(false);
-                }
-
-                if ((key == KeyEvent.VK_RIGHT) && (!snake.isMovingLeft()) && state == STATE.IN_GAME) {
-                    snake.setLeftDirection(false);
-                    snake.setRightDirection(true);
-                }
-                if (key == KeyEvent.VK_P)
-                    if(state == STATE.IN_GAME) {
-                        state = STATE.PAUSE;
-                        timer.stop();
-                    }
-                    else if(state == STATE.PAUSE) {
-                        state = STATE.IN_GAME;
-                        timer.start();
-                    }
-            }
-        });
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentShown(ComponentEvent e) {
-                requestFocusInWindow();
-            }
-        });
-    }
-    
     private void countdown() {
         countdown.setFont(new Font("Arial", Font.BOLD, 100));
         countdown.setForeground(Color.BLACK);
@@ -221,7 +186,6 @@ public class SnakeBoard extends JPanel implements ActionListener {
     
     private void changeLife(String op, int value, Snake snake){
         int actualLife = snake.getLife();
-        
 
         if (op.equals("+")){
             snake.setLife(actualLife + value);
@@ -244,7 +208,47 @@ public class SnakeBoard extends JPanel implements ActionListener {
                 gameBest = actualLife;
             }
         }
-        
+    }
+    
+    private void addListeners() {
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if ((key == KeyEvent.VK_LEFT) && (!snake.isMovingRight()) && state == STATE.IN_GAME) {
+                    snake.setLeftDirection(true);
+                    snake.setRightDirection(false);
+                }
+
+                if ((key == KeyEvent.VK_RIGHT) && (!snake.isMovingLeft()) && state == STATE.IN_GAME) {
+                    snake.setLeftDirection(false);
+                    snake.setRightDirection(true);
+                }
+                if (key == KeyEvent.VK_P)
+                    if(state == STATE.IN_GAME) {
+                        state = STATE.PAUSE;
+                        repaintTimer.stop();
+                        constructorBlockThread.stopThread();
+                        updaterBlockThread.stopThread();
+                    }
+                    else if(state == STATE.PAUSE) {
+                        state = STATE.IN_GAME;
+                        repaintTimer.start();
+                        constructorBlockThread = new ConstructorBlockThread(snake);
+                        updaterBlockThread = new UpdaterBlockThread(snake);
+                        CBThread = new Thread(constructorBlockThread);
+                        UBThread = new Thread(updaterBlockThread);
+                        CBThread.start();
+                        UBThread.start();
+                    }
+            }
+        });
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                requestFocusInWindow();
+            }
+        });
     }
     
     @Override
@@ -252,6 +256,12 @@ public class SnakeBoard extends JPanel implements ActionListener {
         if (hasFocus()) {
             if(!countdownTimer.isRunning()) {
                 countdownTimer.start();
+            }
+        }
+        if (hasFocus() && state == STATE.IN_GAME) {
+            if(!CBThread.isAlive() && !UBThread.isAlive()) {
+                CBThread.start();
+                UBThread.start();
             }
         }
         if (state == STATE.IN_GAME) {
