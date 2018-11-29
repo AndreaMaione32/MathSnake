@@ -14,7 +14,7 @@ public interface Environment {
     public final int JP_HEIGHT = 500; //altezza del pannello 
     public final int DOT_SIZE = 10; //altezza e larghezza di ogni dot di cui è composto lo snake
     public final int DELAY = 50; // determina la velocità di animazione
-    public final int BLOCKDELAY = 70; //determina la velcoità di aggiornamento dei blocchi
+    public final int BLOCKDELAY = 10; //determina la velcoità di aggiornamento dei blocchi
     public final int MAXBLOCKSHIFT = 15; //massimo aumento allo shift iniziale
     public final int MINTHREADDELAY = 1850; //ritardo del thread nella situazione iniziale
     public final int MAXTHREADDELAY = 800; //ritardo del thread nella situazione di massima velocità
