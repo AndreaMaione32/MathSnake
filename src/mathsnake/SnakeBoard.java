@@ -1,5 +1,6 @@
 package mathsnake;
 
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -30,6 +31,7 @@ public class SnakeBoard extends JPanel implements ActionListener {
     private Timer countdownTimer;
     private int secondsLeft = 3;
     private JLabel countdown = new JLabel(Integer.toString(secondsLeft));
+    private JLabel gameOverLabel = new JLabel("GAME OVER");
     private Image ball;
     private Image head;
     private final Snake snake = new Snake();
@@ -37,8 +39,8 @@ public class SnakeBoard extends JPanel implements ActionListener {
     private int gameBest = Environment.STARTLIFEPOINTS;
     private ConstructorBlockThread constructorBlockThread = new ConstructorBlockThread(snake);
     private UpdaterBlockThread updaterBlockThread = new UpdaterBlockThread(snake);
-    private Thread CBThread = new Thread(constructorBlockThread);
-    private Thread UBThread = new Thread(updaterBlockThread);
+    private Thread CBThread = new Thread(constructorBlockThread); 
+    private Thread UBThread = new Thread(updaterBlockThread); 
 
     public SnakeBoard() {
         initSnakeBoard();
@@ -125,23 +127,23 @@ public class SnakeBoard extends JPanel implements ActionListener {
                 g.drawString("GAME BEST : " + Integer.toString(gameBest), Environment.JP_WIDTH - (10 + metrics.stringWidth(text)), 20 + metrics.getHeight());
                 break;
             case GAMEOVER:
-                //da implementare
-                gameOver(g);
+                gameOver();
                 break;
             default:
                 break;
         }
     }
 
-    private void gameOver(Graphics g) {
-        // da implementare
-        String msg = "Game Over";
-        Font small = new Font("Helvetica", Font.BOLD, 14);
-        FontMetrics metr = getFontMetrics(small);
-
-        g.setColor(Color.white);
-        g.setFont(small);
-        g.drawString(msg, (Environment.JP_WIDTH - metr.stringWidth(msg)) / 2, Environment.JP_HEIGHT / 2);
+    private void gameOver() {
+        constructorBlockThread.stopThread();
+        updaterBlockThread.stopThread();
+        long endTime = System.currentTimeMillis() + 1000;
+        while(System.currentTimeMillis() != endTime) {
+            // Wait 1 second
+        }
+        state = STATE.COUNTDOWN;
+        CardLayout cl = MathSnake.getInstance().getCardLayout();
+        cl.show(MathSnake.getInstance().getCardsJPanel(), "gameOver");
     }
     
     private void countdown() {
@@ -187,27 +189,31 @@ public class SnakeBoard extends JPanel implements ActionListener {
     private void changeLife(String op, int value, Snake snake){
         int actualLife = snake.getLife();
 
-        if (op.equals("+")){
+        if (op.equals("+"))
             snake.setLife(actualLife + value);
-        }
-        if (op.equals("x")){
+        if (op.equals("x"))
             snake.setLife(actualLife * value);
-        }
-        if (op.equals("-")){
+        if (op.equals("-"))
             snake.setLife(actualLife - value);
-        }
-        if (op.equals("/")){
+        if (op.equals("/"))
             snake.setLife(actualLife / value);
-        }
         
         actualLife = snake.getLife();
-        if (actualLife < 0){
+        if (actualLife < 0)
             snake.setLife(0);
-        } else{
-            if (actualLife > gameBest){
+        else {
+            if (actualLife > gameBest)
                 gameBest = actualLife;
-            }
         }
+        if (snake.getLife() == 0)
+            state = STATE.GAMEOVER;
+        
+    }
+    
+    private void initialState() {
+        BlocksManager.getInstance().flush();
+        snake.setLife(10);
+        secondsLeft = 3;
     }
     
     private void addListeners() {
@@ -253,13 +259,19 @@ public class SnakeBoard extends JPanel implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (hasFocus()) {
+        if (hasFocus() && state == STATE.COUNTDOWN) {
             if(!countdownTimer.isRunning()) {
+                countdown();
                 countdownTimer.start();
             }
         }
         if (hasFocus() && state == STATE.IN_GAME) {
             if(!CBThread.isAlive() && !UBThread.isAlive()) {
+                initialState();
+                constructorBlockThread = new ConstructorBlockThread(snake);
+                updaterBlockThread = new UpdaterBlockThread(snake);
+                CBThread = new Thread(constructorBlockThread);
+                UBThread = new Thread(updaterBlockThread);
                 CBThread.start();
                 UBThread.start();
             }

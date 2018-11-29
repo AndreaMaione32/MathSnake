@@ -31,7 +31,7 @@ public class Snake {
         y = new int[dots]; // Il vettore delle coordinate y viene settatto a dimensione uguale al valore dots di default (a ogni elemento corrisponde una coordinata di un dot)
         for (int z = 0; z < dots; z++) {
             y[z] = Environment.JP_HEIGHT - (z * Environment.DOT_SIZE); // Poichè la dimensione di ogni dot è DOT_SIZE px la differenza fra due coordinate adiacenti nel vettore è pari a 10, il primo elemento del vettore è il primo dot della coda, mentre l'ultimo è la testa dello snake; il primo dot ha y = JP_WIDTH, il secondo JP_WIDTH - 10 e così via
-        this.rectangle = new Rectangle(x,y[dots-1], Environment.DOT_SIZE,Environment.DOT_SIZE);  //coordinates are the coordinates of the head
+            this.rectangle = new Rectangle(x, y[dots-1], Environment.DOT_SIZE, Environment.DOT_SIZE);  //coordinates are the coordinates of the head
         }
     }
 
@@ -45,7 +45,7 @@ public class Snake {
 
     public void setX(int x) {
         this.x = x;
-        rectangle.setLocation(x, this.y[dots-1]); //Move also Rectangle assoicated
+        rectangle.setLocation(x, this.y[dots-1]); //Move also Rectangle associated
     }
     
     public void setLife(int lifepoints){
