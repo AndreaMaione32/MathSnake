@@ -35,3 +35,4 @@ hs_err_pid*
 >>>>>>> ebbbc59484491428948c108129070b4ea4a703be
 .DS_Store
 *.properties
+*.xml
