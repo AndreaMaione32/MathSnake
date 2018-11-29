@@ -5,8 +5,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,9 +37,9 @@ public class SnakeBoard extends JPanel implements ActionListener {
     private final Snake snake = new Snake();
     
     private int gameBest = Environment.STARTLIFEPOINTS;
-    private Runnable constructorBlockThread = new ConstructorBlockThread(snake);
-    private Runnable updaterBlockThread = new UpdaterBlockThread(snake);
-
+    private ConstructorThread constructorBlockThread = new ConstructorThread(snake);
+    private UpdaterThread updaterThread = new UpdaterThread(snake);
+    
     public SnakeBoard() {
         initSnakeBoard();
     }
@@ -77,7 +79,7 @@ public class SnakeBoard extends JPanel implements ActionListener {
         timer.start();
         //Start threads
         new Thread(constructorBlockThread).start();
-        new Thread(updaterBlockThread).start();
+        new Thread(updaterThread).start();
     }
 
     @Override
@@ -98,13 +100,11 @@ public class SnakeBoard extends JPanel implements ActionListener {
                 checkCountdown();
                 break;
             case IN_GAME:
-                //DRAWING BLOCK
-                BlocksManager blocksManager = BlocksManager.getInstance();
-                for(int i = 0; i < blocksManager.numBlocks(); i++){
-                    Block b = blocksManager.getBlock(i);
-                    b.printBlock(g);
-                }
-
+                //The rendering hints are used to make the drawing smooth
+                RenderingHints rh= new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                ((Graphics2D) g).setRenderingHints(rh);
+                //DRAWING SNAKE
                 for (int z = 0; z < numDots - 1; z++){
                     g.drawImage(ball, x, yVector[z], this);
                 }
@@ -112,8 +112,18 @@ public class SnakeBoard extends JPanel implements ActionListener {
 
                 g.setColor(Color.black);
                 g.drawString(Integer.toString(snake.getLife()), x + 15, yVector[numDots - 1] + 10);
-
-
+                //DRAWING BLOCK
+                BlocksManager blocksManager = BlocksManager.getInstance();
+                for(int i = 0; i < blocksManager.numBlocks(); i++){
+                    Block b = blocksManager.getBlock(i);
+                    b.printBlock(g);
+                }
+                //DRAWING POWER UPS
+                PowerUpsManager powerUpsManager= PowerUpsManager.getInstance();
+                for(int i = 0; i<powerUpsManager.powerUpsnums(); i++){
+                    PowerUps p = powerUpsManager.getPowerUps(i);
+                    p.drawPowerUps(g);
+                }
                 Font font = new Font("Arial", Font.BOLD, 14);
                 FontMetrics metrics = g.getFontMetrics(font);
                 g.setFont(font);
@@ -201,9 +211,12 @@ public class SnakeBoard extends JPanel implements ActionListener {
     
     private void checkCollision(){
         BlocksManager blocksManager = BlocksManager.getInstance();
+        PowerUpsManager powerUpsManager = PowerUpsManager.getInstance();
         Block b;
+        PowerUps p;
            
         if (state == STATE.IN_GAME){
+            //COLLISIONS WITH BLOCK
             for(int y=0; y<blocksManager.numBlocks(); y++){
                 b = blocksManager.getBlock(y);
                 if(snake.collide(b.getAssociatedRectangle())){     //check if snake's head collide with block's rectangle
@@ -213,6 +226,19 @@ public class SnakeBoard extends JPanel implements ActionListener {
                 }
                 if(b.getY() > Environment.JP_HEIGHT){   //check if the block is visibile on the screen, if is not the block is removed
                     blocksManager.removeBlock(b);
+                    y--;
+                }
+            }
+            //COLLISIONS WITH POWER UPS
+            for(int y=0; y<powerUpsManager.powerUpsnums(); y++){
+                p = powerUpsManager.getPowerUps(y);
+                if(snake.collide(p.getAssociatedRectangle())){
+                    p.action(snake);
+                    powerUpsManager.removePowerUps(p);
+                    y--;
+                }
+                if(p.getY() > Environment.JP_HEIGHT){
+                    powerUpsManager.removePowerUps(p);
                     y--;
                 }
             }

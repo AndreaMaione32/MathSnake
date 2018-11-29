@@ -16,16 +16,19 @@ import java.util.logging.Logger;
  * @author antoniocoppola
  * The Runnable, that is called Thread in order to explain better its function, creates the Block
  */
-public class ConstructorBlockThread implements Runnable {
+public class ConstructorThread implements Runnable {
     private  BlocksManager blocksmanager; 
+    private PowerUpsManager powerUpsManager;
     private boolean stop = false;
+    private boolean pause = false;
+    private int counterPowerUps = 0;  //it's used to create power ups every x blocks creation
     
     private Snake snake;
     
-    public ConstructorBlockThread(Snake snake) {
+    public ConstructorThread(Snake snake) {
         super();
-        blocksmanager = BlocksManager.getInstance();
-        
+        this.blocksmanager = BlocksManager.getInstance();
+        this.powerUpsManager = PowerUpsManager.getInstance();
         this.snake = snake;
     }
     
@@ -35,6 +38,7 @@ public class ConstructorBlockThread implements Runnable {
             int y=5;
             boolean mul = false;
             boolean dea = false;
+            createPowerUps();
             for(int i=0; i<7; i++){
                 Random random = new Random();
                 int casuale = random.nextInt(99);
@@ -87,11 +91,25 @@ public class ConstructorBlockThread implements Runnable {
                     }
                 }
             } catch (InterruptedException ex) {
-                Logger.getLogger(ConstructorBlockThread.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ConstructorThread.class.getName()).log(Level.SEVERE, null, ex);
             }
+            }
+        
+    }
+    
+    public void createPowerUps(){
+        if(counterPowerUps == 6){   //create power ups every seven block creations
+        this.powerUpsManager.addPowerUps(new PowerUpsIncreaseLife(this.randomX(), -240));
+        counterPowerUps = 0;
         }
+        else
+            counterPowerUps ++;
     }
 
+    private int randomX(){
+        return (int)(Math.random()*(Environment.JP_WIDTH -Environment.POWERUPS_WIDHT - 10));
+    }
+    
     public boolean isStop() {
         return stop;
     }
@@ -100,5 +118,5 @@ public class ConstructorBlockThread implements Runnable {
     public void stopThread(){
         stop = true;
     }
-    
+   
 }
