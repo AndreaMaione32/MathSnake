@@ -10,42 +10,40 @@ import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
 public class Snake {
-    private short x[] = new short[10]; // La coordinata x dello snake è univoca per tutti i dot che lo costituiscono ed può assumere valori compresti fra 0 e JP_WIDTH
-    private short y[] = new short[10]; // Ogni dot che costituisce lo snake ha coordinata y differente e fissata in quanto lo snake ha altezza fissa
-    
-    private final byte dots = 10; // Numero di dots che costituiscono lo snake
+    private final int x[] = new int[Environment.DOT_NUM]; // La coordinata x dello snake è univoca per tutti i dot che lo costituiscono ed può assumere valori compresti fra 0 e JP_WIDTH
+    private final int y[] = new int[Environment.DOT_NUM]; // Ogni dot che costituisce lo snake ha coordinata y differente e fissata in quanto lo snake ha altezza fissa
     private boolean leftDirection = false;
     private boolean rightDirection = false;
-    private Rectangle rectangle;   //Rect associated to Snake's Head, it's used to mange collision
+    private final Rectangle rectangle;   //Rect associated to Snake's Head, it's used to mange collision
     private int lifepoints; 
     
     // Costruttore con paramtetro di deafult di dots
     public Snake() {
         this.lifepoints = Environment.STARTLIFEPOINTS;
-        for (int i=0; i<x.length; i++) {
+        for (byte i=0; i<Environment.DOT_NUM; i++) {
             x[i] = Environment.JP_WIDTH / 2; // Lo snake viene creato al centro della finestra
         }
-        for (int i=0; i<y.length; i++) {
-            y[i] = (short) (Environment.JP_HEIGHT - (i * Environment.DOT_SIZE)); // Poichè la dimensione di ogni dot è DOT_SIZE px la differenza fra due coordinate adiacenti nel vettore è pari a 10, il primo elemento del vettore è il primo dot della coda, mentre l'ultimo è la testa dello snake; il primo dot ha y = JP_WIDTH, il secondo JP_WIDTH - 10 e così via
+        for (byte i=0; i<Environment.DOT_NUM; i++) {
+            y[i] = Environment.JP_HEIGHT - (i * Environment.DOT_SIZE); // Poichè la dimensione di ogni dot è DOT_SIZE px la differenza fra due coordinate adiacenti nel vettore è pari a 10, il primo elemento del vettore è il primo dot della coda, mentre l'ultimo è la testa dello snake; il primo dot ha y = JP_WIDTH, il secondo JP_WIDTH - 10 e così via
         }
-        this.rectangle = new Rectangle(x[dots - 1], y[dots - 1], Environment.DOT_SIZE, Environment.DOT_SIZE);  //coordinates are the coordinates of the head
+        this.rectangle = new Rectangle(x[Environment.DOT_NUM - 1], y[Environment.DOT_NUM - 1], Environment.DOT_SIZE, Environment.DOT_SIZE);  //coordinates are the coordinates of the head
     }
 
     public Rectangle getAssociatedRectangle() {
         return rectangle;
     }
 
-    public short[] getX() {
+    public int[] getX() {
         return x;
     }
     
-    public short[] getY() {
+    public int[] getY() {
         return y;
     }
     
-    public byte getDots() {
+    /*public byte getDots() {
         return dots;
-    }
+    }*/
     
     public int getLife() {
         return lifepoints;
@@ -86,26 +84,26 @@ public class Snake {
         return this.rectangle.intersects(rect);
     }
     
-    public void move() throws InterruptedException {
+    public void move(){
         int shift = 1; //Environment.DOT_SIZE + 15;
-        for (int i=0; i<dots - 1; i++){
+        for (byte i=0; i<Environment.DOT_NUM - 1; i++){
             x[i] = x[i+1];
         }
         if (leftDirection) {
-            if (x[dots - 1] - shift < 0)
-                x[dots - 1] = 0;
+            if (x[Environment.DOT_NUM - 1] - shift < 0)
+                x[Environment.DOT_NUM - 1] = 0;
             else
-                x[dots - 1] -= shift;
+                x[Environment.DOT_NUM - 1] -= shift;
             leftDirection = false;
         }
         if (rightDirection) {
-            if (x[dots - 1] + shift >= Environment.JP_WIDTH)
-                x[dots - 1] = Environment.JP_WIDTH - 10;
+            if (x[Environment.DOT_NUM - 1] + shift >= Environment.JP_WIDTH)
+                x[Environment.DOT_NUM - 1] = Environment.JP_WIDTH - 10;
             else
-                x[dots - 1] += shift;
+                x[Environment.DOT_NUM - 1] += shift;
             rightDirection = false;
         }
-        rectangle.setLocation(x[dots - 1], this.y[dots-1]);
+        rectangle.setLocation(x[Environment.DOT_NUM - 1], y[Environment.DOT_NUM - 1]);
     }
 }
 

@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * down the block on the screen
  */
 public class UpdaterBlockThread implements Runnable {
-    private  BlocksManager blocksmanager; 
+    private BlocksManager blocksmanager; 
     private boolean stop = false;
     private boolean pause = false;
     
@@ -24,7 +24,6 @@ public class UpdaterBlockThread implements Runnable {
     public UpdaterBlockThread(Snake snake){
         super();
         blocksmanager = BlocksManager.getInstance();
-
         this.snake = snake;
     }
     

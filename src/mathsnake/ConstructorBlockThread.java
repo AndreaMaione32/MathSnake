@@ -15,16 +15,14 @@ import java.util.logging.Logger;
  * The Runnable, that is called Thread in order to explain better its function, creates the Block
  */
 public class ConstructorBlockThread implements Runnable {
-    private  BlocksManager blocksmanager; 
+    private BlocksManager blocksmanager; 
     private boolean stop = false;
     private boolean pause = false;
-    
     private Snake snake;
     
     public ConstructorBlockThread(Snake snake) {
         super();
         blocksmanager = BlocksManager.getInstance();
-        
         this.snake = snake;
     }
     
@@ -107,6 +105,5 @@ public class ConstructorBlockThread implements Runnable {
     
     public void pause(boolean pause) {
         this.pause = pause;
-    }
-    
+    }   
 }

@@ -14,13 +14,9 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-
-
 
 public class SnakeBoard extends JPanel implements ActionListener {
     
@@ -29,7 +25,7 @@ public class SnakeBoard extends JPanel implements ActionListener {
     private Timer repaintTimer = new Timer(Environment.DELAY, this);
     private Timer countdownTimer;
     private int secondsLeft = 3;
-    private JLabel countdown = new JLabel(Integer.toString(secondsLeft));
+    private final JLabel countdown = new JLabel(Integer.toString(secondsLeft));
     private Image ball;
     private Image head;
     private final Snake snake = new Snake();
@@ -86,9 +82,8 @@ public class SnakeBoard extends JPanel implements ActionListener {
     }
     
     private void doDrawing(Graphics g) {
-        byte numDots = snake.getDots();
-        short x[] = snake.getX();
-        short y[] = snake.getY();
+        int x[] = snake.getX();
+        int y[] = snake.getY();
      
         switch (state) {
             case COUNTDOWN:
@@ -103,14 +98,13 @@ public class SnakeBoard extends JPanel implements ActionListener {
                     b.printBlock(g);
                 }
 
-                for (int i = 0; i < numDots - 1; i++){
+                for (int i = 0; i < Environment.DOT_NUM - 1; i++){
                     g.drawImage(ball, x[i], y[i], this);
                 }
-                g.drawImage(head, x[numDots - 1], y[numDots - 1], this);
+                g.drawImage(head, x[Environment.DOT_NUM - 1], y[Environment.DOT_NUM - 1], this);
 
                 g.setColor(Color.black);
-                g.drawString(Integer.toString(snake.getLife()), x[numDots - 1] + 15, y[numDots - 1] + 10);
-
+                g.drawString(Integer.toString(snake.getLife()), x[Environment.DOT_NUM - 1] + 15, y[Environment.DOT_NUM - 1] + 10);
 
                 Font font = new Font("Arial", Font.BOLD, 14);
                 FontMetrics metrics = g.getFontMetrics(font);
@@ -203,10 +197,9 @@ public class SnakeBoard extends JPanel implements ActionListener {
         actualLife = snake.getLife();
         if (actualLife < 0){
             snake.setLife(0);
-        } else{
-            if (actualLife > gameBest){
-                gameBest = actualLife;
-            }
+        }
+        else if(actualLife > gameBest){
+            gameBest = actualLife;
         }
     }
     
@@ -265,12 +258,8 @@ public class SnakeBoard extends JPanel implements ActionListener {
             }
         }
         if (state == STATE.IN_GAME) {
-            try {
-                snake.move();
-                checkCollision();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(SnakeBoard.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            snake.move();
+            checkCollision();
         }
         repaint();
     }
