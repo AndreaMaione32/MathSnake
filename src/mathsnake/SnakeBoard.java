@@ -86,9 +86,9 @@ public class SnakeBoard extends JPanel implements ActionListener {
     }
     
     private void doDrawing(Graphics g) {
-        int numDots = snake.getDots();
-        int x = snake.getX();
-        int[] yVector = snake.getY();
+        byte numDots = snake.getDots();
+        short x[] = snake.getX();
+        short y[] = snake.getY();
      
         switch (state) {
             case COUNTDOWN:
@@ -103,13 +103,13 @@ public class SnakeBoard extends JPanel implements ActionListener {
                     b.printBlock(g);
                 }
 
-                for (int z = 0; z < numDots - 1; z++){
-                    g.drawImage(ball, x, yVector[z], this);
+                for (int i = 0; i < numDots - 1; i++){
+                    g.drawImage(ball, x[i], y[i], this);
                 }
-                g.drawImage(head, x, yVector[numDots - 1], this);
+                g.drawImage(head, x[numDots - 1], y[numDots - 1], this);
 
                 g.setColor(Color.black);
-                g.drawString(Integer.toString(snake.getLife()), x + 15, yVector[numDots - 1] + 10);
+                g.drawString(Integer.toString(snake.getLife()), x[numDots - 1] + 15, y[numDots - 1] + 10);
 
 
                 Font font = new Font("Arial", Font.BOLD, 14);
