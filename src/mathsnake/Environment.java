@@ -28,4 +28,5 @@ public interface Environment {
     public final int POWERUPS_WIDHT = 30;
     public final int POWERUPS_HEIGHT = 39;
     public final int SPEED_UP_DURATION = 7000;
+    public final int SHIELD_DURATION = 7000;
 }

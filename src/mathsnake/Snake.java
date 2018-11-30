@@ -13,19 +13,27 @@ public class Snake implements ActionListener{
     private double[] y; // Ogni dot che costituisce lo snake ha coordinata y differente e fissata in quanto lo snake ha altezza fissa
     private double dx; 
     private Timer speedUpTimer;
+    private Timer shieldTimer;
     private final int dots; // Numero di dots che costituiscono lo snake
     //private boolean leftDirection = false;
     //private boolean rightDirection = false;
     private Rectangle rectangle;   //Rect associated to Snake's Head, it's used to mange collision
     private int lifepoints; 
     private boolean speed_uped = false; //if true increase snake's velocity of 70%
+    private boolean shield = false; //if true the snake's life don't decreases
     // Costruttore con paramtetro di deafult di dots
     public Snake() {
         dots = 10;
         
         int snakeStartPoint = Environment.JP_WIDTH / 2; // Lo snake viene creato al centro della finestra
         x = snakeStartPoint;
-        
+        this.shieldTimer = new Timer(Environment.SHIELD_DURATION, new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                shield = false;
+                shieldTimer.stop();
+            }
+        });
         lifepoints = Environment.STARTLIFEPOINTS;
         this.speedUpTimer = new Timer(Environment.SPEED_UP_DURATION, this);
         y = new double[dots]; // Il vettore delle coordinate y viene settatto a dimensione uguale al valore dots di default (a ogni elemento corrisponde una coordinata di un dot)
@@ -49,7 +57,13 @@ public class Snake implements ActionListener{
     }
     
     public void setLife(int lifepoints){
-        this.lifepoints = lifepoints;
+        if(shield){  
+            if(this.lifepoints > lifepoints){} //if the snake has a shield its life must to don't decrease
+            else
+                this.lifepoints = lifepoints;
+        }
+        else
+            this.lifepoints = lifepoints;
     }
     
     public double[] getY() {
@@ -105,8 +119,17 @@ public class Snake implements ActionListener{
     }
     //it's used to speed up the snake temporarily 
 
+    public void shield(){
+        if(this.shield)
+            shieldTimer.stop(); //if snake has already a shield stop shield timer and start it again
+        else
+            this.shield = true;
+        shieldTimer.start();
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         this.speed_uped = false;
+        this.speedUpTimer.stop();
     }
 }

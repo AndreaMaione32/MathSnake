@@ -25,6 +25,6 @@ public class PowerUpsIncreaseLife extends PowerUps{
 
     @Override
     public void action(Snake snake) {
-        snake.setLife(snake.getLife() + 80);  //increases snake's life
+        snake.setLife(snake.getLife() + 100);  //increases snake's life
     }
 }

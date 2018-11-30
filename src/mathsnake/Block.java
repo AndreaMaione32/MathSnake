@@ -58,13 +58,13 @@ public class Block {
     private Color defineColor(Operation op){
         switch(op){
             case ADD:
-                return Color.ORANGE;
+                return new Color(38,166,191);
             case MUL:
-                 return Color.GREEN;
+                 return new Color(38,166,191);
             case SUB:
-                return Color.MAGENTA;
+                return new Color(179,12,12);
             case DIV:
-                return Color.RED;
+                return new Color(179,12,12);
             case DEA:
                 return Color.BLACK;
             case NULL:
@@ -116,7 +116,7 @@ public class Block {
     
     public void printBlock(Graphics g){ //print block given x, y coordinate and graphics object, associeted to an JPanel
        g.setColor(this.getColor());
-       g.fillRect((int)x, (int)y, Environment.BLOCK_WIDTH, Environment.BLOCK_HEIGHT);
+       g.fill3DRect((int)x, (int)y, Environment.BLOCK_WIDTH, Environment.BLOCK_HEIGHT, true);
        Font font = new Font("Arial", Font.BOLD, 24);
        String text = this.getStrOp()+Integer.toString(this.getValue());
        // Get the FontMetrics

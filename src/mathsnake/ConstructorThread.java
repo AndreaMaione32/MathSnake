@@ -110,7 +110,7 @@ public class ConstructorThread implements Runnable {
                 this.powerUpsManager.addPowerUps(new PowerUpsIncreaseLife(this.randomX(), -240)); //probability of 20% power ups increase life
             }
             if(rand == 4){ //probability of 10%
-            
+                this.powerUpsManager.addPowerUps(new PowerUpsShield(this.randomX(), -240)); //probability of 20% power ups increase life
             }
         }
         counterPowerUps = 0;
