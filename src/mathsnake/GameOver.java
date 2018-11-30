@@ -29,7 +29,6 @@ public class GameOver extends JPanel implements ActionListener {
     }
 
     private void initGameOver() {
-        System.out.println("ciao");
         setBackground(Color.WHITE);
         setFocusable(true);
         setPreferredSize(new Dimension(Environment.JP_WIDTH, Environment.JP_HEIGHT));

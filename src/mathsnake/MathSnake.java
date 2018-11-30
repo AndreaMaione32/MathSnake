@@ -12,6 +12,7 @@ public class MathSnake extends JFrame {
     private CardLayout cl = new CardLayout();
     private JPanel cardsJPanel = new JPanel(cl);
     private FirstPage firstPage = new FirstPage();
+    private GameOver gameOver = new GameOver();
     private Menu menu = new Menu();
     private SnakeBoard game = new SnakeBoard();
     private ScoreBoard score = new ScoreBoard();
@@ -45,6 +46,7 @@ public class MathSnake extends JFrame {
         cardsJPanel.add(menu, "menu");
         cardsJPanel.add(game, "game");
         cardsJPanel.add(score,"score");
+        cardsJPanel.add(gameOver,"gameOver");
         add(cardsJPanel);
         cl.show(this.cardsJPanel, "firstPage");
         pack();

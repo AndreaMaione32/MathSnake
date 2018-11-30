@@ -79,6 +79,7 @@ public class SnakeBoard extends JPanel implements ActionListener {
     
     private void initGame() {
         // Viene inizializzato il timer necessario per i repaint
+        repaintTimer = new Timer(Environment.DELAY, this);
         repaintTimer.start();
     }
 
@@ -145,7 +146,6 @@ public class SnakeBoard extends JPanel implements ActionListener {
     }
 
     private void gameOver() {
-        // da implementare
         constructorThread.stopThread();
         long endTime = System.currentTimeMillis() + 1000;
         while(System.currentTimeMillis() != endTime) {
@@ -219,6 +219,7 @@ public class SnakeBoard extends JPanel implements ActionListener {
         if (secondsLeft == 0) {
             remove(countdown);
             countdownTimer.stop();
+            
             state = STATE.IN_GAME;
         }
     }
@@ -287,6 +288,8 @@ public class SnakeBoard extends JPanel implements ActionListener {
     private void initialState() {
         BlocksManager.getInstance().flush();
         PowerUpsManager.getInstance().flush();
+        this.leftPressed = false;
+        this.rightPressed = false;
         snake.setLife(10);
         secondsLeft = 3;
     }
@@ -295,14 +298,16 @@ public class SnakeBoard extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (hasFocus() && state == STATE.COUNTDOWN) {
             if(!countdownTimer.isRunning()) {
+                countdown();
                 countdownTimer.start();
             }
         }
         if (hasFocus() && state == STATE.IN_GAME) {
             if(!CThread.isAlive()){
-            initialState();
-            CThread = new Thread(constructorThread);
-            CThread.start();
+                initialState();
+                constructorThread = new ConstructorThread(snake);
+                CThread = new Thread(constructorThread);
+                CThread.start();
         }
         }
         if(state == STATE.IN_GAME){

@@ -5,23 +5,27 @@
         <group>
             <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/test/mathsnake/BlockTest.java</file>
             <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/Menu.java</file>
-            <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/ConstructorBlockThread.java</file>
             <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/test/mathsnake/TestUtils.java</file>
             <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/Snake.java</file>
+            <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/PowerUps.java</file>
+            <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/GameOver.java</file>
             <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/FirstPage.java</file>
+            <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/UpdaterThread.java</file>
+            <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/PowerUpsShield.java</file>
             <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/readme.txt</file>
-            <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/test/mathsnake/SnakeTest.java</file>
+            <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/PowerUpsManager.java</file>
             <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/Block.java</file>
             <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/Environment.java</file>
+            <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/PowerUpsSpeedUp.java</file>
             <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/SnakeBoard.java</file>
             <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/test/mathsnake/BlocksManagerTest.java</file>
             <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/test/mathsnake/UpdaterBlockThreadTest.java</file>
-            <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/MathSnake.java</file>
             <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/GameState.java</file>
-            <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/nbproject/build-impl.xml</file>
+            <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/MathSnake.java</file>
+            <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/PowerUpsIncreaseLife.java</file>
             <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/ScoreBoard.java</file>
             <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/BlocksManager.java</file>
-            <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/Operation.java</file>
+            <file>file:/Users/antoniocoppola/Desktop/Università/SOE/Progetto/MathSnake/src/mathsnake/ConstructorThread.java</file>
         </group>
     </open-files>
 </project-private>
