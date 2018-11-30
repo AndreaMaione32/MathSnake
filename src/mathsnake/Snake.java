@@ -9,7 +9,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
-public class Snake {
+public class Snake{
     private final int x[] = new int[Environment.DOT_NUM]; // La coordinata x dello snake è univoca per tutti i dot che lo costituiscono ed può assumere valori compresti fra 0 e JP_WIDTH
     private final int y[] = new int[Environment.DOT_NUM]; // Ogni dot che costituisce lo snake ha coordinata y differente e fissata in quanto lo snake ha altezza fissa
     private boolean leftDirection = false;
@@ -41,10 +41,6 @@ public class Snake {
         return y;
     }
     
-    /*public byte getDots() {
-        return dots;
-    }*/
-    
     public int getLife() {
         return lifepoints;
     }
@@ -56,11 +52,6 @@ public class Snake {
     public boolean isMovingRight() {
         return rightDirection;
     }
-    
-    /*public void setX(int x) {
-        this.x = x;
-        rectangle.setLocation(x, this.y[dots-1]); //Move also Rectangle assoicated
-    }*/
     
     public void setLife(int lifepoints){
         this.lifepoints = lifepoints;
@@ -85,7 +76,7 @@ public class Snake {
     }
     
     public void move(){
-        int shift = 1; //Environment.DOT_SIZE + 15;
+        int shift = Environment.DOT_SIZE;
         for (byte i=0; i<Environment.DOT_NUM - 1; i++){
             x[i] = x[i+1];
         }
@@ -95,6 +86,7 @@ public class Snake {
             else
                 x[Environment.DOT_NUM - 1] -= shift;
             leftDirection = false;
+            rectangle.setLocation(x[Environment.DOT_NUM - 1], y[Environment.DOT_NUM - 1]);
         }
         if (rightDirection) {
             if (x[Environment.DOT_NUM - 1] + shift >= Environment.JP_WIDTH)
@@ -102,9 +94,7 @@ public class Snake {
             else
                 x[Environment.DOT_NUM - 1] += shift;
             rightDirection = false;
+            rectangle.setLocation(x[Environment.DOT_NUM - 1], y[Environment.DOT_NUM - 1]);
         }
-        rectangle.setLocation(x[Environment.DOT_NUM - 1], y[Environment.DOT_NUM - 1]);
     }
 }
-
-

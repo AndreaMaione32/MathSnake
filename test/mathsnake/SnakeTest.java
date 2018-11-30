@@ -5,10 +5,7 @@
  */
 package mathsnake;
 
-import java.awt.Image;
 import java.awt.Rectangle;
-import javax.swing.ImageIcon;
-import mathsnake.Snake;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -19,11 +16,12 @@ import static org.junit.Assert.*;
 public class SnakeTest {
     /**
      * Test of move method, of class Snake.
+     * @throws java.lang.Exception
      */
     @Test
     public void testMove() throws Exception {
         Snake instance = new Snake();
-        int oldX = instance.getX();
+        int oldX[] = instance.getX();
         instance.setLeftDirection(true);
         instance.move();
         assertFalse(instance.getX() == oldX);
@@ -49,7 +47,7 @@ public class SnakeTest {
     @Test
     public void snakeCollide(){
         Snake snake = new Snake();
-        Rectangle rect = new Rectangle(snake.getX() -5 , snake.getY()[snake.getDots() - 1] -5 , 10, 10);  //rectangle in (x-5, y-5) with (x,y) snake's head coordinate
+        Rectangle rect = new Rectangle(snake.getX()[Environment.DOT_NUM - 1]-5 , snake.getY()[Environment.DOT_NUM - 1]-5 , Environment.DOT_SIZE, Environment.DOT_SIZE);  //rectangle in (x-5, y-5) with (x,y) snake's head coordinate
         assertTrue(snake.collide(rect));
     }
 }
