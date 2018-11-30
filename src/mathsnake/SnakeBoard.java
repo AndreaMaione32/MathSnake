@@ -1,5 +1,6 @@
 package mathsnake;
 
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -28,19 +29,20 @@ public class SnakeBoard extends JPanel implements ActionListener {
     
     private STATE state = STATE.COUNTDOWN;
     
-    private Timer timer;
+    private Timer repaintTimer = new Timer(Environment.DELAY, this);
     private Timer countdownTimer;
     private int secondsLeft = 3;
     private JLabel countdown = new JLabel(Integer.toString(secondsLeft));
     private Image ball;
     private Image head;
     private final Snake snake = new Snake();
-    private double snakeSpeed = 300;
+    private double snakeSpeed = 250;
     private boolean leftPressed = false;
     private boolean rightPressed = false;
     private double downSpeed = 240; //define velocity of block and power ups
     private int gameBest = Environment.STARTLIFEPOINTS;
-    private ConstructorThread constructorBlockThread = new ConstructorThread(snake);
+    private ConstructorThread constructorThread = new ConstructorThread(snake);
+    private Thread CThread = new Thread(constructorThread);
     //private UpdaterThread updaterThread = new UpdaterThread(snake);
     
     public SnakeBoard() {
@@ -77,12 +79,7 @@ public class SnakeBoard extends JPanel implements ActionListener {
     
     private void initGame() {
         // Viene inizializzato il timer necessario per i repaint
-        timer = new Timer(Environment.DELAY, this);
-        
-        timer.start();
-        //Start threads
-        new Thread(constructorBlockThread).start();
-        //new Thread(updaterThread).start();
+        repaintTimer.start();
     }
 
     @Override
@@ -140,23 +137,23 @@ public class SnakeBoard extends JPanel implements ActionListener {
                 g.drawString("GAME BEST : " + Integer.toString(gameBest), Environment.JP_WIDTH - (10 + metrics.stringWidth(text)), 20 + metrics.getHeight());
                 break;
             case GAMEOVER:
-                //da implementare
-                gameOver(g);
+                gameOver();
                 break;
             default:
                 break;
         }
     }
 
-    private void gameOver(Graphics g) {
+    private void gameOver() {
         // da implementare
-        String msg = "Game Over";
-        Font small = new Font("Helvetica", Font.BOLD, 14);
-        FontMetrics metr = getFontMetrics(small);
-
-        g.setColor(Color.white);
-        g.setFont(small);
-        g.drawString(msg, (Environment.JP_WIDTH - metr.stringWidth(msg)) / 2, Environment.JP_HEIGHT / 2);
+        constructorThread.stopThread();
+        long endTime = System.currentTimeMillis() + 1000;
+        while(System.currentTimeMillis() != endTime) {
+            // Wait 1 second
+        }
+        state = STATE.COUNTDOWN;
+        CardLayout cl = MathSnake.getInstance().getCardLayout();
+        cl.show(MathSnake.getInstance().getCardsJPanel(), "gameOver");
     }
     
     private void addListeners() {
@@ -170,16 +167,21 @@ public class SnakeBoard extends JPanel implements ActionListener {
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT && state == STATE.IN_GAME) {
                     rightPressed = true;
                 }
-
-                if (key == KeyEvent.VK_P)
-                    if(state == STATE.IN_GAME) {
-                        state = STATE.PAUSE;
-                        timer.stop();
-                    }
-                    else if(state == STATE.PAUSE) {
-                        state = STATE.IN_GAME;
-                        timer.start();
-                    }
+                    if (key == KeyEvent.VK_P)
+                        if(state == STATE.IN_GAME){
+                            state = STATE.PAUSE;
+                            repaintTimer.stop();
+                            constructorThread.stopThread();
+                            System.out.println("p");
+                        }
+                        else if(state == STATE.PAUSE){
+                            System.out.println("p1");
+                            state = STATE.IN_GAME;
+                            repaintTimer.start();
+                            constructorThread = new ConstructorThread(snake);
+                            CThread = new Thread(constructorThread);
+                            CThread.start();
+                        }
             }
             
             public void keyReleased(KeyEvent e) {
@@ -261,38 +263,49 @@ public class SnakeBoard extends JPanel implements ActionListener {
         int actualLife = snake.getLife();
         
 
-        if (op.equals("+")){
+        if (op.equals("+"))
             snake.setLife(actualLife + value);
-        }
-        if (op.equals("x")){
+        if (op.equals("x"))
             snake.setLife(actualLife * value);
-        }
-        if (op.equals("-")){
+        if (op.equals("-"))
             snake.setLife(actualLife - value);
-        }
-        if (op.equals("/")){
+        if (op.equals("/"))
             snake.setLife(actualLife / value);
-        }
         
         actualLife = snake.getLife();
-        if (actualLife < 0){
+        if (actualLife < 0)
             snake.setLife(0);
-        } else{
-            if (actualLife > gameBest){
+        else {
+            if (actualLife > gameBest)
                 gameBest = actualLife;
-            }
         }
+        if (snake.getLife() == 0)
+            state = STATE.GAMEOVER;
         
+    }
+    
+    private void initialState() {
+        BlocksManager.getInstance().flush();
+        PowerUpsManager.getInstance().flush();
+        snake.setLife(10);
+        secondsLeft = 3;
     }
     
      @Override
     public void actionPerformed(ActionEvent e) {
-        if (hasFocus()) {
+        if (hasFocus() && state == STATE.COUNTDOWN) {
             if(!countdownTimer.isRunning()) {
                 countdownTimer.start();
             }
         }
-        if (state == STATE.IN_GAME) {  
+        if (hasFocus() && state == STATE.IN_GAME) {
+            if(!CThread.isAlive()){
+            initialState();
+            CThread = new Thread(constructorThread);
+            CThread.start();
+        }
+        }
+        if(state == STATE.IN_GAME){
             checkCollision();
             snake.move();
             double ds = determineDownSpeed();

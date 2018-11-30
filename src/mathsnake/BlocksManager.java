@@ -51,4 +51,8 @@ public class BlocksManager {
     public synchronized Block getBlock(Block block){     //THREAD SAFE
         return blockList.get(blockList.indexOf(block));
     }
+    
+    public synchronized void flush(){
+        blockList.clear();
+    }
 }

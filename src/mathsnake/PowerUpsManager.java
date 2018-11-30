@@ -51,4 +51,8 @@ public class PowerUpsManager {
     public synchronized PowerUps getPowerUps(PowerUps powerUps){     //THREAD SAFE
         return powerUpsList.get(powerUpsList.indexOf(powerUps));
     }
+    
+    public synchronized void flush(){
+        powerUpsList.clear();
+    }
 }
