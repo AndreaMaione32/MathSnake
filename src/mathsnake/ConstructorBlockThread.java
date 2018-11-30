@@ -45,7 +45,6 @@ public class ConstructorBlockThread implements Runnable {
                 if(life <= 299){ //primo livello di difficoltà
                     System.out.println("Primo livello");
                     if (casuale >= 0 && casuale <= 29){ //30% BLOCCO VUOTO 
-                        blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                         positive = true;
                     }
                     
@@ -98,7 +97,6 @@ public class ConstructorBlockThread implements Runnable {
                 if(life >= 299 && life <= 599){ //secondo livello di difficoltà
                     System.out.println("Secondo livello");
                     if (casuale >= 0 && casuale <= 24){ //25% BLOCCO VUOTO 
-                        blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                         positive = true;
                     }
                     
@@ -175,7 +173,6 @@ public class ConstructorBlockThread implements Runnable {
                 if(life >= 600 && life <= 899){ //terzo livello di difficoltà
                     System.out.println("Terzo livello");
                     if (casuale >= 0 && casuale <= 19){ //20% BLOCCO VUOTO 
-                        blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                         positive = true;
                     }
                     
@@ -258,7 +255,6 @@ public class ConstructorBlockThread implements Runnable {
                 if(life >= 900 && life <= 1199){ //quarto livello di difficoltà
                     System.out.println("Quarto livello");
                     if (casuale >= 0 && casuale <= 14){ // 15% BLOCCO VUOTO 
-                        blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                         positive = true;
                     }
                     
@@ -350,7 +346,6 @@ public class ConstructorBlockThread implements Runnable {
                 if(life >= 1200){ //quinto livello di difficoltà
                     System.out.println("Quinto livello");
                     if (casuale >= 0 && casuale <= 9){ // 10% BLOCCO VUOTO 
-                        blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                         positive = true;
                     }
                     
