@@ -18,7 +18,7 @@ public interface Environment {
     public final int MAXBLOCKSHIFT = 15; //massimo aumento allo shift iniziale
     public final int MINTHREADDELAY = 1850; //ritardo del thread nella situazione iniziale
     public final int MAXTHREADDELAY = 800; //ritardo del thread nella situazione di massima velocità
-    public final int LIFEINCREASING = 200; //la velocità aumenta quando la vita aumenta di questo valore (ad esempio ogni 100 di vita in più un aumento di velocità)
+    public final int LIFEINCREASING = 100; //la velocità aumenta quando la vita aumenta di questo valore (ad esempio ogni 100 di vita in più un aumento di velocità)
     public final int STARTLIFEPOINTS = 10;
     public final int CREATEBLOCKDELAY = 4000; //determina la velocità di creazione dei blocchi
     public final int BLOCKSHIFT = 10; //determina lo shift dei blocchi
