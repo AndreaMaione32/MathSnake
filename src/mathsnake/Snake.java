@@ -1,44 +1,37 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mathsnake;
 
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
 public class Snake implements ActionListener{
-    private int x; // La coordinata x dello snake è univoca per tutti i dot che lo costituiscono ed può assumere valori compresti fra 0 e JP_WIDTH
-    private int[] y; // Ogni dot che costituisce lo snake ha coordinata y differente e fissata in quanto lo snake ha altezza fissa
-    
+    private double x; // La coordinata x dello snake è univoca per tutti i dot che lo costituiscono ed può assumere valori compresti fra 0 e JP_WIDTH
+    private double[] y; // Ogni dot che costituisce lo snake ha coordinata y differente e fissata in quanto lo snake ha altezza fissa
+    private double dx; 
+    private Timer speedUpTimer;
     private final int dots; // Numero di dots che costituiscono lo snake
-    private boolean leftDirection = false;
-    private boolean rightDirection = false;
+    //private boolean leftDirection = false;
+    //private boolean rightDirection = false;
     private Rectangle rectangle;   //Rect associated to Snake's Head, it's used to mange collision
     private int lifepoints; 
-    private int shift;
-    private boolean speeduped; //true if snake is speed upded else false
-    private final Timer timerSpeedUp; //timer used for the speed up duration
-    
+    private boolean speed_uped = false; //if true increase snake's velocity of 70%
     // Costruttore con paramtetro di deafult di dots
     public Snake() {
         dots = 10;
         
         int snakeStartPoint = Environment.JP_WIDTH / 2; // Lo snake viene creato al centro della finestra
         x = snakeStartPoint;
-        this.shift = Environment.DOT_SIZE + 15;
-        this.speeduped = false;
-        this.timerSpeedUp = new Timer(Environment.SPEED_UP_DURATION, this);
+        
         lifepoints = Environment.STARTLIFEPOINTS;
-        y = new int[dots]; // Il vettore delle coordinate y viene settatto a dimensione uguale al valore dots di default (a ogni elemento corrisponde una coordinata di un dot)
+        this.speedUpTimer = new Timer(Environment.SPEED_UP_DURATION, this);
+        y = new double[dots]; // Il vettore delle coordinate y viene settatto a dimensione uguale al valore dots di default (a ogni elemento corrisponde una coordinata di un dot)
         for (int z = 0; z < dots; z++) {
             y[z] = Environment.JP_HEIGHT - (z * Environment.DOT_SIZE); // Poichè la dimensione di ogni dot è DOT_SIZE px la differenza fra due coordinate adiacenti nel vettore è pari a 10, il primo elemento del vettore è il primo dot della coda, mentre l'ultimo è la testa dello snake; il primo dot ha y = JP_WIDTH, il secondo JP_WIDTH - 10 e così via
-        this.rectangle = new Rectangle(x,y[dots-1], Environment.DOT_SIZE,Environment.DOT_SIZE);  //coordinates are the coordinates of the head
+        this.rectangle = new Rectangle((int)x,(int)y[dots-1], Environment.DOT_SIZE,Environment.DOT_SIZE);  //coordinates are the coordinates of the head
         }
     }
 
@@ -46,20 +39,20 @@ public class Snake implements ActionListener{
         return rectangle;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
-        rectangle.setLocation(x, this.y[dots-1]); //Move also Rectangle assoicated
+        rectangle.setLocation((int)x, (int)this.y[dots-1]); //Move also Rectangle assoicated
     }
     
     public void setLife(int lifepoints){
         this.lifepoints = lifepoints;
     }
     
-    public int[] getY() {
+    public double[] getY() {
         return y;
     }
 
@@ -69,22 +62,6 @@ public class Snake implements ActionListener{
     
     public int getLife() {
         return lifepoints;
-    }
-
-    public boolean isMovingLeft() {
-        return leftDirection;
-    }
-
-    public void setLeftDirection(boolean leftDirection) {
-        this.leftDirection = leftDirection;
-    }
-
-    public boolean isMovingRight() {
-        return rightDirection;
-    }
-
-    public void setRightDirection(boolean rightDirection) {
-        this.rightDirection = rightDirection;
     }
     
     public Image loadImage(String PATH) {
@@ -97,42 +74,39 @@ public class Snake implements ActionListener{
         return this.rectangle.intersects(rect);
     }
     
-    public void move() throws InterruptedException {
-        if (leftDirection) {
-            if (x - shift < 0)
-                this.setX(0);
-            else
-                this.setX(this.getX() - shift);
-            leftDirection = false;
-        }
-        if (rightDirection) {
-            if (x + shift >= Environment.JP_WIDTH)
-                this.setX(Environment.JP_WIDTH - 10);
-            else  
-                this.setX(this.getX() + shift);
-            rightDirection = false;
-        }
+    public void move() {
+        
+        double shift = (Environment.DELAY * dx) / 1000;
+        
+        if ((dx < 0) && (x < 0)) {
+            return;
+	}
+        
+        if ((dx > 0) && (x > Environment.JP_WIDTH - Environment.DOT_SIZE)) {
+            return;
+	}
+        
+        this.setX(x + shift);
+    }
+    
+    public void setHorizontalMovement(double dx) {
+        if(speed_uped)
+            this.dx = (1.7)*dx;
+        else
+	this.dx = dx;
     }
     
     public void speed_up(){
-        //If the snake is just speed uped restart the timer in order to
-        //extend the duration of speed up
-        if(! this.speeduped){
-        this.shift = this.shift+8;
-        this.timerSpeedUp.start();
-        this.speeduped = true;
-        }
-        else{
-            this.timerSpeedUp.restart();
-        }
+        if(!this.speed_uped)
+            this.speed_uped = true; 
+        else
+            this.speedUpTimer.stop(); //if snake is already accelerated stop speed up timer and start it again
+        this.speedUpTimer.start();
     }
+    //it's used to speed up the snake temporarily 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        this.shift = this.shift - 8;  
-        this.speeduped = false;
-        this.timerSpeedUp.stop();
+        this.speed_uped = false;
     }
 }
-
-

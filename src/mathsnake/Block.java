@@ -18,8 +18,8 @@ public class Block {
     private final int value; //indicates the value of operation
     private final Operation op; //indicates the operation
     private Color color;
-    private int x;
-    private int y;
+    private double x;
+    private double y;
     private Rectangle rectangle;   //Rect associated to Block, it's used to mange collision
     
     public Block(int value, Operation op, int x, int y){
@@ -32,22 +32,27 @@ public class Block {
     }
     
     //block must to be thread safe on X and Y, only two fields that can be modify
-    public synchronized void setX(int x) {     
+    private synchronized void setX(double x) {     
         this.x = x;
-        rectangle.setLocation(x, this.y); //Move also Rectangle assoicated
+        rectangle.setLocation((int)x, (int)this.y); //Move also Rectangle assoicated
     }
 
-    public  synchronized void setY(int y) {   
+    private  synchronized void setY(double y) {   
         this.y = y;
-        rectangle.setLocation(this.x, y);  //Move also Rectangle assoicated
+        rectangle.setLocation((int)this.x, (int)y);  //Move also Rectangle assoicated
     }
 
     public synchronized int getX() {
-        return x;
+        return (int)x;
     }
 
     public synchronized int getY() {
-        return y;
+        return (int)y;
+    }
+    
+    public void move(double velocity){
+        double shift = (Environment.DELAY * velocity) / 1000; 
+        this.setY(y + shift);
     }
     
     private Color defineColor(Operation op){
@@ -111,23 +116,15 @@ public class Block {
     
     public void printBlock(Graphics g){ //print block given x, y coordinate and graphics object, associeted to an JPanel
        g.setColor(this.getColor());
-       g.fillRect(x, y, Environment.BLOCK_WIDTH, Environment.BLOCK_HEIGHT);
-       Font font = new Font("Arial", Font.BOLD, 17);
-       /*
-       String text;
-       if (this.getStrOp().equals("#")){
-           text = "x0";
-       } else{
-           text = this.getStrOp()+Integer.toString(this.getValue());
-       }
-       */
+       g.fillRect((int)x, (int)y, Environment.BLOCK_WIDTH, Environment.BLOCK_HEIGHT);
+       Font font = new Font("Arial", Font.BOLD, 24);
        String text = this.getStrOp()+Integer.toString(this.getValue());
        // Get the FontMetrics
        FontMetrics metrics = g.getFontMetrics(font);
        // Determine the X coordinate for the text
-       int textX = x + (Environment.BLOCK_WIDTH - metrics.stringWidth(text)) / 2;
+       int textX = (int)x + (Environment.BLOCK_WIDTH - metrics.stringWidth(text)) / 2;
       // Determine the Y coordinate for the text
-       int textY = y + ((Environment.BLOCK_HEIGHT - metrics.getHeight()) / 2) + metrics.getAscent();
+       int textY = (int)y + ((Environment.BLOCK_HEIGHT - metrics.getHeight()) / 2) + metrics.getAscent();
        g.setFont(font);
        g.setColor(Color.WHITE);
        g.drawString(text, textX, textY);

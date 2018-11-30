@@ -15,32 +15,37 @@ import javax.swing.ImageIcon;
  * @author antoniocoppola
  */
 public abstract class PowerUps {
-    private int x;
-    private int y;
+    private double x;
+    private double y;
     private Rectangle rectangle;
     protected String nameimg;
     
      public PowerUps(int x, int y) {
         this.x = x;
         this.y = y;
-        this.rectangle = new Rectangle(x,y,Environment.POWERUPS_WIDHT, Environment.POWERUPS_HEIGHT);
+        this.rectangle = new Rectangle((int)x,(int)y,Environment.POWERUPS_WIDHT, Environment.POWERUPS_HEIGHT);
     }
 
-    public void setX(int x) {
+    private void setX(double x) {
         this.x = x;
-        rectangle.setLocation(x, this.y);   //Move also Rectangle assoicated
+        rectangle.setLocation((int)x, (int)this.y);   //Move also Rectangle assoicated
     }
 
-    public void setY(int y) {
+    private void setY(double y) {
         this.y = y;
-        rectangle.setLocation(this.x, y);  //Move also Rectangle assoicated
+        rectangle.setLocation((int)this.x, (int)y);  //Move also Rectangle assoicated
+    }
+    
+    public void move(double velocity){
+        double shift = (Environment.DELAY * velocity) / 1000; 
+        this.setY(y + shift);
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
@@ -56,7 +61,7 @@ public abstract class PowerUps {
     
     public void drawPowerUps(Graphics g) {
         Image img = this.loadImage(Environment.PATHIMAGES+this.nameimg);
-        g.drawImage(img, this.getX(), this.getY(), null);
+        g.drawImage(img, (int)this.getX(), (int)this.getY(), null);
     }
     
     public abstract void action(Snake snake);

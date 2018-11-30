@@ -98,8 +98,21 @@ public class ConstructorThread implements Runnable {
     }
     
     public void createPowerUps(){
-        if(counterPowerUps == 6){   //create power ups every seven block creations
-        this.powerUpsManager.addPowerUps(new PowerUpsSpeedUp(this.randomX(), -240));
+        if(counterPowerUps == 5){   //create power ups every seven block creations
+        int rand = (int)(Math.random()*10);
+        if(rand > 4){ //powerups is created with probability of 50%
+        }
+        else{
+            if(rand < 2){
+                this.powerUpsManager.addPowerUps(new PowerUpsSpeedUp(this.randomX(), -240)); //probability of 20% power ups speed up
+            }
+            if(rand < 4 && rand >= 2){
+                this.powerUpsManager.addPowerUps(new PowerUpsIncreaseLife(this.randomX(), -240)); //probability of 20% power ups increase life
+            }
+            if(rand == 4){ //probability of 10%
+            
+            }
+        }
         counterPowerUps = 0;
         }
         else

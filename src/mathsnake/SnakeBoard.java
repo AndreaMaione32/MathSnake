@@ -35,10 +35,13 @@ public class SnakeBoard extends JPanel implements ActionListener {
     private Image ball;
     private Image head;
     private final Snake snake = new Snake();
-    
+    private double snakeSpeed = 300;
+    private boolean leftPressed = false;
+    private boolean rightPressed = false;
+    private double downSpeed = 240; //define velocity of block and power ups
     private int gameBest = Environment.STARTLIFEPOINTS;
     private ConstructorThread constructorBlockThread = new ConstructorThread(snake);
-    private UpdaterThread updaterThread = new UpdaterThread(snake);
+    //private UpdaterThread updaterThread = new UpdaterThread(snake);
     
     public SnakeBoard() {
         initSnakeBoard();
@@ -79,7 +82,7 @@ public class SnakeBoard extends JPanel implements ActionListener {
         timer.start();
         //Start threads
         new Thread(constructorBlockThread).start();
-        new Thread(updaterThread).start();
+        //new Thread(updaterThread).start();
     }
 
     @Override
@@ -91,8 +94,8 @@ public class SnakeBoard extends JPanel implements ActionListener {
     
     private void doDrawing(Graphics g) {
         int numDots = snake.getDots();
-        int x = snake.getX();
-        int[] yVector = snake.getY();
+        double x = snake.getX();
+        double[] yVector = snake.getY();
      
         switch (state) {
             case COUNTDOWN:
@@ -106,12 +109,12 @@ public class SnakeBoard extends JPanel implements ActionListener {
                 ((Graphics2D) g).setRenderingHints(rh);
                 //DRAWING SNAKE
                 for (int z = 0; z < numDots - 1; z++){
-                    g.drawImage(ball, x, yVector[z], this);
+                    g.drawImage(ball, (int)x, (int)yVector[z], this);
                 }
-                g.drawImage(head, x, yVector[numDots - 1], this);
+                g.drawImage(head, (int)x, (int)yVector[numDots - 1], this);
 
                 g.setColor(Color.black);
-                g.drawString(Integer.toString(snake.getLife()), x + 15, yVector[numDots - 1] + 10);
+                g.drawString(Integer.toString(snake.getLife()), (int)x + 15, (int)yVector[numDots - 1] + 10);
                 //DRAWING BLOCK
                 BlocksManager blocksManager = BlocksManager.getInstance();
                 for(int i = 0; i < blocksManager.numBlocks(); i++){
@@ -161,15 +164,13 @@ public class SnakeBoard extends JPanel implements ActionListener {
             @Override
             public void keyPressed(KeyEvent e) {
                 int key = e.getKeyCode();
-                if ((key == KeyEvent.VK_LEFT) && (!snake.isMovingRight()) && state == STATE.IN_GAME) {
-                    snake.setLeftDirection(true);
-                    snake.setRightDirection(false);
+                if (e.getKeyCode() == KeyEvent.VK_LEFT && state == STATE.IN_GAME) {
+                    leftPressed = true;
+                }
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT && state == STATE.IN_GAME) {
+                    rightPressed = true;
                 }
 
-                if ((key == KeyEvent.VK_RIGHT) && (!snake.isMovingLeft()) && state == STATE.IN_GAME) {
-                    snake.setLeftDirection(false);
-                    snake.setRightDirection(true);
-                }
                 if (key == KeyEvent.VK_P)
                     if(state == STATE.IN_GAME) {
                         state = STATE.PAUSE;
@@ -179,6 +180,17 @@ public class SnakeBoard extends JPanel implements ActionListener {
                         state = STATE.IN_GAME;
                         timer.start();
                     }
+            }
+            
+            public void keyReleased(KeyEvent e) {
+                int key = e.getKeyCode();
+                if ((key == KeyEvent.VK_LEFT) && state == STATE.IN_GAME){
+                    leftPressed = false;   
+                }
+                if ((key == KeyEvent.VK_RIGHT) && state == STATE.IN_GAME){
+                    rightPressed = false;   
+                }
+                
             }
         });
         addComponentListener(new ComponentAdapter() {
@@ -273,28 +285,55 @@ public class SnakeBoard extends JPanel implements ActionListener {
         
     }
     
-    @Override
+     @Override
     public void actionPerformed(ActionEvent e) {
         if (hasFocus()) {
             if(!countdownTimer.isRunning()) {
                 countdownTimer.start();
             }
         }
-        if (state == STATE.IN_GAME) {
-            try {
-                snake.move();
-                checkCollision();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(SnakeBoard.class.getName()).log(Level.SEVERE, null, ex);
+        if (state == STATE.IN_GAME) {  
+            checkCollision();
+            snake.move();
+            double ds = determineDownSpeed();
+            this.moveBlocks(ds);
+            this.movePowerUps(ds);
+            snake.setHorizontalMovement(0);	
+            if ((leftPressed) && (!rightPressed)) {
+                snake.setHorizontalMovement(-snakeSpeed);
+            } else if ((rightPressed) && (!leftPressed)) {
+                snake.setHorizontalMovement(snakeSpeed);
             }
         }
         repaint();
     }
-     
+         
     private enum STATE {
         COUNTDOWN,
         IN_GAME,
         PAUSE,
         GAMEOVER
+    }
+    
+    private void moveBlocks(double ds){
+        BlocksManager bm = BlocksManager.getInstance();
+        for(int i=0; i<bm.numBlocks(); i++){
+            bm.getBlock(i).move(ds);
+        }
+    }  
+    
+    private void movePowerUps(double ds){
+        PowerUpsManager pm = PowerUpsManager.getInstance();
+        for(int i=0; i< pm.powerUpsnums(); i++){
+            pm.getPowerUps(i).move(ds);
+        }
+    }
+    
+    private double determineDownSpeed(){
+        if((snake.getLife()/Environment.LIFEINCREASING) > (Environment.MAXVELOCITYSHIFT)){
+            return this.downSpeed + ((Environment.MAXVELOCITYSHIFT)*1000/Environment.DELAY);
+                } else {
+                    return this.downSpeed + ((snake.getLife()/Environment.LIFEINCREASING)*1000/Environment.DELAY);
+                }
     }
 }
