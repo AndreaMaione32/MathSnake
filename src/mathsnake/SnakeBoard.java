@@ -34,6 +34,10 @@ public class SnakeBoard extends JPanel implements ActionListener {
     private Image head;
     private final Snake snake = new Snake();
     
+    private double snakeSpeed = 270;
+    private boolean leftPressed = false;
+    private boolean rightPressed = false;
+    
     private int gameBest = Environment.STARTLIFEPOINTS;
     private Runnable constructorBlockThread = new ConstructorBlockThread(snake);
     private Runnable updaterBlockThread = new UpdaterBlockThread(snake);
@@ -63,6 +67,7 @@ public class SnakeBoard extends JPanel implements ActionListener {
         initGame();
         countdown();
         addListeners();
+        
     }
    
     private void loadImages() {
@@ -89,8 +94,8 @@ public class SnakeBoard extends JPanel implements ActionListener {
     
     private void doDrawing(Graphics g) {
         int numDots = snake.getDots();
-        int x = snake.getX();
-        int[] yVector = snake.getY();
+        double x = snake.getX();
+        double[] yVector = snake.getY();
      
         switch (state) {
             case COUNTDOWN:
@@ -98,6 +103,7 @@ public class SnakeBoard extends JPanel implements ActionListener {
                 checkCountdown();
                 break;
             case IN_GAME:
+                
                 //DRAWING BLOCK
                 BlocksManager blocksManager = BlocksManager.getInstance();
                 for(int i = 0; i < blocksManager.numBlocks(); i++){
@@ -106,12 +112,12 @@ public class SnakeBoard extends JPanel implements ActionListener {
                 }
 
                 for (int z = 0; z < numDots - 1; z++){
-                    g.drawImage(ball, x, yVector[z], this);
+                    g.drawImage(ball, (int)x, (int)yVector[z], this);
                 }
-                g.drawImage(head, x, yVector[numDots - 1], this);
+                g.drawImage(head, (int)x, (int)yVector[numDots - 1], this);
 
                 g.setColor(Color.black);
-                g.drawString(Integer.toString(snake.getLife()), x + 15, yVector[numDots - 1] + 10);
+                g.drawString(Integer.toString(snake.getLife()), (int)x + 15, (int)yVector[numDots - 1] + 10);
 
 
                 Font font = new Font("Arial", Font.BOLD, 14);
@@ -151,15 +157,13 @@ public class SnakeBoard extends JPanel implements ActionListener {
             @Override
             public void keyPressed(KeyEvent e) {
                 int key = e.getKeyCode();
-                if ((key == KeyEvent.VK_LEFT) && (!snake.isMovingRight()) && state == STATE.IN_GAME) {
-                    snake.setLeftDirection(true);
-                    snake.setRightDirection(false);
+                if (e.getKeyCode() == KeyEvent.VK_LEFT && state == STATE.IN_GAME) {
+                    leftPressed = true;
+                }
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT && state == STATE.IN_GAME) {
+                    rightPressed = true;
                 }
 
-                if ((key == KeyEvent.VK_RIGHT) && (!snake.isMovingLeft()) && state == STATE.IN_GAME) {
-                    snake.setLeftDirection(false);
-                    snake.setRightDirection(true);
-                }
                 if (key == KeyEvent.VK_P)
                     if(state == STATE.IN_GAME) {
                         state = STATE.PAUSE;
@@ -169,6 +173,17 @@ public class SnakeBoard extends JPanel implements ActionListener {
                         state = STATE.IN_GAME;
                         timer.start();
                     }
+            }
+            
+            public void keyReleased(KeyEvent e) {
+                int key = e.getKeyCode();
+                if ((key == KeyEvent.VK_LEFT) && state == STATE.IN_GAME){
+                    leftPressed = false;   
+                }
+                if ((key == KeyEvent.VK_RIGHT) && state == STATE.IN_GAME){
+                    rightPressed = false;   
+                }
+                
             }
         });
         addComponentListener(new ComponentAdapter() {
@@ -254,12 +269,15 @@ public class SnakeBoard extends JPanel implements ActionListener {
                 countdownTimer.start();
             }
         }
-        if (state == STATE.IN_GAME) {
-            try {
-                snake.move();
-                checkCollision();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(SnakeBoard.class.getName()).log(Level.SEVERE, null, ex);
+        if (state == STATE.IN_GAME) {  
+            checkCollision();
+            snake.move();
+            
+            snake.setHorizontalMovement(0);	
+            if ((leftPressed) && (!rightPressed)) {
+                snake.setHorizontalMovement(-snakeSpeed);
+            } else if ((rightPressed) && (!leftPressed)) {
+                snake.setHorizontalMovement(snakeSpeed);
             }
         }
         repaint();

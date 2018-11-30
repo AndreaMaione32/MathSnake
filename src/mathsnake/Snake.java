@@ -7,15 +7,18 @@ package mathsnake;
 
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 
 public class Snake {
-    private int x; // La coordinata x dello snake è univoca per tutti i dot che lo costituiscono ed può assumere valori compresti fra 0 e JP_WIDTH
-    private int[] y; // Ogni dot che costituisce lo snake ha coordinata y differente e fissata in quanto lo snake ha altezza fissa
+    private double x; // La coordinata x dello snake è univoca per tutti i dot che lo costituiscono ed può assumere valori compresti fra 0 e JP_WIDTH
+    private double[] y; // Ogni dot che costituisce lo snake ha coordinata y differente e fissata in quanto lo snake ha altezza fissa
+    
+    private double dx; 
     
     private final int dots; // Numero di dots che costituiscono lo snake
-    private boolean leftDirection = false;
-    private boolean rightDirection = false;
+    //private boolean leftDirection = false;
+    //private boolean rightDirection = false;
     private Rectangle rectangle;   //Rect associated to Snake's Head, it's used to mange collision
     private int lifepoints; 
     
@@ -28,10 +31,10 @@ public class Snake {
         
         lifepoints = Environment.STARTLIFEPOINTS;
         
-        y = new int[dots]; // Il vettore delle coordinate y viene settatto a dimensione uguale al valore dots di default (a ogni elemento corrisponde una coordinata di un dot)
+        y = new double[dots]; // Il vettore delle coordinate y viene settatto a dimensione uguale al valore dots di default (a ogni elemento corrisponde una coordinata di un dot)
         for (int z = 0; z < dots; z++) {
             y[z] = Environment.JP_HEIGHT - (z * Environment.DOT_SIZE); // Poichè la dimensione di ogni dot è DOT_SIZE px la differenza fra due coordinate adiacenti nel vettore è pari a 10, il primo elemento del vettore è il primo dot della coda, mentre l'ultimo è la testa dello snake; il primo dot ha y = JP_WIDTH, il secondo JP_WIDTH - 10 e così via
-        this.rectangle = new Rectangle(x,y[dots-1], Environment.DOT_SIZE,Environment.DOT_SIZE);  //coordinates are the coordinates of the head
+        this.rectangle = new Rectangle((int)x,(int)y[dots-1], Environment.DOT_SIZE,Environment.DOT_SIZE);  //coordinates are the coordinates of the head
         }
     }
 
@@ -39,20 +42,20 @@ public class Snake {
         return rectangle;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
-        rectangle.setLocation(x, this.y[dots-1]); //Move also Rectangle assoicated
+        rectangle.setLocation((int)x, (int)this.y[dots-1]); //Move also Rectangle assoicated
     }
     
     public void setLife(int lifepoints){
         this.lifepoints = lifepoints;
     }
     
-    public int[] getY() {
+    public double[] getY() {
         return y;
     }
 
@@ -63,7 +66,7 @@ public class Snake {
     public int getLife() {
         return lifepoints;
     }
-
+    /*
     public boolean isMovingLeft() {
         return leftDirection;
     }
@@ -79,6 +82,7 @@ public class Snake {
     public void setRightDirection(boolean rightDirection) {
         this.rightDirection = rightDirection;
     }
+    */
     
     public Image loadImage(String PATH) {
         ImageIcon iid = new ImageIcon(PATH);
@@ -90,7 +94,33 @@ public class Snake {
         return this.rectangle.intersects(rect);
     }
     
-    public void move() throws InterruptedException {
+    public void move() {
+        
+        double shift = (Environment.DELAY * dx) / 1000;
+        
+        if ((dx < 0) && (x < 0)) {
+            return;
+	}
+        
+        if ((dx > 0) && (x > Environment.JP_WIDTH - Environment.DOT_SIZE)) {
+            return;
+	}
+        
+        this.setX(x + shift);
+        
+        /*
+        if (x + shift < 0){
+            this.setX(0);
+        } 
+        if(x + shift >= Environment.JP_WIDTH){
+            this.setX(Environment.JP_WIDTH - Environment.DOT_SIZE);
+        } else{
+            this.setX(x + shift);
+        }
+        */
+        
+        
+        /*
         int shift = Environment.DOT_SIZE + 15;
         if (leftDirection) {
             if (x - shift < 0)
@@ -106,7 +136,14 @@ public class Snake {
                 this.setX(this.getX() + shift);
             rightDirection = false;
         }
+        */
     }
+    
+    public void setHorizontalMovement(double dx) {
+	this.dx = dx;
+    }
+    
+    
 }
 
 
