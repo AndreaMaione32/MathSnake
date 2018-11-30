@@ -28,4 +28,5 @@ public interface Environment {
     public final int BLOCKDESTROYDELAY = 10000; //determina la velocità di distruzione dei blocchi
     public final int POWERUPS_WIDHT = 30;
     public final int POWERUPS_HEIGHT = 39;
+    public final int SPEED_UP_DURATION = 7000;
 }

@@ -99,7 +99,7 @@ public class ConstructorThread implements Runnable {
     
     public void createPowerUps(){
         if(counterPowerUps == 6){   //create power ups every seven block creations
-        this.powerUpsManager.addPowerUps(new PowerUpsIncreaseLife(this.randomX(), -240));
+        this.powerUpsManager.addPowerUps(new PowerUpsSpeedUp(this.randomX(), -240));
         counterPowerUps = 0;
         }
         else

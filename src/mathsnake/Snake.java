@@ -7,9 +7,12 @@ package mathsnake;
 
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
+import javax.swing.Timer;
 
-public class Snake {
+public class Snake implements ActionListener{
     private int x; // La coordinata x dello snake è univoca per tutti i dot che lo costituiscono ed può assumere valori compresti fra 0 e JP_WIDTH
     private int[] y; // Ogni dot che costituisce lo snake ha coordinata y differente e fissata in quanto lo snake ha altezza fissa
     
@@ -18,6 +21,9 @@ public class Snake {
     private boolean rightDirection = false;
     private Rectangle rectangle;   //Rect associated to Snake's Head, it's used to mange collision
     private int lifepoints; 
+    private int shift;
+    private boolean speeduped; //true if snake is speed upded else false
+    private final Timer timerSpeedUp; //timer used for the speed up duration
     
     // Costruttore con paramtetro di deafult di dots
     public Snake() {
@@ -25,9 +31,10 @@ public class Snake {
         
         int snakeStartPoint = Environment.JP_WIDTH / 2; // Lo snake viene creato al centro della finestra
         x = snakeStartPoint;
-        
+        this.shift = Environment.DOT_SIZE + 15;
+        this.speeduped = false;
+        this.timerSpeedUp = new Timer(Environment.SPEED_UP_DURATION, this);
         lifepoints = Environment.STARTLIFEPOINTS;
-        
         y = new int[dots]; // Il vettore delle coordinate y viene settatto a dimensione uguale al valore dots di default (a ogni elemento corrisponde una coordinata di un dot)
         for (int z = 0; z < dots; z++) {
             y[z] = Environment.JP_HEIGHT - (z * Environment.DOT_SIZE); // Poichè la dimensione di ogni dot è DOT_SIZE px la differenza fra due coordinate adiacenti nel vettore è pari a 10, il primo elemento del vettore è il primo dot della coda, mentre l'ultimo è la testa dello snake; il primo dot ha y = JP_WIDTH, il secondo JP_WIDTH - 10 e così via
@@ -91,7 +98,6 @@ public class Snake {
     }
     
     public void move() throws InterruptedException {
-        int shift = Environment.DOT_SIZE + 15;
         if (leftDirection) {
             if (x - shift < 0)
                 this.setX(0);
@@ -106,6 +112,26 @@ public class Snake {
                 this.setX(this.getX() + shift);
             rightDirection = false;
         }
+    }
+    
+    public void speed_up(){
+        //If the snake is just speed uped restart the timer in order to
+        //extend the duration of speed up
+        if(! this.speeduped){
+        this.shift = this.shift+8;
+        this.timerSpeedUp.start();
+        this.speeduped = true;
+        }
+        else{
+            this.timerSpeedUp.restart();
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        this.shift = this.shift - 8;  
+        this.speeduped = false;
+        this.timerSpeedUp.stop();
     }
 }
 

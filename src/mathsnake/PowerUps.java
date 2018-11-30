@@ -6,7 +6,9 @@
 package mathsnake;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -16,6 +18,7 @@ public abstract class PowerUps {
     private int x;
     private int y;
     private Rectangle rectangle;
+    protected String nameimg;
     
      public PowerUps(int x, int y) {
         this.x = x;
@@ -45,7 +48,16 @@ public abstract class PowerUps {
         return rectangle;
     } 
     
-    public abstract void action(Snake snake);    //perform an action on the snake when snake collide power ups
+    protected Image loadImage(String PATH) {
+        ImageIcon iid = new ImageIcon(PATH);
+        Image icon = iid.getImage();
+        return icon;
+    }
     
-    public abstract void drawPowerUps(Graphics g);
+    public void drawPowerUps(Graphics g) {
+        Image img = this.loadImage(Environment.PATHIMAGES+this.nameimg);
+        g.drawImage(img, this.getX(), this.getY(), null);
+    }
+    
+    public abstract void action(Snake snake);
 }

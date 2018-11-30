@@ -17,26 +17,14 @@ import javax.swing.ImageIcon;
  */
 public class PowerUpsIncreaseLife extends PowerUps{
    
-    private final String nameimg = "heart.png";
     
     public PowerUpsIncreaseLife(int x, int y){
         super(x, y);
+        super.nameimg = "heart.png";
     }
 
     @Override
     public void action(Snake snake) {
-        snake.setLife(snake.getLife() + 30);  //increases snake's life
-    }
-
-    @Override
-    public void drawPowerUps(Graphics g) {
-        Image img = this.loadImage(Environment.PATHIMAGES+this.nameimg);
-        g.drawImage(img, this.getX(), this.getY(), null);
-    }
-    
-    private Image loadImage(String PATH) {
-        ImageIcon iid = new ImageIcon(PATH);
-        Image icon = iid.getImage();
-        return icon;
+        snake.setLife(snake.getLife() + 80);  //increases snake's life
     }
 }
