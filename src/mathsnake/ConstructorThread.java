@@ -69,7 +69,6 @@ public class ConstructorThread implements Runnable {
                             if(choise == 1){ //50%
                                 blocksmanager.addBlock(new Block(10,Operation.ADD,y+(70*i),-100));
                             } else{ //50%
-                                blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                             }
                         } else{
                         int choise = random.nextInt(99);
@@ -88,7 +87,6 @@ public class ConstructorThread implements Runnable {
                             if(choise == 1){ //50%
                                 blocksmanager.addBlock(new Block(10,Operation.ADD,y+(70*i),-100));
                             } else{ //50%
-                                blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                             }
                         } else{
                             blocksmanager.addBlock(new Block(2,Operation.DIV,y+(70*i),-100));
@@ -121,7 +119,6 @@ public class ConstructorThread implements Runnable {
                             if(choise == 1){ //50%
                                 blocksmanager.addBlock(new Block(10,Operation.ADD,y+(70*i),-100));
                             } else{ //50%
-                                blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                             }
                         } else{
                             int choise = random.nextInt(99);
@@ -140,7 +137,6 @@ public class ConstructorThread implements Runnable {
                             if(choise == 1){ //50%
                                 blocksmanager.addBlock(new Block(10,Operation.ADD,y+(70*i),-100));
                             } else{ //50%
-                                blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                             }
                         } else{
                             blocksmanager.addBlock(new Block(2,Operation.DIV,y+(70*i),-100));
@@ -153,7 +149,6 @@ public class ConstructorThread implements Runnable {
                             if(choise == 1){ //50%
                                 blocksmanager.addBlock(new Block(10,Operation.ADD,y+(70*i),-100));
                             } else{ //50%
-                                blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                             }
                         } else{
                             if (dea == false){
@@ -197,7 +192,6 @@ public class ConstructorThread implements Runnable {
                             if(choise == 1){ //50%
                                 blocksmanager.addBlock(new Block(10,Operation.ADD,y+(70*i),-100));
                             } else{ //50%
-                                blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                             }
                         } else{
                             int choise = random.nextInt(99);
@@ -216,7 +210,6 @@ public class ConstructorThread implements Runnable {
                             if(choise == 1){ //50%
                                 blocksmanager.addBlock(new Block(10,Operation.ADD,y+(70*i),-100));
                             } else{ //50%
-                                blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                             }
                         } else{
                             int choise = random.nextInt(99);
@@ -235,7 +228,6 @@ public class ConstructorThread implements Runnable {
                             if(choise == 1){ //50%
                                 blocksmanager.addBlock(new Block(10,Operation.ADD,y+(70*i),-100));
                             } else{ //50%
-                                blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                             }
                         } else{
                             if (dea == false){
@@ -282,7 +274,6 @@ public class ConstructorThread implements Runnable {
                             if(choise == 1){ //50%
                                 blocksmanager.addBlock(new Block(10,Operation.ADD,y+(70*i),-100));
                             } else{ //50%
-                                blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                             }
                         } else{
                             int choise = random.nextInt(99);
@@ -304,7 +295,6 @@ public class ConstructorThread implements Runnable {
                             if(choise == 1){ //50%
                                 blocksmanager.addBlock(new Block(10,Operation.ADD,y+(70*i),-100));
                             } else{ //50%
-                                blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                             }
                         } else{
                             int choise = random.nextInt(99);
@@ -326,7 +316,6 @@ public class ConstructorThread implements Runnable {
                             if(choise == 1){ //50%
                                 blocksmanager.addBlock(new Block(10,Operation.ADD,y+(70*i),-100));
                             } else{ //50%
-                                blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                             }
                         } else{
                             if (dea == false){
@@ -373,7 +362,6 @@ public class ConstructorThread implements Runnable {
                             if(choise == 1){ //50%
                                 blocksmanager.addBlock(new Block(10,Operation.ADD,y+(70*i),-100));
                             } else{ //50%
-                                blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                             }
                         } else{
                             int choise = random.nextInt(99);
@@ -395,7 +383,6 @@ public class ConstructorThread implements Runnable {
                             if(choise == 1){ //50%
                                 blocksmanager.addBlock(new Block(10,Operation.ADD,y+(70*i),-100));
                             } else{ //50%
-                                blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                             }
                         } else{
                             int choise = random.nextInt(99);
@@ -420,7 +407,6 @@ public class ConstructorThread implements Runnable {
                             if(choise == 1){ //50%
                                 blocksmanager.addBlock(new Block(10,Operation.ADD,y+(70*i),-100));
                             } else{ //50%
-                                blocksmanager.addBlock(new Block(10,Operation.NULL,y+(70*i),-100));
                             }
                         } else{
                             blocksmanager.addBlock(new Block(0,Operation.DEA,y+(70*i),-100));
@@ -441,7 +427,6 @@ public class ConstructorThread implements Runnable {
                     }
                 }
             } catch (InterruptedException ex) {
-                Logger.getLogger(ConstructorThread.class.getName()).log(Level.SEVERE, null, ex);
             }
             
         }

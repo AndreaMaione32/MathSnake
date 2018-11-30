@@ -25,11 +25,10 @@ import javax.swing.Timer;
 
 
 
-public class SnakeBoard extends JPanel implements ActionListener {
+public class SnakeBoard extends JPanel implements Runnable {
     
     private STATE state = STATE.COUNTDOWN;
     
-    private Timer repaintTimer = new Timer(Environment.DELAY, this);
     private Timer countdownTimer;
     private int secondsLeft = 3;
     private JLabel countdown = new JLabel(Integer.toString(secondsLeft));
@@ -43,6 +42,8 @@ public class SnakeBoard extends JPanel implements ActionListener {
     private int gameBest = Environment.STARTLIFEPOINTS;
     private ConstructorThread constructorThread = new ConstructorThread(snake);
     private Thread CThread = new Thread(constructorThread);
+    private boolean stop = false;
+    private boolean pause = false;
     //private UpdaterThread updaterThread = new UpdaterThread(snake);
     
     public SnakeBoard() {
@@ -79,8 +80,7 @@ public class SnakeBoard extends JPanel implements ActionListener {
     
     private void initGame() {
         // Viene inizializzato il timer necessario per i repaint
-        repaintTimer = new Timer(Environment.DELAY, this);
-        repaintTimer.start();
+        new Thread(this).start();
     }
 
     @Override
@@ -88,6 +88,57 @@ public class SnakeBoard extends JPanel implements ActionListener {
         super.paintComponent(g);
         doDrawing(g);
         Toolkit.getDefaultToolkit().sync();
+    }
+    
+    public void run(){
+        long beforeTime, delta, sleep; 
+        beforeTime = System.currentTimeMillis();
+        while(!stop){
+            if(!pause){
+                if (hasFocus() && state == STATE.COUNTDOWN) {
+                if(!countdownTimer.isRunning()) {
+                    countdown();
+                    countdownTimer.start();
+                }
+            }
+            if (hasFocus() && state == STATE.IN_GAME) {
+                if(!CThread.isAlive()){
+                    System.out.println("ciao");
+                    initialState();
+                    constructorThread = new ConstructorThread(snake);
+                    CThread = new Thread(constructorThread);
+                    CThread.start();
+            }
+            }
+            if(state == STATE.IN_GAME){
+                checkCollision();
+                snake.move();
+                double ds = determineDownSpeed();
+                this.moveBlocks(ds);
+                this.movePowerUps(ds);
+                snake.setHorizontalMovement(0);	
+                if ((leftPressed) && (!rightPressed)) {
+                    snake.setHorizontalMovement(-snakeSpeed);
+                } else if ((rightPressed) && (!leftPressed)) {
+                    snake.setHorizontalMovement(snakeSpeed);
+                }
+            }
+            repaint();
+            }
+            delta = System.currentTimeMillis() - beforeTime;
+            sleep = Environment.DELAY - delta;
+
+            if (sleep < 0) {
+                sleep = 2;
+            }
+
+            try {
+                Thread.sleep(sleep);
+            } catch (InterruptedException e) {
+                System.out.println("interrupted");
+            }            
+            beforeTime = System.currentTimeMillis();
+        }
     }
     
     private void doDrawing(Graphics g) {
@@ -170,14 +221,12 @@ public class SnakeBoard extends JPanel implements ActionListener {
                     if (key == KeyEvent.VK_P)
                         if(state == STATE.IN_GAME){
                             state = STATE.PAUSE;
-                            repaintTimer.stop();
+                            pause = true;
                             constructorThread.stopThread();
-                            System.out.println("p");
                         }
                         else if(state == STATE.PAUSE){
-                            System.out.println("p1");
                             state = STATE.IN_GAME;
-                            repaintTimer.start();
+                            pause = false;
                             constructorThread = new ConstructorThread(snake);
                             CThread = new Thread(constructorThread);
                             CThread.start();
@@ -293,40 +342,8 @@ public class SnakeBoard extends JPanel implements ActionListener {
         snake.setLife(10);
         secondsLeft = 3;
     }
-    
-     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (hasFocus() && state == STATE.COUNTDOWN) {
-            if(!countdownTimer.isRunning()) {
-                countdown();
-                countdownTimer.start();
-            }
-        }
-        if (hasFocus() && state == STATE.IN_GAME) {
-            if(!CThread.isAlive()){
-                initialState();
-                constructorThread = new ConstructorThread(snake);
-                CThread = new Thread(constructorThread);
-                CThread.start();
-        }
-        }
-        if(state == STATE.IN_GAME){
-            checkCollision();
-            snake.move();
-            double ds = determineDownSpeed();
-            this.moveBlocks(ds);
-            this.movePowerUps(ds);
-            snake.setHorizontalMovement(0);	
-            if ((leftPressed) && (!rightPressed)) {
-                snake.setHorizontalMovement(-snakeSpeed);
-            } else if ((rightPressed) && (!leftPressed)) {
-                snake.setHorizontalMovement(snakeSpeed);
-            }
-        }
-        repaint();
-    }
-         
-    private enum STATE {
+   
+     private enum STATE {
         COUNTDOWN,
         IN_GAME,
         PAUSE,
@@ -353,5 +370,9 @@ public class SnakeBoard extends JPanel implements ActionListener {
                 } else {
                     return this.downSpeed + ((snake.getLife()/Environment.LIFEINCREASING)*1000/Environment.DELAY);
                 }
+    }
+    
+    public void stop(){
+        this.stop = true;
     }
 }

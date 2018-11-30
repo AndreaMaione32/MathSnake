@@ -62,9 +62,9 @@ public class Block {
             case MUL:
                  return new Color(38,166,191);
             case SUB:
-                return new Color(179,12,12);
+                return new Color(3, 58, 112);
             case DIV:
-                return new Color(179,12,12);
+                return new Color(3, 58, 112);
             case DEA:
                 return Color.BLACK;
             case NULL:
@@ -117,7 +117,7 @@ public class Block {
     public void printBlock(Graphics g){ //print block given x, y coordinate and graphics object, associeted to an JPanel
        g.setColor(this.getColor());
        g.fill3DRect((int)x, (int)y, Environment.BLOCK_WIDTH, Environment.BLOCK_HEIGHT, true);
-       Font font = new Font("Arial", Font.BOLD, 24);
+       Font font = new Font("Arial", Font.BOLD, 26);
        String text = this.getStrOp()+Integer.toString(this.getValue());
        // Get the FontMetrics
        FontMetrics metrics = g.getFontMetrics(font);
