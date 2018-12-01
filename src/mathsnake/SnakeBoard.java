@@ -34,7 +34,7 @@ public class SnakeBoard extends JPanel implements ActionListener {
     private Image head;
     private final Snake snake = new Snake();
     
-    private double snakeSpeed = 250;
+    private double snakeSpeed = 300;
     private boolean leftPressed = false;
     private boolean rightPressed = false;
     
