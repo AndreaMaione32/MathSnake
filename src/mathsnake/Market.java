@@ -11,8 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.*;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,9 +18,9 @@ import javax.swing.JPanel;
 
 public class Market extends JPanel {
     
-    //private GroupLayout layout = new GroupLayout(this);
+    private int currentCoins = Coins.getInstance().getCurrentCoins();
     private JLabel marketLabel = new JLabel("MARKET");
-    private JLabel coinsLabel = new JLabel("Coins: 0");
+    private JLabel coinsLabel = new JLabel("Coins: " + Integer.toString(currentCoins));
     private JButton backButton = new JButton("Back");
     private JButton b1 = new JButton("10");
     private JButton b2 = new JButton("20");
@@ -41,7 +39,6 @@ public class Market extends JPanel {
         setBackground(Color.BLACK);
         setFocusable(true);
         setPreferredSize(new Dimension(Environment.JP_WIDTH, Environment.JP_HEIGHT));
-        //setLayout(layout);
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         setLayout(layout);
@@ -132,51 +129,6 @@ public class Market extends JPanel {
         c.gridy = 5;
         c.anchor = GridBagConstraints.LAST_LINE_END;
         add(backButton, c);
-        
-        /**
-        layout.setHorizontalGroup(
-                layout.createParallelGroup()
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(150)
-                        .addComponent(marketLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(170)
-                        .addGroup(layout.createParallelGroup()
-                            .addComponent(b1)
-                            .addGap(100)
-                            .addComponent(b2))
-                        .addGroup(layout.createParallelGroup()
-                            .addComponent(l1)
-                            .addGap(100)
-                            .addComponent(l2))
-                    )
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(coinsLabel)
-                        .addGap(300)
-                        .addComponent(backButton)
-                        .addContainerGap())
-        );
-        layout.setVerticalGroup(
-                layout.createSequentialGroup()
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(marketLabel)
-                        .addGap(100))
-                    .addGroup(layout.createParallelGroup(Alignment.BASELINE)
-                        .addComponent(b1)
-                        .addGap(70)
-                        .addComponent(l1))
-                    .addGroup(layout.createParallelGroup(Alignment.BASELINE)
-                        .addComponent(b2)
-                        .addGap(70)
-                        .addComponent(l2))
-                    .addGap(170)
-                    .addGroup(layout.createParallelGroup(Alignment.BASELINE)
-                        .addComponent(coinsLabel)
-                        .addComponent(backButton))
-        );
-        **/
     }
 
     private void addListeners() {
