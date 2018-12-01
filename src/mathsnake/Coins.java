@@ -29,8 +29,11 @@ public class Coins {
     
     public synchronized void setCurrentCoins(int coins) {
         currentCoins = coins;
+    }
+    
+    public synchronized void saveCoins() {
         try {
-            writeCoins(coins);
+            writeCoins(currentCoins);
         } catch (IOException ex) {
             Logger.getLogger(Coins.class.getName()).log(Level.SEVERE, null, ex);
         }

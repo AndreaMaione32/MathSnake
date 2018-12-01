@@ -17,8 +17,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -36,6 +34,7 @@ public class SnakeBoard extends JPanel implements Runnable {
     private Image head;
     private Image shield_small;
     private Image blu_head;
+    private int coins = 0;
     private final Snake snake = new Snake();
     private double snakeSpeed = 250;
     private boolean leftPressed = false;
@@ -211,6 +210,7 @@ public class SnakeBoard extends JPanel implements Runnable {
         while(System.currentTimeMillis() != endTime) {
             // Wait 1 second
         }
+        Coins.getInstance().saveCoins();
         state = STATE.COUNTDOWN;
         CardLayout cl = MathSnake.getInstance().getCardLayout();
         cl.show(MathSnake.getInstance().getCardsJPanel(), "gameOver");
@@ -348,6 +348,7 @@ public class SnakeBoard extends JPanel implements Runnable {
         PowerUpsManager.getInstance().flush();
         this.leftPressed = false;
         this.rightPressed = false;
+        coins = 0;
         snake.setLife(10);
         secondsLeft = 3;
     }
