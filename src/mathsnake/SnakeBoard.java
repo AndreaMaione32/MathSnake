@@ -40,7 +40,7 @@ public class SnakeBoard extends JPanel implements Runnable {
     private double snakeSpeed = 250;
     private boolean leftPressed = false;
     private boolean rightPressed = false;
-    private double downSpeed = 240; //define velocity of block and power ups
+    private double downSpeed = Environment.STARTDOWNSPEED; //define velocity of block and power ups
     private int gameBest = Environment.STARTLIFEPOINTS;
     private ConstructorThread constructorThread = new ConstructorThread(snake);
     private Thread CThread = new Thread(constructorThread);
@@ -374,11 +374,20 @@ public class SnakeBoard extends JPanel implements Runnable {
     }
     
     private double determineDownSpeed(){
-        if((snake.getLife()/Environment.LIFEINCREASING) > (Environment.MAXVELOCITYSHIFT)){
-            return this.downSpeed + ((Environment.MAXVELOCITYSHIFT)*1000/Environment.DELAY);
-                } else {
-                    return this.downSpeed + ((snake.getLife()/Environment.LIFEINCREASING)*1000/Environment.DELAY);
-                }
+        if (snake.getLife() < Environment.LIFEINCREASING){
+            System.out.println("Min DownSpeed: "+this.downSpeed);
+            return this.downSpeed;
+        } else{
+            int actualShift = (snake.getLife())/Environment.LIFEINCREASING;
+            if (actualShift > (Environment.MAXINCREMENT)){
+                System.out.println("Max DownSpeed: "+(this.downSpeed + Environment.MAXVELOCITYSHIFT));
+                return this.downSpeed + Environment.MAXVELOCITYSHIFT;
+            } else{
+                int actualDown = (Environment.MAXVELOCITYSHIFT/Environment.MAXINCREMENT)*actualShift;
+                System.out.println("Mid DownSpeed: "+(this.downSpeed + actualDown));
+                return this.downSpeed + actualDown;
+            }
+        }
     }
     
     public void stop(){

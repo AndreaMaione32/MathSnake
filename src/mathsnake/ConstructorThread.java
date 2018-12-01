@@ -414,19 +414,26 @@ public class ConstructorThread implements Runnable {
                     }
                 }
             }
+            
+            
+            
             try {
                 if (snake.getLife() < Environment.LIFEINCREASING){
                     Thread.sleep(Environment.MINTHREADDELAY);
+                    System.out.println("Sleep Constructor: "+Environment.MINTHREADDELAY);
                 } else{
                     int actualShift = (snake.getLife())/Environment.LIFEINCREASING;
-                    if (actualShift > (Environment.MAXBLOCKSHIFT)){
+                    if (actualShift > (Environment.MAXINCREMENT)){
                         Thread.sleep(Environment.MAXTHREADDELAY);
+                        System.out.println("Sleep Constructor: "+Environment.MAXTHREADDELAY);
                     } else{
-                        int actualSleep = ((Environment.MINTHREADDELAY - Environment.MAXTHREADDELAY)/Environment.MAXBLOCKSHIFT)*actualShift;
+                        int actualSleep = ((Environment.MINTHREADDELAY - Environment.MAXTHREADDELAY)/Environment.MAXINCREMENT)*actualShift;
                         Thread.sleep(Environment.MINTHREADDELAY - actualSleep);
+                        System.out.println("Sleep Constructor: "+(Environment.MINTHREADDELAY - actualSleep));
                     }
-                }
+                }   
             } catch (InterruptedException ex) {
+                Logger.getLogger(ConstructorThread.class.getName()).log(Level.SEVERE, null, ex);
             }
             
         }
