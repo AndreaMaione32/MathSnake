@@ -76,7 +76,7 @@ public class Snake{
     }
     
     public void move(){
-        int shift = Environment.DOT_SIZE;
+        int shift = 1; //Environment.DOT_SIZE + 15;
         for (byte i=0; i<Environment.DOT_NUM - 1; i++){
             x[i] = x[i+1];
         }
