@@ -434,19 +434,19 @@ public class ConstructorThread implements Runnable {
     }
     
     public void createPowerUps(){
-        if(counterPowerUps == 5){   //create power ups every seven block creations
+        if(counterPowerUps == 5){   //create power ups every four block creations
         int rand = (int)(Math.random()*10);
-        if(rand > 4){ //powerups is created with probability of 50%
+        if(rand >= 6){ //powerups is created with probability of 40%
         }
         else{
-            if(rand < 2){
-                this.powerUpsManager.addPowerUps(new PowerUpsSpeedUp(this.randomX(), -240)); //probability of 20% power ups speed up
+            if(rand < 3){  //probability of 30%
+                this.powerUpsManager.addPowerUps(new PowerUpsSpeedUp(this.randomX(), -240));
             }
-            if(rand < 4 && rand >= 2){
-                this.powerUpsManager.addPowerUps(new PowerUpsIncreaseLife(this.randomX(), -240)); //probability of 20% power ups increase life
+            if(rand < 5 && rand >= 3){  //probability of 20%
+                this.powerUpsManager.addPowerUps(new PowerUpsShield(this.randomX(), -240));
             }
-            if(rand == 4){ //probability of 10%
-                this.powerUpsManager.addPowerUps(new PowerUpsShield(this.randomX(), -240)); //probability of 20% power ups increase life
+            if(rand == 5){ //probability of 10% 
+                this.powerUpsManager.addPowerUps(new PowerUpsIncreaseLife(this.randomX(), -240));
             }
         }
         counterPowerUps = 0;

@@ -132,4 +132,12 @@ public class Snake implements ActionListener{
         this.speed_uped = false;
         this.speedUpTimer.stop();
     }
+
+    public boolean isSpeedUped() {
+        return speed_uped;
+    }
+
+    public boolean isShielded() {
+        return shield;
+    }
 }

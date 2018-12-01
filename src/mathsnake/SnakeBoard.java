@@ -34,6 +34,8 @@ public class SnakeBoard extends JPanel implements Runnable {
     private JLabel countdown = new JLabel(Integer.toString(secondsLeft));
     private Image ball;
     private Image head;
+    private Image shield_small;
+    private Image blu_head;
     private final Snake snake = new Snake();
     private double snakeSpeed = 250;
     private boolean leftPressed = false;
@@ -44,7 +46,6 @@ public class SnakeBoard extends JPanel implements Runnable {
     private Thread CThread = new Thread(constructorThread);
     private boolean stop = false;
     private boolean pause = false;
-    //private UpdaterThread updaterThread = new UpdaterThread(snake);
     
     public SnakeBoard() {
         initSnakeBoard();
@@ -75,7 +76,9 @@ public class SnakeBoard extends JPanel implements Runnable {
    
     private void loadImages() {
         ball = snake.loadImage(Environment.PATHIMAGES + "dot.png");
+        shield_small = snake.loadImage(Environment.PATHIMAGES + "shield_small.png");
         head = snake.loadImage(Environment.PATHIMAGES + "smiling.png");
+        blu_head = snake.loadImage(Environment.PATHIMAGES + "blu_head.png");
     }
     
     private void initGame() {
@@ -158,9 +161,15 @@ public class SnakeBoard extends JPanel implements Runnable {
                 ((Graphics2D) g).setRenderingHints(rh);
                 //DRAWING SNAKE
                 for (int z = 0; z < numDots - 1; z++){
-                    g.drawImage(ball, (int)x, (int)yVector[z], this);
+                    if(snake.isShielded())
+                       g.drawImage(this.shield_small, (int)x, (int)yVector[z], this);
+                    else
+                        g.drawImage(ball, (int)x, (int)yVector[z], this);
                 }
-                g.drawImage(head, (int)x, (int)yVector[numDots - 1], this);
+                if(snake.isSpeedUped())
+                    g.drawImage(blu_head, (int)x, (int)yVector[numDots - 1], this);
+                else
+                    g.drawImage(head, (int)x, (int)yVector[numDots - 1], this);
 
                 g.setColor(Color.black);
                 g.drawString(Integer.toString(snake.getLife()), (int)x + 15, (int)yVector[numDots - 1] + 10);
