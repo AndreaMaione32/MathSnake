@@ -2,7 +2,10 @@ package mathsnake;
 
 import java.awt.CardLayout;
 import java.awt.EventQueue;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class MathSnake extends JFrame {
@@ -16,7 +19,7 @@ public class MathSnake extends JFrame {
     private Menu menu = new Menu();
     private SnakeBoard game = new SnakeBoard();
     private ScoreBoard score = new ScoreBoard();
-    private JPanel market;
+    private Market market = new Market();
     private static MathSnake instance = null;
     
     public synchronized static MathSnake getInstance() {
@@ -41,12 +44,21 @@ public class MathSnake extends JFrame {
         setTitle("Math Snake");
         setResizable(false);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent we) {
+                int choice = JOptionPane.showConfirmDialog(MathSnake.getInstance(), "Are you sure you want to exit ?", "Choose an option", JOptionPane.YES_NO_OPTION);
+                if(choice == 0)
+                    System.exit(0);
+            }
+        });
         cardsJPanel.add(firstPage, "firstPage");
         cardsJPanel.add(menu, "menu");
         cardsJPanel.add(game, "game");
         cardsJPanel.add(score,"score");
         cardsJPanel.add(gameOver,"gameOver");
+        cardsJPanel.add(market,"market");
         add(cardsJPanel);
         cl.show(this.cardsJPanel, "firstPage");
         pack();
