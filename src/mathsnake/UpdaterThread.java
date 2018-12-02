@@ -1,20 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mathsnake;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author antoniocoppola
  * The Runnable, that is called Thread in order to explain better its function, updates Block's coordinates and power ups cordinates in order to move 
  * down them on the screen
  */
+
 public class UpdaterThread implements Runnable {
     private  BlocksManager blocksmanager; 
     private PowerUpsManager powerUpsManager; 
@@ -67,7 +60,5 @@ public class UpdaterThread implements Runnable {
     public void stopThread(){
         stop = true;
     }
-    
-    
 
 }

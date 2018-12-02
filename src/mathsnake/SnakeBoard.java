@@ -21,8 +21,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-
-
 public class SnakeBoard extends JPanel implements Runnable {
     
     private STATE state = STATE.COUNTDOWN;
@@ -34,7 +32,7 @@ public class SnakeBoard extends JPanel implements Runnable {
     private Image head;
     private Image shield_small;
     private Image blu_head;
-    private int coins = 0;
+    private CoinsSaver coinsSaver = new CoinsSaver();
     private final Snake snake = new Snake();
     private double snakeSpeed = 250;
     private boolean leftPressed = false;
@@ -92,6 +90,7 @@ public class SnakeBoard extends JPanel implements Runnable {
         Toolkit.getDefaultToolkit().sync();
     }
     
+    @Override
     public void run(){
         long beforeTime, delta, sleep; 
         beforeTime = System.currentTimeMillis();
@@ -210,7 +209,7 @@ public class SnakeBoard extends JPanel implements Runnable {
         while(System.currentTimeMillis() != endTime) {
             // Wait 1 second
         }
-        Coins.getInstance().saveCoins();
+        coinsSaver.saveCoins();
         state = STATE.COUNTDOWN;
         CardLayout cl = MathSnake.getInstance().getCardLayout();
         cl.show(MathSnake.getInstance().getCardsJPanel(), "gameOver");
@@ -348,7 +347,7 @@ public class SnakeBoard extends JPanel implements Runnable {
         PowerUpsManager.getInstance().flush();
         this.leftPressed = false;
         this.rightPressed = false;
-        coins = 0;
+        coinsSaver = new CoinsSaver();
         snake.setLife(10);
         secondsLeft = 3;
     }

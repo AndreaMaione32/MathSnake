@@ -1,21 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mathsnake;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author antoniocoppola
  PowerUpsManager manages the power ups list of Math Snake. PowerUpsManager adds or remove power ups from
  power ups list. 
  * The PowerUpsManager must to be unique, we have one powerups list in our game thus we want to have unique PowerUpsManager
  * For this reason we use Singleton Design Pattern
  */
+
 public class PowerUpsManager {
     private List<PowerUps> powerUpsList;
     private static PowerUpsManager instance = null;

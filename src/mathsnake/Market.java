@@ -15,12 +15,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
 public class Market extends JPanel {
     
-    private int currentCoins = Coins.getInstance().getCurrentCoins();
+    private CoinsSaver coinsSaver = new CoinsSaver();
     private JLabel marketLabel = new JLabel("MARKET");
-    private JLabel coinsLabel = new JLabel("Coins: " + Integer.toString(currentCoins));
+    private JLabel coinsLabel = new JLabel("Coins: " + Integer.toString(coinsSaver.getCurrentCoins()));
     private JButton backButton = new JButton("Back");
     private JButton b1 = new JButton("10");
     private JButton b2 = new JButton("20");
@@ -42,30 +41,14 @@ public class Market extends JPanel {
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         setLayout(layout);
-        backButton.setFont(new Font("Arial", 1, 20));
-        marketLabel.setFont(new Font("Arial", Font.BOLD, 50));
-        marketLabel.setForeground(Color.WHITE);
-        coinsLabel.setFont(new Font("Arial", 1, 20));
-        coinsLabel.setForeground(Color.WHITE);
-        b1.setFont(new Font("Arial", 1, 20));
-        b2.setFont(new Font("Arial", 1, 20));
-        b3.setFont(new Font("Arial", 1, 20));
-        b4.setFont(new Font("Arial", 1, 20));
-        l1.setFont(new Font("Arial", 1, 20));
-        l1.setForeground(Color.WHITE);
-        l2.setFont(new Font("Arial", 1, 20));
-        l2.setForeground(Color.WHITE);
-        l3.setFont(new Font("Arial", 1, 20));
-        l3.setForeground(Color.WHITE);
-        l4.setFont(new Font("Arial", 1, 20));
-        l4.setForeground(Color.WHITE);
-        addListeners();
         
         c.gridx = 1;
         c.gridy = 0;
         c.gridwidth = 3;
         c.anchor = GridBagConstraints.PAGE_START;
         c.weighty = 1.0;
+        marketLabel.setFont(new Font("Arial", Font.BOLD, 50));
+        marketLabel.setForeground(Color.WHITE);
         add(marketLabel, c);
         
         c.weighty = 0;
@@ -76,41 +59,53 @@ public class Market extends JPanel {
         c.insets = new Insets(0, 0, 20, 40);
         c.gridx = 0;
         c.gridy = 1;
+        b1.setFont(new Font("Arial", 1, 20));
         add(b1, c);
         
         c.insets = new Insets(0, 0, 20, 0);
         c.gridx = 2;
         c.gridy = 1;
+        l1.setFont(new Font("Arial", 1, 20));
+        l1.setForeground(Color.WHITE);
         add(l1, c);
         
         c.insets = new Insets(0, 0, 20, 40);
         c.gridx = 0;
         c.gridy = 2;
+        b2.setFont(new Font("Arial", 1, 20));
         add(b2, c);
         
         c.insets = new Insets(0, 0, 20, 0);
         c.gridx = 2;
         c.gridy = 2;
+        l2.setFont(new Font("Arial", 1, 20));
+        l2.setForeground(Color.WHITE);
         add(l2, c);
         
         c.insets = new Insets(0, 0, 20, 40);
         c.gridx = 0;
         c.gridy = 3;
+        b3.setFont(new Font("Arial", 1, 20));
         add(b3, c);
         
         c.insets = new Insets(0, 0, 20, 0);
         c.gridx = 2;
         c.gridy = 3;
+        l3.setFont(new Font("Arial", 1, 20));
+        l3.setForeground(Color.WHITE);
         add(l3, c);
         
         c.insets = new Insets(0, 0, 0, 40);
         c.gridx = 0;
         c.gridy = 4;
+        b4.setFont(new Font("Arial", 1, 20));
         add(b4, c);
         
         c.insets = new Insets(0, 0, 0, 0);
         c.gridx = 2;
         c.gridy = 4;
+        l4.setFont(new Font("Arial", 1, 20));
+        l4.setForeground(Color.WHITE);
         add(l4, c);
         
         c.weighty = 1;
@@ -122,13 +117,18 @@ public class Market extends JPanel {
         c.gridx = 0;
         c.gridy = 5;
         c.anchor = GridBagConstraints.LAST_LINE_START;
+        coinsLabel.setFont(new Font("Arial", 1, 20));
+        coinsLabel.setForeground(Color.WHITE);
         add(coinsLabel, c);
         
         c.insets = new Insets(0, 0, 10, 10);
         c.gridx = 2;
         c.gridy = 5;
         c.anchor = GridBagConstraints.LAST_LINE_END;
+        backButton.setFont(new Font("Arial", 1, 20));
         add(backButton, c);
+        
+        addListeners();
     }
 
     private void addListeners() {
@@ -136,6 +136,7 @@ public class Market extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 MathSnake.state = GameState.MENU;
+                coinsSaver.saveCoins();
                 CardLayout cl = MathSnake.getInstance().getCardLayout();
                 cl.show(MathSnake.getInstance().getCardsJPanel(), "menu");
             }

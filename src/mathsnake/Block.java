@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mathsnake;
 import java.awt.Color;
 import java.awt.Font;
@@ -12,10 +7,6 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
-/**
- *
- * @author antoniocoppola
- */
 public class Block {
     private final int value; //indicates the value of operation
     private final Operation op; //indicates the operation
