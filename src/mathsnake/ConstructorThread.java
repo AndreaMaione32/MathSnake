@@ -39,7 +39,6 @@ public class ConstructorThread implements Runnable {
                 
                 
                 if(life <= 299){ //primo livello di difficoltà
-                    System.out.println("Primo livello");
                     if (casuale >= 0 && casuale <= 29){ //30% BLOCCO VUOTO 
                         positive = true;
                     }
@@ -89,7 +88,6 @@ public class ConstructorThread implements Runnable {
                 
                 
                 if(life >= 299 && life <= 599){ //secondo livello di difficoltà
-                    System.out.println("Secondo livello");
                     if (casuale >= 0 && casuale <= 24){ //25% BLOCCO VUOTO 
                         positive = true;
                     }
@@ -162,7 +160,6 @@ public class ConstructorThread implements Runnable {
                 
                 
                 if(life >= 600 && life <= 899){ //terzo livello di difficoltà
-                    System.out.println("Terzo livello");
                     if (casuale >= 0 && casuale <= 19){ //20% BLOCCO VUOTO 
                         positive = true;
                     }
@@ -241,7 +238,6 @@ public class ConstructorThread implements Runnable {
                 
                 
                 if(life >= 900 && life <= 1199){ //quarto livello di difficoltà
-                    System.out.println("Quarto livello");
                     if (casuale >= 0 && casuale <= 14){ // 15% BLOCCO VUOTO 
                         positive = true;
                     }
@@ -329,7 +325,6 @@ public class ConstructorThread implements Runnable {
                 
                 
                 if(life >= 1200){ //quinto livello di difficoltà
-                    System.out.println("Quinto livello");
                     if (casuale >= 0 && casuale <= 9){ // 10% BLOCCO VUOTO 
                         positive = true;
                     }
@@ -412,16 +407,15 @@ public class ConstructorThread implements Runnable {
             try {
                 if (snake.getLife() < Environment.LIFEINCREASING){
                     Thread.sleep(Environment.MINTHREADDELAY);
-                    System.out.println("Sleep Constructor: "+Environment.MINTHREADDELAY);
-                } else{
+                }
+                else {
                     int actualShift = (snake.getLife())/Environment.LIFEINCREASING;
                     if (actualShift > (Environment.MAXINCREMENT)){
                         Thread.sleep(Environment.MAXTHREADDELAY);
-                        System.out.println("Sleep Constructor: "+Environment.MAXTHREADDELAY);
-                    } else{
+                    }
+                    else {
                         int actualSleep = ((Environment.MINTHREADDELAY - Environment.MAXTHREADDELAY)/Environment.MAXINCREMENT)*actualShift;
                         Thread.sleep(Environment.MINTHREADDELAY - actualSleep);
-                        System.out.println("Sleep Constructor: "+(Environment.MINTHREADDELAY - actualSleep));
                     }
                 }   
             } catch (InterruptedException ex) {

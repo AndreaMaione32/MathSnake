@@ -241,6 +241,7 @@ public class SnakeBoard extends JPanel implements Runnable {
                         }
             }
             
+            @Override
             public void keyReleased(KeyEvent e) {
                 int key = e.getKeyCode();
                 if ((key == KeyEvent.VK_LEFT) && state == STATE.IN_GAME){
@@ -349,6 +350,7 @@ public class SnakeBoard extends JPanel implements Runnable {
         this.rightPressed = false;
         coinsSaver = new CoinsSaver();
         snake.setLife(10);
+        gameBest = 0;
         secondsLeft = 3;
     }
    
@@ -375,16 +377,15 @@ public class SnakeBoard extends JPanel implements Runnable {
     
     private double determineDownSpeed(){
         if (snake.getLife() < Environment.LIFEINCREASING){
-            System.out.println("Min DownSpeed: "+this.downSpeed);
             return this.downSpeed;
-        } else{
+        }
+        else {
             int actualShift = (snake.getLife())/Environment.LIFEINCREASING;
             if (actualShift > (Environment.MAXINCREMENT)){
-                System.out.println("Max DownSpeed: "+(this.downSpeed + Environment.MAXVELOCITYSHIFT));
                 return this.downSpeed + Environment.MAXVELOCITYSHIFT;
-            } else{
+            }
+            else {
                 int actualDown = (Environment.MAXVELOCITYSHIFT/Environment.MAXINCREMENT)*actualShift;
-                System.out.println("Mid DownSpeed: "+(this.downSpeed + actualDown));
                 return this.downSpeed + actualDown;
             }
         }
