@@ -104,12 +104,11 @@ public class SnakeBoard extends JPanel implements Runnable {
             }
             if (hasFocus() && state == STATE.IN_GAME) {
                 if(!CThread.isAlive()){
-                    System.out.println("ciao");
                     initialState();
                     constructorThread = new ConstructorThread(snake);
                     CThread = new Thread(constructorThread);
                     CThread.start();
-            }
+                }
             }
             if(state == STATE.IN_GAME){
                 checkCollision();
@@ -222,52 +221,6 @@ public class SnakeBoard extends JPanel implements Runnable {
         cl.show(MathSnake.getInstance().getCardsJPanel(), "gameOver");
     }
     
-    private void addListeners() {
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                int key = e.getKeyCode();
-                if (e.getKeyCode() == KeyEvent.VK_LEFT && state == STATE.IN_GAME) {
-                    leftPressed = true;
-                }
-                if (e.getKeyCode() == KeyEvent.VK_RIGHT && state == STATE.IN_GAME) {
-                    rightPressed = true;
-                }
-                    if (key == KeyEvent.VK_P)
-                        if(state == STATE.IN_GAME){
-                            state = STATE.PAUSE;
-                            pause = true;
-                            constructorThread.stopThread();
-                        }
-                        else if(state == STATE.PAUSE){
-                            state = STATE.IN_GAME;
-                            pause = false;
-                            constructorThread = new ConstructorThread(snake);
-                            CThread = new Thread(constructorThread);
-                            CThread.start();
-                        }
-            }
-            
-            @Override
-            public void keyReleased(KeyEvent e) {
-                int key = e.getKeyCode();
-                if ((key == KeyEvent.VK_LEFT) && state == STATE.IN_GAME){
-                    leftPressed = false;   
-                }
-                if ((key == KeyEvent.VK_RIGHT) && state == STATE.IN_GAME){
-                    rightPressed = false;   
-                }
-                
-            }
-        });
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentShown(ComponentEvent e) {
-                requestFocusInWindow();
-            }
-        });
-    }
-    
     private void countdown() {
         countdown.setFont(new Font("Arial", Font.BOLD, 100));
         countdown.setForeground(Color.BLACK);
@@ -284,7 +237,6 @@ public class SnakeBoard extends JPanel implements Runnable {
         if (secondsLeft == 0) {
             remove(countdown);
             countdownTimer.stop();
-            
             state = STATE.IN_GAME;
         }
     }
@@ -375,13 +327,6 @@ public class SnakeBoard extends JPanel implements Runnable {
         gameBest = 0;
         secondsLeft = 3;
     }
-   
-     private enum STATE {
-        COUNTDOWN,
-        IN_GAME,
-        PAUSE,
-        GAMEOVER
-    }
     
     private void moveBlocks(double ds){
         BlocksManager bm = BlocksManager.getInstance();
@@ -422,5 +367,58 @@ public class SnakeBoard extends JPanel implements Runnable {
     
     public void stop(){
         this.stop = true;
+    }
+    
+    private void addListeners() {
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (e.getKeyCode() == KeyEvent.VK_LEFT && state == STATE.IN_GAME) {
+                    leftPressed = true;
+                }
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT && state == STATE.IN_GAME) {
+                    rightPressed = true;
+                }
+                if (key == KeyEvent.VK_P)
+                    if(state == STATE.IN_GAME){
+                        state = STATE.PAUSE;
+                        pause = true;
+                        constructorThread.stopThread();
+                    }
+                    else if(state == STATE.PAUSE){
+                        state = STATE.IN_GAME;
+                        pause = false;
+                        constructorThread = new ConstructorThread(snake);
+                        CThread = new Thread(constructorThread);
+                        CThread.start();
+                    }
+            }
+            
+            @Override
+            public void keyReleased(KeyEvent e) {
+                int key = e.getKeyCode();
+                if ((key == KeyEvent.VK_LEFT) && state == STATE.IN_GAME){
+                    leftPressed = false;   
+                }
+                if ((key == KeyEvent.VK_RIGHT) && state == STATE.IN_GAME){
+                    rightPressed = false;   
+                }
+                
+            }
+        });
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                requestFocusInWindow();
+            }
+        });
+    }
+    
+    private enum STATE {
+        COUNTDOWN,
+        IN_GAME,
+        PAUSE,
+        GAMEOVER
     }
 }

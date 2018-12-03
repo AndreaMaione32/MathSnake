@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -140,6 +142,19 @@ public class Market extends JPanel {
                 CardLayout cl = MathSnake.getInstance().getCardLayout();
                 cl.show(MathSnake.getInstance().getCardsJPanel(), "menu");
             }
+        });
+        addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                coinsSaver = new CoinsSaver();
+                coinsLabel.setText("Coins: " + Integer.toString(coinsSaver.getCurrentCoins()));
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                //DO NOTHING
+            }
+            
         });
         addComponentListener(new ComponentAdapter() {
             @Override
