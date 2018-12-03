@@ -11,9 +11,11 @@ import java.util.logging.Logger;
 public class ConstructorThread implements Runnable {
     private  BlocksManager blocksmanager; 
     private PowerUpsManager powerUpsManager;
+    private CoinsManager coinsManager;
     private boolean stop = false;
     private boolean pause = false;
     private int counterPowerUps = 0;  //it's used to create power ups every x blocks creation
+    private int counterCoins = 0; //it's used to create coins  every y blocks creation
     
     private Snake snake;
     
@@ -21,6 +23,7 @@ public class ConstructorThread implements Runnable {
         super();
         this.blocksmanager = BlocksManager.getInstance();
         this.powerUpsManager = PowerUpsManager.getInstance();
+        this.coinsManager = CoinsManager.getInstance();
         this.snake = snake;
     }
     
@@ -31,6 +34,7 @@ public class ConstructorThread implements Runnable {
             boolean dea = false;
             boolean positive = false;
             createPowerUps();
+            createCoins();
             //creazione blocchi
             for(int i=0; i<7; i++){
                 Random random = new Random();
@@ -433,13 +437,13 @@ public class ConstructorThread implements Runnable {
         }
         else{
             if(rand < 3){  //probability of 30%
-                this.powerUpsManager.addPowerUps(new PowerUpsSpeedUp(this.randomX(), -240));
+                this.powerUpsManager.addPowerUps(new PowerUpsSpeedUp(this.randomXPU(), -240));
             }
             if(rand < 5 && rand >= 3){  //probability of 20%
-                this.powerUpsManager.addPowerUps(new PowerUpsShield(this.randomX(), -240));
+                this.powerUpsManager.addPowerUps(new PowerUpsShield(this.randomXPU(), -240));
             }
             if(rand == 5){ //probability of 10% 
-                this.powerUpsManager.addPowerUps(new PowerUpsIncreaseLife(this.randomX(), -240));
+                this.powerUpsManager.addPowerUps(new PowerUpsIncreaseLife(this.randomXPU(), -240));
             }
         }
         counterPowerUps = 0;
@@ -447,9 +451,29 @@ public class ConstructorThread implements Runnable {
         else
             counterPowerUps ++;
     }
+ 
+    
+    public void createCoins(){
+        if(counterCoins == 3){
+            int rand = (int)(Math.random()*10);
+            if(rand > 4){  //create coins with probability of 50%
+                this.coinsManager.addCoins(new Coin(this.randomXC(), -250));
+            }
+            else{
+            }
+            counterCoins = 0;
+        }
+        else{
+            counterCoins ++;
+        }
+    }
 
-    private int randomX(){
-        return (int)(Math.random()*(Environment.JP_WIDTH -Environment.POWERUPS_WIDHT - 10));
+    private int randomXPU(){
+        return (int)(Math.random()*(Environment.JP_WIDTH -Environment.POWERUPS_WIDTH - 10));
+    }
+    
+    private int randomXC(){
+        return (int)(Math.random()*(Environment.JP_WIDTH -Environment.COIN_WIDTH - 10));
     }
     
     public boolean isStop() {

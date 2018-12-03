@@ -117,6 +117,7 @@ public class SnakeBoard extends JPanel implements Runnable {
                 double ds = determineDownSpeed();
                 this.moveBlocks(ds);
                 this.movePowerUps(ds);
+                this.moveCoins(ds);
                 snake.setHorizontalMovement(0);	
                 if ((leftPressed) && (!rightPressed)) {
                     snake.setHorizontalMovement(-snakeSpeed);
@@ -182,6 +183,12 @@ public class SnakeBoard extends JPanel implements Runnable {
                 for(int i = 0; i<powerUpsManager.powerUpsnums(); i++){
                     PowerUps p = powerUpsManager.getPowerUps(i);
                     p.drawPowerUps(g);
+                }
+                //DRAWING COINS
+                CoinsManager coinsManager = CoinsManager.getInstance();
+                for(int i = 0; i<coinsManager.numCoins(); i++){
+                    Coin c = coinsManager.getCoin(i);
+                    c.drawCoin(g);
                 }
                 Font font = new Font("Arial", Font.BOLD, 14);
                 FontMetrics metrics = g.getFontMetrics(font);
@@ -285,8 +292,10 @@ public class SnakeBoard extends JPanel implements Runnable {
     private void checkCollision(){
         BlocksManager blocksManager = BlocksManager.getInstance();
         PowerUpsManager powerUpsManager = PowerUpsManager.getInstance();
+        CoinsManager coinsManager = CoinsManager.getInstance();
         Block b;
         PowerUps p;
+        Coin c;
            
         if (state == STATE.IN_GAME){
             //COLLISIONS WITH BLOCK
@@ -312,6 +321,19 @@ public class SnakeBoard extends JPanel implements Runnable {
                 }
                 if(p.getY() > Environment.JP_HEIGHT){
                     powerUpsManager.removePowerUps(p);
+                    y--;
+                }
+            }
+            //COLLISION WITH COINS
+            for(int y = 0; y<coinsManager.numCoins(); y++){
+                c = coinsManager.getCoin(y);
+                if(snake.collide(c.getAssociatedRectangle())){
+                    coinsSaver.setCurrentCoins(coinsSaver.getCurrentCoins()+1);
+                    coinsManager.removeCoin(c);
+                    y--;
+                }
+                if(c.getY() > Environment.JP_HEIGHT){
+                    coinsManager.removeCoin(c);
                     y--;
                 }
             }
@@ -372,6 +394,13 @@ public class SnakeBoard extends JPanel implements Runnable {
         PowerUpsManager pm = PowerUpsManager.getInstance();
         for(int i=0; i< pm.powerUpsnums(); i++){
             pm.getPowerUps(i).move(ds);
+        }
+    }
+    
+    private void moveCoins(double ds){
+        CoinsManager cm = CoinsManager.getInstance();
+        for(int i = 0; i< cm.numCoins(); i++){
+            cm.getCoin(i).move(ds);
         }
     }
     

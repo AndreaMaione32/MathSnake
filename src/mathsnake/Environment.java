@@ -17,8 +17,10 @@ public interface Environment {
     public final String PATHIMAGES = "../MathSnake/images/";
     public final int BLOCK_HEIGHT = 70;
     public final int BLOCK_WIDTH = 70;
-    public final int POWERUPS_WIDHT = 30;
+    public final int POWERUPS_WIDTH = 30;
     public final int POWERUPS_HEIGHT = 39;
     public final int SPEED_UP_DURATION = 7000;
     public final int SHIELD_DURATION = 7000;
+    public final int COIN_WIDTH = 35;
+    public final int COIN_HEIGHT = 35;
 }

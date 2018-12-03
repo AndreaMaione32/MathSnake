@@ -1,10 +1,12 @@
 package mathsnake;
 
+import java.awt.Image;
+
 public class PowerUpsIncreaseLife extends PowerUps {
    
     public PowerUpsIncreaseLife(int x, int y){
         super(x, y);
-        super.nameimg = "heart.png";
+        this.img = this.loadImage(Environment.PATHIMAGES+"heart.png");
     }
 
     @Override

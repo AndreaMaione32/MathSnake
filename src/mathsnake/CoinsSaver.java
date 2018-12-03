@@ -32,7 +32,7 @@ public class CoinsSaver {
         }
     }
     
-    private int readCoins() throws FileNotFoundException, IOException {
+    public int readCoins() throws FileNotFoundException, IOException {
         File file = new File("coins.txt");
         if(!file.exists()) {
             try {

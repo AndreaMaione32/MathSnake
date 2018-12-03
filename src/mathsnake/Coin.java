@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package mathsnake;
 
 import java.awt.Graphics;
@@ -5,18 +10,29 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
-public abstract class PowerUps {
+/**
+ *
+ * @author antoniocoppola
+ */
+public class Coin {
+    private Image img;
     private double x;
     private double y;
     private Rectangle rectangle;
-    protected Image img;
     
-     public PowerUps(int x, int y) {
+    public Coin(int x, int y){
         this.x = x;
         this.y = y;
-        this.rectangle = new Rectangle((int)x,(int)y,Environment.POWERUPS_WIDTH, Environment.POWERUPS_HEIGHT);
+        this.img = loadImage(Environment.PATHIMAGES+"retro_coins.png");
+        this.rectangle = new Rectangle((int)x,(int)y,Environment.COIN_WIDTH, Environment.COIN_HEIGHT);
     }
-
+    
+    protected Image loadImage(String PATH) {
+        ImageIcon iid = new ImageIcon(PATH);
+        Image icon = iid.getImage();
+        return icon;
+    }
+    
     private void setX(double x) {
         this.x = x;
         rectangle.setLocation((int)x, (int)this.y);   //Move also Rectangle assoicated
@@ -44,15 +60,7 @@ public abstract class PowerUps {
         return rectangle;
     } 
     
-    protected Image loadImage(String PATH) {
-        ImageIcon iid = new ImageIcon(PATH);
-        Image icon = iid.getImage();
-        return icon;
+    public void drawCoin(Graphics g){
+      g.drawImage(img, (int)this.getX(), (int)this.getY(), null);  
     }
-    
-    public void drawPowerUps(Graphics g) {
-        g.drawImage(img, (int)this.getX(), (int)this.getY(), null);
-    }
-    
-    public abstract void action(Snake snake);
 }
