@@ -32,6 +32,7 @@ public class SnakeBoard extends JPanel implements Runnable {
     private Image head;
     private Image shield_small;
     private Image blu_head;
+    private Image small_coins;
     private CoinsSaver coinsSaver = new CoinsSaver();
     private final Snake snake = new Snake();
     private double snakeSpeed = 250;
@@ -43,6 +44,7 @@ public class SnakeBoard extends JPanel implements Runnable {
     private Thread CThread = new Thread(constructorThread);
     private boolean stop = false;
     private boolean pause = false;
+    private Background background;
     
     public SnakeBoard() {
         initSnakeBoard();
@@ -62,6 +64,7 @@ public class SnakeBoard extends JPanel implements Runnable {
     
     private void initSnakeBoard() {
         setBackground(Color.WHITE);
+        background = new Background(Environment.PATHBACKGROUND);
         setFocusable(true);
         setPreferredSize(new Dimension(Environment.JP_WIDTH, Environment.JP_HEIGHT));
         setLayout(new GridBagLayout());
@@ -76,6 +79,7 @@ public class SnakeBoard extends JPanel implements Runnable {
         shield_small = snake.loadImage(Environment.PATHIMAGES + "shield_small.png");
         head = snake.loadImage(Environment.PATHIMAGES + "smiling.png");
         blu_head = snake.loadImage(Environment.PATHIMAGES + "blu_head.png");
+        small_coins = snake.loadImage(Environment.PATHIMAGES+"small_retro_coins.png");
     }
     
     private void initGame() {
@@ -117,6 +121,7 @@ public class SnakeBoard extends JPanel implements Runnable {
                 this.moveBlocks(ds);
                 this.movePowerUps(ds);
                 this.moveCoins(ds);
+                background.move(ds/2);
                 snake.setHorizontalMovement(0);	
                 if ((leftPressed) && (!rightPressed)) {
                     snake.setHorizontalMovement(-snakeSpeed);
@@ -146,7 +151,8 @@ public class SnakeBoard extends JPanel implements Runnable {
         int numDots = snake.getDots();
         double x = snake.getX();
         double[] yVector = snake.getY();
-     
+        //DRAWING BACKGROUND
+        this.background.drawBackground(g);
         switch (state) {
             case COUNTDOWN:
                 countdown.setText(Integer.toString(secondsLeft));
@@ -199,7 +205,21 @@ public class SnakeBoard extends JPanel implements Runnable {
                 text = "GAME BEST : " + Integer.toString(gameBest);
                 g.setFont(font);
                 g.setColor(Color.black);
-                g.drawString("GAME BEST : " + Integer.toString(gameBest), Environment.JP_WIDTH - (10 + metrics.stringWidth(text)), 20 + metrics.getHeight());
+                int textX = Environment.JP_WIDTH - (10 + metrics.stringWidth(text));
+                int textY = 20 + metrics.getHeight();
+                g.drawString("GAME BEST : " + Integer.toString(gameBest), textX, textY);
+                String textCoin = "x"+coinsSaver.getCurrentCoins();
+                font = new Font("Arial", Font.BOLD, 18);
+                g.setFont(font);
+                metrics = g.getFontMetrics(font);
+                int textCoinX = Environment.JP_WIDTH - (10 + metrics.stringWidth(textCoin));
+                int imgX = textCoinX - this.small_coins.getWidth(null);;
+                int imgY = textY + 10;
+                int textCoinY = imgY + ((this.small_coins.getHeight(null) - metrics.getHeight()) / 2) + metrics.getAscent();;
+                g.drawString(textCoin, textCoinX, textCoinY);
+                g.drawImage(this.small_coins, imgX, imgY, null);
+                //text = "COINS: "+this.coinsSaver.getCurrentCoins();
+                //g.drawString(text, Environment.JP_WIDTH - (10 + metrics.stringWidth(text)), 20 + metrics.getHeight());
                 break;
             case GAMEOVER:
                 gameOver();
@@ -217,6 +237,8 @@ public class SnakeBoard extends JPanel implements Runnable {
         }
         coinsSaver.saveCoins();
         state = STATE.COUNTDOWN;
+        //RESTART BACKGROUND
+        background = new Background(Environment.PATHBACKGROUND);
         CardLayout cl = MathSnake.getInstance().getCardLayout();
         cl.show(MathSnake.getInstance().getCardsJPanel(), "gameOver");
     }

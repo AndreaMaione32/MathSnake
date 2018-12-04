@@ -23,4 +23,5 @@ public interface Environment {
     public final int SHIELD_DURATION = 7000;
     public final int COIN_WIDTH = 35;
     public final int COIN_HEIGHT = 35;
+    public final String PATHBACKGROUND = "../MathSnake/images/base_background.png";
 }
