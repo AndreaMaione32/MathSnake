@@ -11,11 +11,17 @@ import javax.swing.Timer;
 
 public class GameOver extends JPanel implements ActionListener {
     
-    private JLabel gameOverLabel = new JLabel("GAME OVER !");
+    private JLabel gameOverLabel = new JLabel("GAME OVER :(");
     private Timer endTimer = new Timer(Environment.DELAY, this);
     
     public GameOver() {
         initGameOver();
+    }
+    
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        new Background(Environment.PATHBACKGROUND).drawBackground(g);
     }
 
     private void initGameOver() {

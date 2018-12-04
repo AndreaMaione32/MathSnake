@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -35,7 +36,12 @@ public class Market extends JPanel {
     public Market() {
         initMarket();
     }
-
+@Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        new Background(Environment.PATHBACKGROUND).drawBackground(g);
+    }
+    
     private void initMarket() {
         setBackground(Color.BLACK);
         setFocusable(true);
@@ -50,7 +56,7 @@ public class Market extends JPanel {
         c.anchor = GridBagConstraints.PAGE_START;
         c.weighty = 1.0;
         marketLabel.setFont(new Font("Arial", Font.BOLD, 50));
-        marketLabel.setForeground(Color.WHITE);
+        marketLabel.setForeground(Color.BLACK);
         add(marketLabel, c);
         
         c.weighty = 0;
@@ -68,7 +74,7 @@ public class Market extends JPanel {
         c.gridx = 2;
         c.gridy = 1;
         l1.setFont(new Font("Arial", 1, 20));
-        l1.setForeground(Color.WHITE);
+        l1.setForeground(Color.BLACK);
         add(l1, c);
         
         c.insets = new Insets(0, 0, 20, 40);
@@ -81,7 +87,7 @@ public class Market extends JPanel {
         c.gridx = 2;
         c.gridy = 2;
         l2.setFont(new Font("Arial", 1, 20));
-        l2.setForeground(Color.WHITE);
+        l2.setForeground(Color.BLACK);
         add(l2, c);
         
         c.insets = new Insets(0, 0, 20, 40);
@@ -94,7 +100,7 @@ public class Market extends JPanel {
         c.gridx = 2;
         c.gridy = 3;
         l3.setFont(new Font("Arial", 1, 20));
-        l3.setForeground(Color.WHITE);
+        l3.setForeground(Color.BLACK);
         add(l3, c);
         
         c.insets = new Insets(0, 0, 0, 40);
@@ -107,7 +113,7 @@ public class Market extends JPanel {
         c.gridx = 2;
         c.gridy = 4;
         l4.setFont(new Font("Arial", 1, 20));
-        l4.setForeground(Color.WHITE);
+        l4.setForeground(Color.BLACK);
         add(l4, c);
         
         c.weighty = 1;

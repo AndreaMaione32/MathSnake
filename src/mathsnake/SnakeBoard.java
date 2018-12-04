@@ -36,7 +36,7 @@ public class SnakeBoard extends JPanel implements Runnable {
     private Image grey_dot;
     private CoinsSaver coinsSaver = new CoinsSaver();
     private final Snake snake = new Snake();
-    private double snakeSpeed = 250;
+    private double snakeSpeed = 300;
     private boolean leftPressed = false;
     private boolean rightPressed = false;
     private double downSpeed = Environment.STARTDOWNSPEED; //define velocity of block and power ups
@@ -168,9 +168,10 @@ public class SnakeBoard extends JPanel implements Runnable {
                 for (int z = 0; z < Environment.DOT_NUM - 1; z++){
                     if(snake.isSpeedUped())
                         g.drawImage(this.yellow_dot, (int)xVector[z], (int)yVector[z], this);
-                    if(snake.isShielded())
+                    if(snake.isShielded()){
                       g.drawImage(this.grey_dot, (int)xVector[z], (int)yVector[z], this);
                        g.drawImage(this.shield_small, (int)xVector[z], (int)yVector[z], this);
+                    }
                     if(!(snake.isShielded() || snake.isSpeedUped()))
                         g.drawImage(this.ball, (int)xVector[z], (int)yVector[z], this);
                 }
@@ -182,7 +183,7 @@ public class SnakeBoard extends JPanel implements Runnable {
                     g.drawImage(ball, (int)xVector[Environment.DOT_NUM-1], (int)yVector[Environment.DOT_NUM - 1], this);
                 g.setFont(new Font("Arial", Font.BOLD, 15));
                 g.setColor(Color.black);
-                g.drawString(Integer.toString(snake.getLife()), (int)xVector[Environment.DOT_NUM-1] + 15, (int)yVector[Environment.DOT_NUM - 1] + 10);
+                g.drawString(Integer.toString(snake.getLife()), (int)xVector[Environment.DOT_NUM-1] + 20, (int)yVector[Environment.DOT_NUM - 1] + 10);
                 //DRAWING BLOCK
                 BlocksManager blocksManager = BlocksManager.getInstance();
                 for(int i = 0; i < blocksManager.numBlocks(); i++){
@@ -224,8 +225,6 @@ public class SnakeBoard extends JPanel implements Runnable {
                 int textCoinY = imgY + ((this.small_coins.getHeight(null) - metrics.getHeight()) / 2) + metrics.getAscent();;
                 g.drawString(textCoin, textCoinX, textCoinY);
                 g.drawImage(this.small_coins, imgX, imgY, null);
-                //text = "COINS: "+this.coinsSaver.getCurrentCoins();
-                //g.drawString(text, Environment.JP_WIDTH - (10 + metrics.stringWidth(text)), 20 + metrics.getHeight());
                 break;
             case GAMEOVER:
                 gameOver();

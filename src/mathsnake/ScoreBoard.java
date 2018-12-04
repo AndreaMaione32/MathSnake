@@ -19,6 +19,12 @@ public class ScoreBoard extends JPanel {
     public ScoreBoard() {
         initComponents();
     }
+    
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        new Background(Environment.PATHBACKGROUND).drawBackground(g);
+    }
 
     private void initComponents() {
 
@@ -27,7 +33,7 @@ public class ScoreBoard extends JPanel {
         jTable2 = new JTable();
         backButton = new JButton();
 
-        setBackground(Color.BLACK);
+        setBackground(Color.WHITE);
         setForeground(Color.WHITE);
         setPreferredSize(new Dimension(500, 500));
 
@@ -38,7 +44,7 @@ public class ScoreBoard extends JPanel {
         jScrollPane1.setMinimumSize(new Dimension(450, 450));
         jScrollPane1.setPreferredSize(new Dimension(450, 450));
 
-        jTable2.setBackground(Color.BLACK);
+        jTable2.setBackground(Color.WHITE);
         jTable2.setFont(new Font("Arial", 1, 20)); // NOI18N
         jTable2.setModel(new DefaultTableModel(
                 new Object[][]{
