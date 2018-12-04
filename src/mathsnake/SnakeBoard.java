@@ -182,7 +182,7 @@ public class SnakeBoard extends JPanel implements Runnable {
                 if(!(snake.isShielded() || snake.isSpeedUped()))
                     g.drawImage(ball, (int)xVector[Environment.DOT_NUM-1], (int)yVector[Environment.DOT_NUM - 1], this);
                 g.setFont(new Font("Arial", Font.BOLD, 15));
-                g.setColor(Color.black);
+                g.setColor(Environment.WRITECOLOR);
                 g.drawString(Integer.toString(snake.getLife()), (int)xVector[Environment.DOT_NUM-1] + 20, (int)yVector[Environment.DOT_NUM - 1] + 10);
                 //DRAWING BLOCK
                 BlocksManager blocksManager = BlocksManager.getInstance();
@@ -205,13 +205,13 @@ public class SnakeBoard extends JPanel implements Runnable {
                 Font font = new Font("Arial", Font.BOLD, 14);
                 FontMetrics metrics = g.getFontMetrics(font);
                 g.setFont(font);
-                g.setColor(Color.black);
+                g.setColor(Environment.WRITECOLOR);
                 String text = "CURRENT BEST : NULL"; //Dovrà mostrare il miglior punteggio della Scoreboard
                 g.drawString("CURRENT BEST : NULL", Environment.JP_WIDTH - (10 + metrics.stringWidth(text)), 20); 
 
                 text = "GAME BEST : " + Integer.toString(gameBest);
                 g.setFont(font);
-                g.setColor(Color.black);
+                g.setColor(Environment.WRITECOLOR);
                 int textX = Environment.JP_WIDTH - (10 + metrics.stringWidth(text));
                 int textY = 20 + metrics.getHeight();
                 g.drawString("GAME BEST : " + Integer.toString(gameBest), textX, textY);
@@ -250,7 +250,7 @@ public class SnakeBoard extends JPanel implements Runnable {
     
     private void countdown() {
         countdown.setFont(new Font("Arial", Font.BOLD, 100));
-        countdown.setForeground(Color.BLACK);
+        countdown.setForeground(Environment.WRITECOLOR);
         add(countdown);
         countdownTimer = new Timer(1000, new ActionListener() {
             @Override

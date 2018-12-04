@@ -30,7 +30,7 @@ public class GameOver extends JPanel implements ActionListener {
         setPreferredSize(new Dimension(Environment.JP_WIDTH, Environment.JP_HEIGHT));
         setLayout(new GridBagLayout());
         gameOverLabel.setFont(new Font("Arial", Font.BOLD, 50));
-        gameOverLabel.setForeground(Color.BLACK);
+        gameOverLabel.setForeground(Environment.WRITECOLOR);
         add(gameOverLabel);
         addComponentListener(new ComponentAdapter() {
             @Override

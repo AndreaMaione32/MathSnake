@@ -38,7 +38,7 @@ public class ScoreBoard extends JPanel {
         setPreferredSize(new Dimension(500, 500));
 
         jLabel1.setFont(new Font("Arial", 1, 40)); // NOI18N
-        jLabel1.setForeground(Color.WHITE);
+        jLabel1.setForeground(Environment.WRITECOLOR);
         jLabel1.setText("SCOREBOARD");
 
         jScrollPane1.setMinimumSize(new Dimension(450, 450));

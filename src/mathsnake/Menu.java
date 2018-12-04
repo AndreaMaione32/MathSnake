@@ -46,7 +46,7 @@ public class Menu extends JPanel {
         FontMetrics metrics1 = g.getFontMetrics(font1);
         int x1 = (Environment.JP_WIDTH - metrics1.stringWidth("MATH SNAKE")) / 2; //Stringa centrata nel panel
         g.setFont(font1);
-        g.setColor(Color.BLACK);
+        g.setColor(Environment.WRITECOLOR);
         g.drawString("MATH SNAKE", x1, 100);
         Font font2 = new Font("Arial", Font.BOLD, 20);
         play.setFont(font2);
