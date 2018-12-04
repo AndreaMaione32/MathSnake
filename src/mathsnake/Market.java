@@ -126,7 +126,7 @@ public class Market extends JPanel {
         c.gridy = 5;
         c.anchor = GridBagConstraints.LAST_LINE_START;
         coinsLabel.setFont(new Font("Arial", 1, 20));
-        coinsLabel.setForeground(Color.WHITE);
+        coinsLabel.setForeground(Color.BLACK);
         add(coinsLabel, c);
         
         c.insets = new Insets(0, 0, 10, 10);
