@@ -27,5 +27,5 @@ public interface Environment {
     public final int COIN_HEIGHT = 35;
     public final String PATHBACKGROUND = "../MathSnake/images/base_background.png";
     public final int DOT_NUM = 7; //numero di dot di cui è composto lo snake
-    public final Color WRITECOLOR = Color.BLACK;
+    public final Color WRITECOLOR = Color.YELLOW;
 }

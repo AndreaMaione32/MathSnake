@@ -46,7 +46,7 @@ public class FirstPage extends JPanel {
         
         Font font2 = new Font("Arial", Font.BOLD, 20);
         pressSpacebar.setFont(font2);
-        pressSpacebar.setForeground(Color.BLACK);
+        pressSpacebar.setForeground(Environment.WRITECOLOR);
         pressSpacebar.setLocation(Environment.JP_WIDTH / 2 - pressSpacebar.getSize().width / 2, 350);
     }
 
