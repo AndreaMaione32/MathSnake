@@ -3,7 +3,7 @@ package mathsnake;
 public interface Environment {
     public final int JP_WIDTH = 500; //larghezza del pannello 
     public final int JP_HEIGHT = 500; //altezza del pannello 
-    public final int DOT_SIZE = 10; //altezza e larghezza di ogni dot di cui è composto lo snake
+    public final int DOT_SIZE = 18; //altezza e larghezza di ogni dot di cui è composto lo snake
     public final int DELAY = 15; // determina la velocità di animazione
     public final int BLOCKDELAY = 70; //determina la velcoità di aggiornamento dei blocchi
     public final int MAXINCREMENT = 15; //numero massimo di incrementi alla velocità iniziale dei blocchi
@@ -24,4 +24,5 @@ public interface Environment {
     public final int COIN_WIDTH = 35;
     public final int COIN_HEIGHT = 35;
     public final String PATHBACKGROUND = "../MathSnake/images/base_background.png";
+    public final int DOT_NUM = 7; //numero di dot di cui è composto lo snake
 }

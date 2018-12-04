@@ -31,8 +31,9 @@ public class SnakeBoard extends JPanel implements Runnable {
     private Image ball;
     private Image head;
     private Image shield_small;
-    private Image blu_head;
+    private Image yellow_dot;
     private Image small_coins;
+    private Image grey_dot;
     private CoinsSaver coinsSaver = new CoinsSaver();
     private final Snake snake = new Snake();
     private double snakeSpeed = 250;
@@ -78,8 +79,9 @@ public class SnakeBoard extends JPanel implements Runnable {
         ball = snake.loadImage(Environment.PATHIMAGES + "dot.png");
         shield_small = snake.loadImage(Environment.PATHIMAGES + "shield_small.png");
         head = snake.loadImage(Environment.PATHIMAGES + "smiling.png");
-        blu_head = snake.loadImage(Environment.PATHIMAGES + "blu_head.png");
+        yellow_dot = snake.loadImage(Environment.PATHIMAGES + "yellow_dot.png");
         small_coins = snake.loadImage(Environment.PATHIMAGES+"small_retro_coins.png");
+        grey_dot = snake.loadImage(Environment.PATHIMAGES+"grey_dot.png");
     }
     
     private void initGame() {
@@ -148,8 +150,7 @@ public class SnakeBoard extends JPanel implements Runnable {
     }
     
     private void doDrawing(Graphics g) {
-        int numDots = snake.getDots();
-        double x = snake.getX();
+        double[] xVector = snake.getX();
         double[] yVector = snake.getY();
         //DRAWING BACKGROUND
         this.background.drawBackground(g);
@@ -164,19 +165,24 @@ public class SnakeBoard extends JPanel implements Runnable {
                 rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
                 ((Graphics2D) g).setRenderingHints(rh);
                 //DRAWING SNAKE
-                for (int z = 0; z < numDots - 1; z++){
+                for (int z = 0; z < Environment.DOT_NUM - 1; z++){
+                    if(snake.isSpeedUped())
+                        g.drawImage(this.yellow_dot, (int)xVector[z], (int)yVector[z], this);
                     if(snake.isShielded())
-                       g.drawImage(this.shield_small, (int)x, (int)yVector[z], this);
-                    else
-                        g.drawImage(ball, (int)x, (int)yVector[z], this);
+                      g.drawImage(this.grey_dot, (int)xVector[z], (int)yVector[z], this);
+                       g.drawImage(this.shield_small, (int)xVector[z], (int)yVector[z], this);
+                    if(!(snake.isShielded() || snake.isSpeedUped()))
+                        g.drawImage(this.ball, (int)xVector[z], (int)yVector[z], this);
                 }
+                if(snake.isShielded())
+                    g.drawImage(grey_dot, (int)xVector[Environment.DOT_NUM-1], (int)yVector[Environment.DOT_NUM - 1], this);
                 if(snake.isSpeedUped())
-                    g.drawImage(blu_head, (int)x, (int)yVector[numDots - 1], this);
-                else
-                    g.drawImage(head, (int)x, (int)yVector[numDots - 1], this);
-
+                    g.drawImage(yellow_dot, (int)xVector[Environment.DOT_NUM-1], (int)yVector[Environment.DOT_NUM - 1], this);
+                if(!(snake.isShielded() || snake.isSpeedUped()))
+                    g.drawImage(ball, (int)xVector[Environment.DOT_NUM-1], (int)yVector[Environment.DOT_NUM - 1], this);
+                g.setFont(new Font("Arial", Font.BOLD, 15));
                 g.setColor(Color.black);
-                g.drawString(Integer.toString(snake.getLife()), (int)x + 15, (int)yVector[numDots - 1] + 10);
+                g.drawString(Integer.toString(snake.getLife()), (int)xVector[Environment.DOT_NUM-1] + 15, (int)yVector[Environment.DOT_NUM - 1] + 10);
                 //DRAWING BLOCK
                 BlocksManager blocksManager = BlocksManager.getInstance();
                 for(int i = 0; i < blocksManager.numBlocks(); i++){
