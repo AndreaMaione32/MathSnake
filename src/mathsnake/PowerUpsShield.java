@@ -4,7 +4,7 @@ public class PowerUpsShield extends PowerUps {
 
     public PowerUpsShield(int x, int y) {
         super(x, y);
-        this.img = this.loadImage(Environment.PATHIMAGES+"shield.png");
+        this.img = this.loadImage(Environment.getInstance().PATHIMAGES+"shield.png");
     }
 
     @Override

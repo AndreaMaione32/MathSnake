@@ -6,7 +6,7 @@ public class PowerUpsIncreaseLife extends PowerUps {
    
     public PowerUpsIncreaseLife(int x, int y){
         super(x, y);
-        this.img = this.loadImage(Environment.PATHIMAGES+"heart.png");
+        this.img = this.loadImage(Environment.getInstance().PATHIMAGES+"heart.png");
     }
 
     @Override

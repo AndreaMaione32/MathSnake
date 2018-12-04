@@ -21,15 +21,15 @@ public class Block {
         this.op = op;
         //color = defineColor(op);   //define color accordint to operation
         if(op == Operation.ADD || op == Operation.MUL){
-            img = this.loadImage(Environment.PATHIMAGES+"retro_block_p.png");
+            img = this.loadImage(Environment.getInstance().PATHIMAGES+"retro_block_p.png");
         }
         if(op == Operation.DEA)
-            img = this.loadImage(Environment.PATHIMAGES+"retro_block_d.png");
+            img = this.loadImage(Environment.getInstance().PATHIMAGES+"retro_block_d.png");
         if(op == Operation.DIV || op == Operation.SUB)
-            img = this.loadImage(Environment.PATHIMAGES+"retro_block_n.png");
+            img = this.loadImage(Environment.getInstance().PATHIMAGES+"retro_block_n.png");
         this.x = x;
         this.y = y;
-        this.rectangle = new Rectangle(x,y,Environment.BLOCK_WIDTH, Environment.BLOCK_HEIGHT);
+        this.rectangle = new Rectangle(x,y,Environment.getInstance().BLOCK_WIDTH, Environment.getInstance().BLOCK_HEIGHT);
     }
     
     //block must to be thread safe on X and Y, only two fields that can be modify
@@ -52,7 +52,7 @@ public class Block {
     }
     
     public void move(double velocity){
-        double shift = (Environment.DELAY * velocity) / 1000; 
+        double shift = (Environment.getInstance().DELAY * velocity) / 1000; 
         this.setY(y + shift);
     }
     
@@ -124,9 +124,9 @@ public class Block {
     public void printBlock(Graphics g){ 
        g.drawImage(this.img, (int) x, (int) y, null);
        if(this.op == Operation.DEA){
-          Image img_d = this.loadImage(Environment.PATHIMAGES+"retro_skull.png");
-          int img_d_X = (int)x + (Environment.BLOCK_WIDTH - img_d.getWidth(null))/2;
-          int img_d_Y = (int)y + (Environment.BLOCK_HEIGHT - img_d.getHeight(null))/2;
+          Image img_d = this.loadImage(Environment.getInstance().PATHIMAGES+"retro_skull.png");
+          int img_d_X = (int)x + (Environment.getInstance().BLOCK_WIDTH - img_d.getWidth(null))/2;
+          int img_d_Y = (int)y + (Environment.getInstance().BLOCK_HEIGHT - img_d.getHeight(null))/2;
           g.drawImage(img_d, img_d_X, img_d_Y, null);
        }
        else{
@@ -135,9 +135,9 @@ public class Block {
             // Get the FontMetrics
             FontMetrics metrics = g.getFontMetrics(font);
             // Determine the X coordinate for the text
-            int textX = (int)x + (Environment.BLOCK_WIDTH - metrics.stringWidth(text)) / 2;
+            int textX = (int)x + (Environment.getInstance().BLOCK_WIDTH - metrics.stringWidth(text)) / 2;
            // Determine the Y coordinate for the text
-            int textY = (int)y + ((Environment.BLOCK_HEIGHT - metrics.getHeight()) / 2) + metrics.getAscent();
+            int textY = (int)y + ((Environment.getInstance().BLOCK_HEIGHT - metrics.getHeight()) / 2) + metrics.getAscent();
             g.setFont(font);
             g.setColor(Color.WHITE);
             g.drawString(text, textX, textY);

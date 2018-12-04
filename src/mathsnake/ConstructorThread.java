@@ -409,17 +409,17 @@ public class ConstructorThread implements Runnable {
             
             
             try {
-                if (snake.getLife() < Environment.LIFEINCREASING){
-                    Thread.sleep(Environment.MINTHREADDELAY);
+                if (snake.getLife() < Environment.getInstance().LIFEINCREASING){
+                    Thread.sleep(Environment.getInstance().MINTHREADDELAY);
                 }
                 else {
-                    int actualShift = (snake.getLife())/Environment.LIFEINCREASING;
-                    if (actualShift > (Environment.MAXINCREMENT)){
-                        Thread.sleep(Environment.MAXTHREADDELAY);
+                    int actualShift = (snake.getLife())/Environment.getInstance().LIFEINCREASING;
+                    if (actualShift > (Environment.getInstance().MAXINCREMENT)){
+                        Thread.sleep(Environment.getInstance().MAXTHREADDELAY);
                     }
                     else {
-                        int actualSleep = ((Environment.MINTHREADDELAY - Environment.MAXTHREADDELAY)/Environment.MAXINCREMENT)*actualShift;
-                        Thread.sleep(Environment.MINTHREADDELAY - actualSleep);
+                        int actualSleep = ((Environment.getInstance().MINTHREADDELAY - Environment.getInstance().MAXTHREADDELAY)/Environment.getInstance().MAXINCREMENT)*actualShift;
+                        Thread.sleep(Environment.getInstance().MINTHREADDELAY - actualSleep);
                     }
                 }   
             } catch (InterruptedException ex) {
@@ -469,11 +469,11 @@ public class ConstructorThread implements Runnable {
     }
 
     private int randomXPU(){
-        return (int)(Math.random()*(Environment.JP_WIDTH -Environment.POWERUPS_WIDTH - 10));
+        return (int)(Math.random()*(Environment.getInstance().JP_WIDTH -Environment.getInstance().POWERUPS_WIDTH - 10));
     }
     
     private int randomXC(){
-        return (int)(Math.random()*(Environment.JP_WIDTH -Environment.COIN_WIDTH - 10));
+        return (int)(Math.random()*(Environment.getInstance().JP_WIDTH -Environment.getInstance().COIN_WIDTH - 10));
     }
     
     public boolean isStop() {

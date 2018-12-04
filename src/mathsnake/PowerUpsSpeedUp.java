@@ -4,7 +4,7 @@ public class PowerUpsSpeedUp extends PowerUps {
 
     public PowerUpsSpeedUp(int x, int y) {
         super(x, y);
-        this.img = this.loadImage(Environment.PATHIMAGES+"speed_up.png");
+        this.img = this.loadImage(Environment.getInstance().PATHIMAGES+"speed_up.png");
     }
 
     @Override

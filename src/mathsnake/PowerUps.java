@@ -14,7 +14,7 @@ public abstract class PowerUps {
      public PowerUps(int x, int y) {
         this.x = x;
         this.y = y;
-        this.rectangle = new Rectangle((int)x,(int)y,Environment.POWERUPS_WIDTH, Environment.POWERUPS_HEIGHT);
+        this.rectangle = new Rectangle((int)x,(int)y,Environment.getInstance().POWERUPS_WIDTH, Environment.getInstance().POWERUPS_HEIGHT);
     }
 
     private void setX(double x) {
@@ -28,7 +28,7 @@ public abstract class PowerUps {
     }
     
     public void move(double velocity){
-        double shift = (Environment.DELAY * velocity) / 1000; 
+        double shift = (Environment.getInstance().DELAY * velocity) / 1000; 
         this.setY(y + shift);
     }
 

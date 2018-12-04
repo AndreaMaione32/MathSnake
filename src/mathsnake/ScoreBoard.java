@@ -23,7 +23,7 @@ public class ScoreBoard extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        new Background(Environment.PATHBACKGROUND).drawBackground(g);
+        new Background(Environment.getInstance().PATHBACKGROUND).drawBackground(g);
     }
 
     private void initComponents() {
@@ -38,7 +38,7 @@ public class ScoreBoard extends JPanel {
         setPreferredSize(new Dimension(500, 500));
 
         jLabel1.setFont(new Font("Arial", 1, 40)); // NOI18N
-        jLabel1.setForeground(Environment.WRITECOLOR);
+        jLabel1.setForeground(Environment.getInstance().WRITECOLOR);
         jLabel1.setText("SCOREBOARD");
 
         jScrollPane1.setMinimumSize(new Dimension(450, 450));

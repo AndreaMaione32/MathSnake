@@ -12,7 +12,7 @@ import javax.swing.Timer;
 public class GameOver extends JPanel implements ActionListener {
     
     private JLabel gameOverLabel = new JLabel("GAME OVER :(");
-    private Timer endTimer = new Timer(Environment.DELAY, this);
+    private Timer endTimer = new Timer(Environment.getInstance().DELAY, this);
     
     public GameOver() {
         initGameOver();
@@ -21,16 +21,16 @@ public class GameOver extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        new Background(Environment.PATHBACKGROUND).drawBackground(g);
+        new Background(Environment.getInstance().PATHBACKGROUND).drawBackground(g);
     }
 
     private void initGameOver() {
         setBackground(Color.WHITE);
         setFocusable(true);
-        setPreferredSize(new Dimension(Environment.JP_WIDTH, Environment.JP_HEIGHT));
+        setPreferredSize(new Dimension(Environment.getInstance().JP_WIDTH, Environment.getInstance().JP_HEIGHT));
         setLayout(new GridBagLayout());
         gameOverLabel.setFont(new Font("Arial", Font.BOLD, 50));
-        gameOverLabel.setForeground(Environment.WRITECOLOR);
+        gameOverLabel.setForeground(Environment.getInstance().WRITECOLOR);
         add(gameOverLabel);
         addComponentListener(new ComponentAdapter() {
             @Override

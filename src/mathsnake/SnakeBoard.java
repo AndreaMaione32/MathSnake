@@ -39,8 +39,8 @@ public class SnakeBoard extends JPanel implements Runnable {
     private double snakeSpeed = 300;
     private boolean leftPressed = false;
     private boolean rightPressed = false;
-    private double downSpeed = Environment.STARTDOWNSPEED; //define velocity of block and power ups
-    private int gameBest = Environment.STARTLIFEPOINTS;
+    private double downSpeed = Environment.getInstance().STARTDOWNSPEED; //define velocity of block and power ups
+    private int gameBest = Environment.getInstance().STARTLIFEPOINTS;
     private ConstructorThread constructorThread = new ConstructorThread(snake);
     private Thread CThread = new Thread(constructorThread);
     private boolean stop = false;
@@ -65,9 +65,9 @@ public class SnakeBoard extends JPanel implements Runnable {
     
     private void initSnakeBoard() {
         setBackground(Color.WHITE);
-        background = new Background(Environment.PATHBACKGROUND);
+        background = new Background(Environment.getInstance().PATHBACKGROUND);
         setFocusable(true);
-        setPreferredSize(new Dimension(Environment.JP_WIDTH, Environment.JP_HEIGHT));
+        setPreferredSize(new Dimension(Environment.getInstance().JP_WIDTH, Environment.getInstance().JP_HEIGHT));
         setLayout(new GridBagLayout());
         loadImages();
         initGame();
@@ -76,12 +76,12 @@ public class SnakeBoard extends JPanel implements Runnable {
     }
    
     private void loadImages() {
-        ball = snake.loadImage(Environment.PATHIMAGES + "dot.png");
-        shield_small = snake.loadImage(Environment.PATHIMAGES + "shield_small.png");
-        head = snake.loadImage(Environment.PATHIMAGES + "smiling.png");
-        yellow_dot = snake.loadImage(Environment.PATHIMAGES + "yellow_dot.png");
-        small_coins = snake.loadImage(Environment.PATHIMAGES+"small_retro_coins.png");
-        grey_dot = snake.loadImage(Environment.PATHIMAGES+"grey_dot.png");
+        ball = snake.loadImage(Environment.getInstance().PATHIMAGES + "dot.png");
+        shield_small = snake.loadImage(Environment.getInstance().PATHIMAGES + "shield_small.png");
+        head = snake.loadImage(Environment.getInstance().PATHIMAGES + "smiling.png");
+        yellow_dot = snake.loadImage(Environment.getInstance().PATHIMAGES + "yellow_dot.png");
+        small_coins = snake.loadImage(Environment.getInstance().PATHIMAGES+"small_retro_coins.png");
+        grey_dot = snake.loadImage(Environment.getInstance().PATHIMAGES+"grey_dot.png");
     }
     
     private void initGame() {
@@ -134,7 +134,7 @@ public class SnakeBoard extends JPanel implements Runnable {
             repaint();
             }
             delta = System.currentTimeMillis() - beforeTime;
-            sleep = Environment.DELAY - delta;
+            sleep = Environment.getInstance().DELAY - delta;
 
             if (sleep < 0) {
                 sleep = 2;
@@ -165,7 +165,7 @@ public class SnakeBoard extends JPanel implements Runnable {
                 rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
                 ((Graphics2D) g).setRenderingHints(rh);
                 //DRAWING SNAKE
-                for (int z = 0; z < Environment.DOT_NUM - 1; z++){
+                for (int z = 0; z < Environment.getInstance().DOT_NUM - 1; z++){
                     if(snake.isSpeedUped())
                         g.drawImage(this.yellow_dot, (int)xVector[z], (int)yVector[z], this);
                     if(snake.isShielded()){
@@ -176,14 +176,14 @@ public class SnakeBoard extends JPanel implements Runnable {
                         g.drawImage(this.ball, (int)xVector[z], (int)yVector[z], this);
                 }
                 if(snake.isShielded())
-                    g.drawImage(grey_dot, (int)xVector[Environment.DOT_NUM-1], (int)yVector[Environment.DOT_NUM - 1], this);
+                    g.drawImage(grey_dot, (int)xVector[Environment.getInstance().DOT_NUM-1], (int)yVector[Environment.getInstance().DOT_NUM - 1], this);
                 if(snake.isSpeedUped())
-                    g.drawImage(yellow_dot, (int)xVector[Environment.DOT_NUM-1], (int)yVector[Environment.DOT_NUM - 1], this);
+                    g.drawImage(yellow_dot, (int)xVector[Environment.getInstance().DOT_NUM-1], (int)yVector[Environment.getInstance().DOT_NUM - 1], this);
                 if(!(snake.isShielded() || snake.isSpeedUped()))
-                    g.drawImage(ball, (int)xVector[Environment.DOT_NUM-1], (int)yVector[Environment.DOT_NUM - 1], this);
+                    g.drawImage(ball, (int)xVector[Environment.getInstance().DOT_NUM-1], (int)yVector[Environment.getInstance().DOT_NUM - 1], this);
                 g.setFont(new Font("Arial", Font.BOLD, 15));
-                g.setColor(Environment.WRITECOLOR);
-                g.drawString(Integer.toString(snake.getLife()), (int)xVector[Environment.DOT_NUM-1] + 20, (int)yVector[Environment.DOT_NUM - 1] + 10);
+                g.setColor(Environment.getInstance().WRITECOLOR);
+                g.drawString(Integer.toString(snake.getLife()), (int)xVector[Environment.getInstance().DOT_NUM-1] + 20, (int)yVector[Environment.getInstance().DOT_NUM - 1] + 10);
                 //DRAWING BLOCK
                 BlocksManager blocksManager = BlocksManager.getInstance();
                 for(int i = 0; i < blocksManager.numBlocks(); i++){
@@ -205,21 +205,21 @@ public class SnakeBoard extends JPanel implements Runnable {
                 Font font = new Font("Arial", Font.BOLD, 14);
                 FontMetrics metrics = g.getFontMetrics(font);
                 g.setFont(font);
-                g.setColor(Environment.WRITECOLOR);
+                g.setColor(Environment.getInstance().WRITECOLOR);
                 String text = "CURRENT BEST : NULL"; //Dovrà mostrare il miglior punteggio della Scoreboard
-                g.drawString("CURRENT BEST : NULL", Environment.JP_WIDTH - (10 + metrics.stringWidth(text)), 20); 
+                g.drawString("CURRENT BEST : NULL", Environment.getInstance().JP_WIDTH - (10 + metrics.stringWidth(text)), 20); 
 
                 text = "GAME BEST : " + Integer.toString(gameBest);
                 g.setFont(font);
-                g.setColor(Environment.WRITECOLOR);
-                int textX = Environment.JP_WIDTH - (10 + metrics.stringWidth(text));
+                g.setColor(Environment.getInstance().WRITECOLOR);
+                int textX = Environment.getInstance().JP_WIDTH - (10 + metrics.stringWidth(text));
                 int textY = 20 + metrics.getHeight();
                 g.drawString("GAME BEST : " + Integer.toString(gameBest), textX, textY);
                 String textCoin = "x"+coinsSaver.getCurrentCoins();
                 font = new Font("Arial", Font.BOLD, 18);
                 g.setFont(font);
                 metrics = g.getFontMetrics(font);
-                int textCoinX = Environment.JP_WIDTH - (10 + metrics.stringWidth(textCoin));
+                int textCoinX = Environment.getInstance().JP_WIDTH - (10 + metrics.stringWidth(textCoin));
                 int imgX = textCoinX - this.small_coins.getWidth(null);;
                 int imgY = textY + 10;
                 int textCoinY = imgY + ((this.small_coins.getHeight(null) - metrics.getHeight()) / 2) + metrics.getAscent();;
@@ -243,14 +243,14 @@ public class SnakeBoard extends JPanel implements Runnable {
         coinsSaver.saveCoins();
         state = STATE.COUNTDOWN;
         //RESTART BACKGROUND
-        background = new Background(Environment.PATHBACKGROUND);
+        background = new Background(Environment.getInstance().PATHBACKGROUND);
         CardLayout cl = MathSnake.getInstance().getCardLayout();
         cl.show(MathSnake.getInstance().getCardsJPanel(), "gameOver");
     }
     
     private void countdown() {
         countdown.setFont(new Font("Arial", Font.BOLD, 100));
-        countdown.setForeground(Environment.WRITECOLOR);
+        countdown.setForeground(Environment.getInstance().WRITECOLOR);
         add(countdown);
         countdownTimer = new Timer(1000, new ActionListener() {
             @Override
@@ -285,7 +285,7 @@ public class SnakeBoard extends JPanel implements Runnable {
                     blocksManager.removeBlock(b);
                     y--; //decrease y by one because when a block is eliminated the other blocks in list are shifted by one to left, so the next element to check is y again
                 }
-                if(b.getY() > Environment.JP_HEIGHT){   //check if the block is visibile on the screen, if is not the block is removed
+                if(b.getY() > Environment.getInstance().JP_HEIGHT){   //check if the block is visibile on the screen, if is not the block is removed
                     blocksManager.removeBlock(b);
                     y--;
                 }
@@ -298,7 +298,7 @@ public class SnakeBoard extends JPanel implements Runnable {
                     powerUpsManager.removePowerUps(p);
                     y--;
                 }
-                if(p.getY() > Environment.JP_HEIGHT){
+                if(p.getY() > Environment.getInstance().JP_HEIGHT){
                     powerUpsManager.removePowerUps(p);
                     y--;
                 }
@@ -311,7 +311,7 @@ public class SnakeBoard extends JPanel implements Runnable {
                     coinsManager.removeCoin(c);
                     y--;
                 }
-                if(c.getY() > Environment.JP_HEIGHT){
+                if(c.getY() > Environment.getInstance().JP_HEIGHT){
                     coinsManager.removeCoin(c);
                     y--;
                 }
@@ -377,16 +377,16 @@ public class SnakeBoard extends JPanel implements Runnable {
     }
     
     private double determineDownSpeed(){
-        if (snake.getLife() < Environment.LIFEINCREASING){
+        if (snake.getLife() < Environment.getInstance().LIFEINCREASING){
             return this.downSpeed;
         }
         else {
-            int actualShift = (snake.getLife())/Environment.LIFEINCREASING;
-            if (actualShift > (Environment.MAXINCREMENT)){
-                return this.downSpeed + Environment.MAXVELOCITYSHIFT;
+            int actualShift = (snake.getLife())/Environment.getInstance().LIFEINCREASING;
+            if (actualShift > (Environment.getInstance().MAXINCREMENT)){
+                return this.downSpeed + Environment.getInstance().MAXVELOCITYSHIFT;
             }
             else {
-                int actualDown = (Environment.MAXVELOCITYSHIFT/Environment.MAXINCREMENT)*actualShift;
+                int actualDown = (Environment.getInstance().MAXVELOCITYSHIFT/Environment.getInstance().MAXINCREMENT)*actualShift;
                 return this.downSpeed + actualDown;
             }
         }

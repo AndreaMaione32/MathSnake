@@ -39,13 +39,13 @@ public class Market extends JPanel {
 @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        new Background(Environment.PATHBACKGROUND).drawBackground(g);
+        new Background(Environment.getInstance().PATHBACKGROUND).drawBackground(g);
     }
     
     private void initMarket() {
         setBackground(Color.BLACK);
         setFocusable(true);
-        setPreferredSize(new Dimension(Environment.JP_WIDTH, Environment.JP_HEIGHT));
+        setPreferredSize(new Dimension(Environment.getInstance().JP_WIDTH, Environment.getInstance().JP_HEIGHT));
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         setLayout(layout);
@@ -56,7 +56,7 @@ public class Market extends JPanel {
         c.anchor = GridBagConstraints.PAGE_START;
         c.weighty = 1.0;
         marketLabel.setFont(new Font("Arial", Font.BOLD, 50));
-        marketLabel.setForeground(Environment.WRITECOLOR);
+        marketLabel.setForeground(Environment.getInstance().WRITECOLOR);
         add(marketLabel, c);
         
         c.weighty = 0;
@@ -74,7 +74,7 @@ public class Market extends JPanel {
         c.gridx = 2;
         c.gridy = 1;
         l1.setFont(new Font("Arial", 1, 20));
-        l1.setForeground(Environment.WRITECOLOR);
+        l1.setForeground(Environment.getInstance().WRITECOLOR);
         add(l1, c);
         
         c.insets = new Insets(0, 0, 20, 40);
@@ -87,7 +87,7 @@ public class Market extends JPanel {
         c.gridx = 2;
         c.gridy = 2;
         l2.setFont(new Font("Arial", 1, 20));
-        l2.setForeground(Environment.WRITECOLOR);
+        l2.setForeground(Environment.getInstance().WRITECOLOR);
         add(l2, c);
         
         c.insets = new Insets(0, 0, 20, 40);
@@ -100,7 +100,7 @@ public class Market extends JPanel {
         c.gridx = 2;
         c.gridy = 3;
         l3.setFont(new Font("Arial", 1, 20));
-        l3.setForeground(Environment.WRITECOLOR);
+        l3.setForeground(Environment.getInstance().WRITECOLOR);
         add(l3, c);
         
         c.insets = new Insets(0, 0, 0, 40);
@@ -113,7 +113,7 @@ public class Market extends JPanel {
         c.gridx = 2;
         c.gridy = 4;
         l4.setFont(new Font("Arial", 1, 20));
-        l4.setForeground(Environment.WRITECOLOR);
+        l4.setForeground(Environment.getInstance().WRITECOLOR);
         add(l4, c);
         
         c.weighty = 1;
@@ -126,7 +126,7 @@ public class Market extends JPanel {
         c.gridy = 5;
         c.anchor = GridBagConstraints.LAST_LINE_START;
         coinsLabel.setFont(new Font("Arial", 1, 20));
-        coinsLabel.setForeground(Environment.WRITECOLOR);
+        coinsLabel.setForeground(Environment.getInstance().WRITECOLOR);
         add(coinsLabel, c);
         
         c.insets = new Insets(0, 0, 10, 10);

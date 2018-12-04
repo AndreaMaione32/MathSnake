@@ -23,8 +23,8 @@ public class Coin {
     public Coin(int x, int y){
         this.x = x;
         this.y = y;
-        this.img = loadImage(Environment.PATHIMAGES+"retro_coins.png");
-        this.rectangle = new Rectangle((int)x,(int)y,Environment.COIN_WIDTH, Environment.COIN_HEIGHT);
+        this.img = loadImage(Environment.getInstance().PATHIMAGES+"retro_coins.png");
+        this.rectangle = new Rectangle((int)x,(int)y,Environment.getInstance().COIN_WIDTH, Environment.getInstance().COIN_HEIGHT);
     }
     
     protected Image loadImage(String PATH) {
@@ -44,7 +44,7 @@ public class Coin {
     }
     
     public void move(double velocity){
-        double shift = (Environment.DELAY * velocity) / 1000; 
+        double shift = (Environment.getInstance().DELAY * velocity) / 1000; 
         this.setY(y + shift);
     }
 

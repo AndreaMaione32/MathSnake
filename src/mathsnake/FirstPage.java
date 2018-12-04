@@ -23,7 +23,7 @@ public class FirstPage extends JPanel {
     private void initFirstPage() {
         setBackground(Color.BLACK);
         setFocusable(true);
-        setPreferredSize(new Dimension(Environment.JP_WIDTH, Environment.JP_HEIGHT));
+        setPreferredSize(new Dimension(Environment.getInstance().JP_WIDTH, Environment.getInstance().JP_HEIGHT));
         add(pressSpacebar);
         addListeners();
         flashingTimer.start();
@@ -36,18 +36,18 @@ public class FirstPage extends JPanel {
     }
     
     private void doDrawing(Graphics g) {
-        new Background(Environment.PATHBACKGROUND).drawBackground(g);
+        new Background(Environment.getInstance().PATHBACKGROUND).drawBackground(g);
         Font font1 = new Font("Arial", Font.BOLD, 50);
         FontMetrics metrics1 = g.getFontMetrics(font1);
-        int x1 = (Environment.JP_WIDTH - metrics1.stringWidth("MATH SNAKE")) / 2; //Stringa centrata nel panel
+        int x1 = (Environment.getInstance().JP_WIDTH - metrics1.stringWidth("MATH SNAKE")) / 2; //Stringa centrata nel panel
         g.setFont(font1);
-        g.setColor(Environment.WRITECOLOR);
+        g.setColor(Environment.getInstance().WRITECOLOR);
         g.drawString("MATH SNAKE", x1, 200);
         
         Font font2 = new Font("Arial", Font.BOLD, 20);
         pressSpacebar.setFont(font2);
-        pressSpacebar.setForeground(Environment.WRITECOLOR);
-        pressSpacebar.setLocation(Environment.JP_WIDTH / 2 - pressSpacebar.getSize().width / 2, 350);
+        pressSpacebar.setForeground(Environment.getInstance().WRITECOLOR);
+        pressSpacebar.setLocation(Environment.getInstance().JP_WIDTH / 2 - pressSpacebar.getSize().width / 2, 350);
     }
 
     private void addListeners() {

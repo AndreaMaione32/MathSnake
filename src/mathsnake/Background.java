@@ -21,7 +21,7 @@ public class Background {
     public Background(String pathImg){
          this.img = this.loadImage(pathImg);
          this.x = 0;
-         this.y = -this.img.getHeight(null)+Environment.JP_HEIGHT;
+         this.y = -this.img.getHeight(null)+Environment.getInstance().JP_HEIGHT;
     }
     
     protected Image loadImage(String PATH) {
@@ -31,9 +31,9 @@ public class Background {
     }
     
     public void move(double velocity){
-        double shift = (Environment.DELAY * velocity) / 1000;
+        double shift = (Environment.getInstance().DELAY * velocity) / 1000;
         if(y + shift >= 0){
-            this.y = -this.img.getHeight(null)+Environment.JP_HEIGHT;
+            this.y = -this.img.getHeight(null)+Environment.getInstance().JP_HEIGHT;
         }
         else
             this.y += shift;
