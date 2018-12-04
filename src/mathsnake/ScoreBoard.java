@@ -1,289 +1,130 @@
+
 package mathsnake;
 
-import java.io.FileInputStream;
+import java.awt.CardLayout;
+import static java.awt.Color.white;
+import java.awt.Font;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JLabel;
 
 /**
- * 
- * @author Antonino Durazzo
+ *
+ * @author VALE
  */
-public class ScoreBoard implements Serializable{
-    
-    private final LinkedList<Score> list;
-    private final String database= "database.dat";
-    
-    /**
-     * classe score annidata 
-     */
-    public class Score implements Serializable{
-        
-        private final float score;
-        private final Date score_date;
-        private final String name_player;
-        
-        /**
-         * Costruttore che inizializza gli attributi della classe 
-         * @param score
-         * @param score_date
-         * @param name_player 
-         */
-        public Score(float score, Date score_date, String name_player){
-            this.score = score;
-            this.score_date = score_date;
-            this.name_player = name_player;
-        }
-        
-        /**
-         * 
-         * @return restituisce l'attributo score della classe
-         */
-        public float getScore(){
-            return this.score;
-        }
-        /**
-         * 
-         * @return restituisce l'attributo score_data della classe
-         */
-        public Date getDateScore(){
-            return this.score_date;
-        }
-        /**
-         * 
-         * @return restituisce l'attributo name_player della classe
-         */
-        public String getNamePlayer(){
-            return this.name_player;
-        }
-        
-        /**
-         * 
-         * @return 
-         */
-        @Override
-        public String toString(){
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-            String strDate = dateFormat.format(this.score_date);
-            return "\n||||\t" + this.name_player + "\t\t\t\t" + Float.toString(this.score) +"\t\t\t"+ this.score_date.toString() + "\t|||\n";
-        }
+public class ScoreBoard extends javax.swing.JPanel {
+
+
+    public ScoreBoard() throws IOException, FileNotFoundException, ClassNotFoundException {
+        initComponents();
     }
-    
-    /**
-     * costruttore della classe che inizializza una linkedlist di score vuota come suo attributo
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws ClassNotFoundException 
-     */
-    public ScoreBoard() throws IOException, FileNotFoundException, ClassNotFoundException{
-        this.list = new LinkedList<>();
-        //this.updateDB(this);
-    }
-    
-    
-    
-    /**
-     * 
-     * @return restituisce la dimensione della lista
-     */
-    public int len(){
-        return this.list.size();
+
+
+   
+                         
+    private void initComponents() {
         
-    }
-    
-    /**
-     * 
-     * @return True se la scoreboard è vuota altrimenti false
-     */
-    public boolean isEmpty(){
-        return this.list.isEmpty();
-    }
+
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        
+        try {
+            SB = new ScoreBoard2();
+           ;
+           // ScoreBoard2.Score a = SB.new Score((float)10,new Date(),"valentino");
+           // SB.insert_score(a);
+          
+        } catch (IOException ex) {
+            Logger.getLogger(ScoreBoard.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ScoreBoard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Font font1 =new Font("Arial", Font.BOLD, 15);
+        
+
+        
+        
+        
+        setBackground(new java.awt.Color(0, 0, 0));
+        setPreferredSize(new java.awt.Dimension(500, 500));
+        setSize(new java.awt.Dimension(500, 500));
+
+        jTextArea1.setBackground(new java.awt.Color(0, 0, 0));
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+        try {
+            jTextArea1.setText(SB.toStringFromDat());
+        } catch (IOException ex) {
+            Logger.getLogger(ScoreBoard.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ScoreBoard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        jTextArea1.setForeground(white);
+        jTextArea1.setEditable(false);
+        jTextArea1.setFont(font1);
+       
+ 
+        jButton1.setText("RETURN");
+        jButton1.setFont(new java.awt.Font("Arial",1,15));
+        jButton1.addActionListener(this::jButton1ActionPerformed);
+
+        jLabel1.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 40)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("SCORE BOARD");
+        
+        jLabel1.setHorizontalAlignment( JLabel.CENTER );
+        
+        
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22))
+        );
+    }                      
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+     
+                CardLayout cl = MathSnake.getInstance().getCardLayout();
+                cl.show(MathSnake.getInstance().getCardsJPanel(), "menu");
+    }                                        
+
+
+                   
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
+    private ScoreBoard2 SB;
     
 
-    /**
-     * Questa funzione permette di poter memorizzare una scoreboard all'interno del file binario,
-     * in più viene invocata la funzione copiDbIntoTxt().
-     * @param board: rappresenta la board che si vuole inserire nel file binario
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws ClassNotFoundException 
-     */
-    private void updateDB(ScoreBoard board) throws FileNotFoundException, IOException, ClassNotFoundException{
-        ObjectOutputStream fbinarioOut;
-        fbinarioOut = new ObjectOutputStream(new FileOutputStream(this.database));
-        fbinarioOut.writeObject(board);
-        //System.out.print("HEIIIItttt" + board.toString());
-        fbinarioOut.flush();
-        fbinarioOut.close();
-        this.copyDbIntoTxt();
-        
-    }
     
-    /**
-     * Questa funzione legge l'oggetto contenuto all'interno del database e lo scrive in un file di testo database.txt
-     * questa funzione è invocata ogni qual volta si apportano modifiche al database siccome è utile tener traccia in 
-     * formato testuale e non binario del contenuto del database.
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws ClassNotFoundException 
-     */
-    public void copyDbIntoTxt() throws IOException, FileNotFoundException, ClassNotFoundException{
-        ScoreBoard board;
-        board = this.readDB();
-        //System.out.print("ciao" + board.toString());
-        //Scrive l'oggetto in file di testo, sfruttando  (implicitamente) il suo metodo toString()
-        try (PrintWriter ftestoOut = new PrintWriter(new FileWriter("database.txt"))) {
-            ftestoOut.println(board);
-            ftestoOut.flush();
-        }
-        
-    }
-    
-    /**
-     * Questa funzione apre un flusso in lettura verso un il file binario database.dat,
-     * legge l'oggetto memorizzato, chiude il flusso e restituisce l'oggetto letto.
-     * @return tmpScoreboard: rappresenta lo ScoreBoard letto dal file binario database.dat
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws ClassNotFoundException 
-     */
-    private ScoreBoard readDB() throws FileNotFoundException, IOException, ClassNotFoundException{
-        ScoreBoard tmpScoreBoard;
-        try (ObjectInputStream fin = new ObjectInputStream(new FileInputStream(this.database))) {
-            tmpScoreBoard = (ScoreBoard) fin.readObject();
-        }
-        //System.out.print("====================" + tmpScoreBoard.toString());
-        return tmpScoreBoard;
-    }
-    
-    
-    
-    /**
-     * 
-     * @param n: rappresenta il numero dei migliori risultati che si vuole ottenere
-     * @return list_score: ScoreBoard che contiene gli elementi desiderati
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws ClassNotFoundException 
-     */
-    public ScoreBoard top(int n) throws IOException, FileNotFoundException, ClassNotFoundException{
-        ScoreBoard list_score = new ScoreBoard();
-        ScoreBoard board = this.readDB();
-        if (board.isEmpty()){
-            return null;
-        } else{
-            for (int i=0;i<n;i++){
-                list_score.list.addLast(board.list.get(i));
-            }
-        return list_score;
-        }
-    }
-    
-    
-    /**
-     * 
-     * @param n: rappresenta il numero dei peggiori risultati che si vuole ottenere
-     * @return list_score: Scoreboard che contiene gli elementi desiderati
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws ClassNotFoundException 
-     */
-    public ScoreBoard last(int n) throws IOException, FileNotFoundException, ClassNotFoundException{
-        
-        ScoreBoard list_score = new ScoreBoard();
-        ScoreBoard board = this.readDB();
-        if (board.isEmpty()){
-            return null;
-        } else{
-            System.out.println(board.len());
-            for (int i=board.len()-1;i>=board.len()-n;i--){
-                System.out.println(i);
-                list_score.list.addLast(board.list.get(i));
-            }
-            return list_score;
-        }
-    }
-    
-    /**
-     * Questa funziona effettua un inserimento in ordine dello score che si vuole inserire nella ScoreBoard, 
-     * il criterio di ordine è dato dallo score migliore che nel nostro caso è l'intervallo di tempo migliore 
-     * quindi per migliore score intendiamo un minor tempo totalizzato.Inoltre questa funzione si interfaccia 
-     * con il database infatti non si memorizzano istanze temporanee degli score di questa scoreboard ma viene 
-     * letta la scoreboard presente nel file binario e a quell'istanza si apportano modifche.Cio è stato sviluppato 
-     * per avere una stato permanente della scoreboard del gioco.
-     * @param score: score da memorizzare all'interno del database.dat
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws ClassNotFoundException 
-     */
-    public void insert_score(Score score) throws IOException, FileNotFoundException, ClassNotFoundException{
-        ScoreBoard board = this.readDB();
-        if (board.isEmpty()){
-            board.list.addLast(score);
-        } else {
-            int dim = board.len();
-            boolean added = false;
-            int i = 0;
-            while(i<dim){
-                if (score.getScore() >= board.list.get(i).getScore()){
-                    board.list.add(i, score);
-                    added = true;
-                    break;
-                }
-                i++;
-            }
-            if ((added==false)){
-                board.list.addLast(score);
-            }
-        }
-        this.updateDB(board); 
-    }
-    
-    /**
-     * 
-     * @return str: rappresenta l'oggetto ScoreBoard, memorizzato all'interno del file binario database.dat, sotto forma di caratteri  
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws ClassNotFoundException 
-     */
-    public String toStringFromDat() throws IOException, FileNotFoundException, ClassNotFoundException{
-        String str = "\n||||\tPlayer Name\t\t\tScore\t\t\tDate\t\t\t\t|||\n";
-        ScoreBoard list_score = this.readDB();
-        if (!list_score.isEmpty()){
-            Iterator<Score> itr = this.readDB().list.iterator();
-            while(itr.hasNext()){
-                Score score = itr.next();
-                str += score.toString();
-            }
-            return str;
-        }else{
-            return null;
-        }
-        
-    }
-    
-    /**
-     * 
-     * @return String str: rappresenta l'oggetto ScoreBoard sotto forma di caratteri
-     */
-    @Override
-    public String toString(){
-        String str = "\n||||\tPlayer Name\t\t\tScore\t\t\tDate\t\t\t\t|||\n";
-        Iterator<Score> itr = this.list.iterator();
-        while(itr.hasNext()){
-            Score score = itr.next();
-            str += score.toString();
-        }
-        return str;
-    }
+                 
 }

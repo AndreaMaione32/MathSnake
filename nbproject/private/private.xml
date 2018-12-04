@@ -3,14 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/mathsnake/TestUtils.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/BlockTest.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/Block.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/mathsnake/SnakeTest.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/mathsnake/SnakeBoardTest.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/FirstPage.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/MathSnake.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/CoinsSaver.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/Menu.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/ScoreBoard.java</file>
             <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/SnakeBoard.java</file>
             <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/Snake.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/mathsnake/BlockTest.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/Market.java</file>
         </group>
     </open-files>
 </project-private>

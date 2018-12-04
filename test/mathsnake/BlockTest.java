@@ -5,36 +5,58 @@
  */
 package mathsnake;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
- * @author andreamaione
+ * @author antoniocoppola
  */
 public class BlockTest {
-
-    /**
-     * Test of getStrOp method, of class Block.
-     */
+    
     @Test
-    public void testGetStrOp() {
-        Block instance1 = new Block(1, Operation.ADD);
-        String expResult = "+";
-        String result = instance1.getStrOp();
-        assertEquals(expResult, result);
-        Block instance2 = new Block(2, Operation.MUL);
-        expResult = "x";
-        result = instance2.getStrOp();
-        assertEquals(expResult, result);
-        Block instance3 = new Block(1, Operation.SUB);
-        expResult = "-";
-        result = instance3.getStrOp();
-        assertEquals(expResult, result);
-        Block instance4 = new Block(2, Operation.DIV);
-        expResult = "/";
-        result = instance4.getStrOp();
-        assertEquals(expResult, result);
+    public void setXTest(){
+        Block b = new Block(1, Operation.ADD, 0, 0);
+        b.setX(20);
+        assertEquals(b.getX(), 20);   //check if x value is expected one
     }
     
+    @Test
+    public void setYTest(){
+        Block b = new Block(1, Operation.ADD, 0, 0);
+        b.setY(20);
+        assertEquals(b.getY(), 20);   //check if Y value is expected one
+    }
+    
+    @Test
+    public void differentColorTest(){
+        Block b1 = new Block(1, Operation.ADD, 0, 0);
+        Block b2 = new Block(2, Operation.MUL, 0, 0);
+        assertTrue(b1.getColor() != b2.getColor());   //blocks with different operation must to have different colors
+    }
+    
+    @Test
+    public void ColorTest(){
+        Block b = new Block(1, Operation.ADD, 0, 0);
+        assertEquals(b.getColor(), Color.ORANGE);  //ADD Block must to be orange
+    }
+    
+    //TEST IF BLOCK, in (x,y) point, COLLIDES WITH RECTANGLE THAT IS IN ONE OF THE EXTREME POINT x, y OR x+BLOCKWIDTH and y+BLOCKHEIGHT
+    
+    @Test
+    public void fristExtremeCollide(){
+    Block b = new Block(1, Operation.ADD, 0, 0);
+    Rectangle rect = new Rectangle(0,0, 10, 10);
+    assertTrue(b.collide(rect));
+    }
+    
+    @Test
+    public void secondExtremeCollide(){
+    Block b = new Block(1, Operation.ADD, 0, 0);
+    Rectangle rect = new Rectangle(0 + Environment.BLOCK_WIDTH -10,0 + Environment.BLOCK_HEIGHT-10, 10, 10);
+    assertTrue(b.collide(rect));
+    }
 }

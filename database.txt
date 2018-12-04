@@ -1,27 +1,19 @@
 
 ||||	Player Name			Score			Date				|||
 
-||||	maione				7.8			Mon Dec 09 00:00:00 CET 3918	|||
+   giovanni	                390.0		  04/12/18 18.12
 
-||||	maione				7.8			Mon Dec 09 00:00:00 CET 3918	|||
+   Todisco	                390.0		  04/12/18 17.58
 
-||||	ciussentino				7.7			Sun Dec 08 00:00:00 CET 3918	|||
+   carmine	                12.0		  04/12/18 17.46
 
-||||	ciussentino				7.7			Sun Dec 08 00:00:00 CET 3918	|||
+   valentino	                10.0		  04/12/18 17.48
 
-||||	cioppola				7.6			Sat Dec 07 00:00:00 CET 3918	|||
+   valentino	                10.0		  04/12/18 17.47
 
-||||	cioppola				7.6			Sat Dec 07 00:00:00 CET 3918	|||
+   valentino	                10.0		  04/12/18 17.47
 
-||||	De pretis				7.5			Fri Dec 06 00:00:00 CET 3918	|||
+   valentino	                10.0		  04/12/18 17.46
 
-||||	De pretis				7.5			Fri Dec 06 00:00:00 CET 3918	|||
-
-||||	valentina				7.4			Thu Dec 05 00:00:00 CET 3918	|||
-
-||||	valentina				7.4			Thu Dec 05 00:00:00 CET 3918	|||
-
-||||	antonio				7.3			Wed Dec 04 00:00:00 CET 3918	|||
-
-||||	antonio				7.3			Wed Dec 04 00:00:00 CET 3918	|||
+   marco	                0.0		  04/12/18 18.06
 
