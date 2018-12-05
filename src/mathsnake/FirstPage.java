@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import javax.swing.Timer;
 
 public class FirstPage extends JPanel {
@@ -51,6 +53,20 @@ public class FirstPage extends JPanel {
     }
 
     private void addListeners() {
+        addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                for(Component component : getComponents()) {
+                    if(component instanceof JLabel)
+                        component.setForeground(Environment.getInstance().WRITECOLOR);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                //DO NOTHING
+            }
+        });
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {

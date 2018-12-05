@@ -3,6 +3,7 @@ package mathsnake;
 import java.awt.CardLayout;
 import java.awt.Color;
 import static java.awt.Color.white;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ComponentAdapter;
@@ -31,7 +32,11 @@ public class ScoreBoard extends javax.swing.JPanel {
             @Override
             public void focusGained(FocusEvent e){
                 removeAll();
-               createScoreBoard();
+                createScoreBoard();
+                for(Component component : getComponents()) {
+                    if(component instanceof JLabel)
+                        component.setForeground(Environment.getInstance().WRITECOLOR);
+                }
             }
             @Override
             public void focusLost(FocusEvent e) {

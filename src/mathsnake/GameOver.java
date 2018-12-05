@@ -2,11 +2,15 @@
 package mathsnake;
 
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 
 
 
@@ -46,8 +50,24 @@ public class GameOver extends javax.swing.JPanel {
         setBackground(new java.awt.Color(0, 0, 0));
         setPreferredSize(new java.awt.Dimension(500, 500));
        
+        addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                for(Component component : getComponents()) {
+                    if(component instanceof JLabel)
+                        component.setForeground(Environment.getInstance().WRITECOLOR);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                //DO NOTHING
+            }
+        });
+        
         jTextField1.setFont(new java.awt.Font("Arial", 1, 18));
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
@@ -59,6 +79,7 @@ public class GameOver extends javax.swing.JPanel {
 
         jButton1.setText("OK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
                 

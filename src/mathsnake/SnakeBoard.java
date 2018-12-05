@@ -46,7 +46,6 @@ public class SnakeBoard extends JPanel implements Runnable {
     private boolean stop = false;
     private boolean pause = false;
     private Background background;
-
     
     public SnakeBoard() {
         initSnakeBoard();
@@ -77,12 +76,11 @@ public class SnakeBoard extends JPanel implements Runnable {
     }
    
     private void loadImages() {
-        ball = snake.loadImage(Environment.getInstance().PATHIMAGES + "dot.png");
+        ball = snake.loadImage(Environment.getInstance().PATHSKIN);
         shield_small = snake.loadImage(Environment.getInstance().PATHIMAGES + "shield_small.png");
-        head = snake.loadImage(Environment.getInstance().PATHIMAGES + "smiling.png");
         yellow_dot = snake.loadImage(Environment.getInstance().PATHIMAGES + "yellow_dot.png");
-        small_coins = snake.loadImage(Environment.getInstance().PATHIMAGES+"small_retro_coins.png");
-        grey_dot = snake.loadImage(Environment.getInstance().PATHIMAGES+"grey_dot.png");
+        small_coins = snake.loadImage(Environment.getInstance().PATHIMAGES + "small_retro_coins.png");
+        grey_dot = snake.loadImage(Environment.getInstance().PATHIMAGES + "grey_dot.png");
     }
     
     private void initGame() {
@@ -108,6 +106,7 @@ public class SnakeBoard extends JPanel implements Runnable {
                     countdown();
                     countdownTimer.start();
                 }
+                background = new Background(Environment.getInstance().PATHBACKGROUND);
             }
             if (hasFocus() && state == STATE.IN_GAME) {
                 if(!CThread.isAlive()){
@@ -346,6 +345,8 @@ public class SnakeBoard extends JPanel implements Runnable {
     private void initialState() {
         BlocksManager.getInstance().flush();
         PowerUpsManager.getInstance().flush();
+        loadImages();
+        
         this.leftPressed = false;
         this.rightPressed = false;
         coinsSaver = new CoinsSaver();
@@ -441,14 +442,14 @@ public class SnakeBoard extends JPanel implements Runnable {
         });
     }
     
+    public int getGameBest() {
+        return gameBest;
+    }
+    
     private enum STATE {
         COUNTDOWN,
         IN_GAME,
         PAUSE,
         GAMEOVER
-    }
-    
-    public int getGameBest() {
-        return gameBest;
     }
 }

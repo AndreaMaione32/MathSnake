@@ -1,6 +1,11 @@
 package mathsnake;
 
 import java.awt.Color;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Environment {
     private static Environment instance = null;
@@ -27,13 +32,23 @@ public class Environment {
     public final int SHIELD_DURATION = 7000;
     public final int COIN_WIDTH = 35;
     public final int COIN_HEIGHT = 35;
-    public final String PATHBACKGROUND = "../MathSnake/images/base_background.png";
+    public String PATHBACKGROUND = "../MathSnake/images/base_background.png"; //Background di default
+    public String PATHSKIN = "../MathSnake/images/dot.png"; //Skin di default
+    public Map<String, Boolean> BOUGHT_FEATURES = new HashMap();
     public final int DOT_NUM = 7; //numero di dot di cui è composto lo snake
-    public final Color WRITECOLOR = Color.BLACK;
     public final int SCOREBOARD_SIZE = 6;
+    public Color WRITECOLOR;
     
     private Environment(){
-        
+        BOUGHT_FEATURES.put("base_background.png", true);
+        BOUGHT_FEATURES.put("cloud_background.png", false);
+        BOUGHT_FEATURES.put("dirt_background.png", false);
+        BOUGHT_FEATURES.put("dot.png", true);
+        try {
+            readGraphicConfiguration();
+        } catch (IOException ex) {
+            Logger.getLogger(Environment.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public static Environment getInstance(){
@@ -41,5 +56,98 @@ public class Environment {
             instance = new Environment();
         }
         return instance;
+    }
+    
+    public void setBackground(BACKGROUNDS background) {
+        switch(background) {
+            case DEFAULT:
+                PATHSKIN = PATHIMAGES + "base_background.png";
+                break;
+            case BACKGROUND_1:
+                PATHSKIN = PATHIMAGES + "cloud_background.png";
+                break;
+            case BACKGROUND_2:
+                PATHSKIN = PATHIMAGES + "dirt_background.png";
+                break;
+        }
+    }
+    
+    public void setSkin(SKINS skin) {
+        switch(skin) {
+            case DEFAULT:
+                PATHBACKGROUND = PATHIMAGES + "dot.png";
+                break;
+            case SKIN_1:
+                PATHBACKGROUND = PATHIMAGES + "skin1.png";
+                break;
+            case SKIN_2:
+                PATHBACKGROUND = PATHIMAGES + "skin2.png";
+                break;
+        }
+    }
+    
+    private void readGraphicConfiguration() throws IOException {
+        File f = new File("graphic_configuration.txt");
+        if(!f.exists()) {
+            f.createNewFile();
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
+                bw.write("base_background.png", 0, "base_background.png".length());
+                bw.newLine();
+                bw.write(Integer.toString(Color.BLACK.getRGB()));
+                bw.newLine();
+                bw.write("dot.png", 0, "dot.png".length());
+            }
+        }
+        else {
+            try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+                PATHBACKGROUND = PATHIMAGES + br.readLine();
+                WRITECOLOR = new Color(Integer.parseInt(br.readLine()));
+                PATHSKIN = PATHIMAGES + br.readLine();
+            }
+        }
+        
+        f = new File("bought_features.txt");
+        if(!f.exists()) {
+            f.createNewFile();
+            ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(f));
+            writer.writeObject(BOUGHT_FEATURES);
+        }
+        ObjectInputStream reader = new ObjectInputStream(new FileInputStream(f));
+        try {
+            BOUGHT_FEATURES = (HashMap) reader.readObject();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Environment.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void writeGraphicConfiguration() throws IOException {
+        String background = PATHBACKGROUND.split("/")[3];
+        String skin = PATHSKIN.split("/")[3];
+        File f = new File("graphic_configuration.txt");
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(f, false))) {
+            bw.write(background, 0, background.length());
+            bw.newLine();
+            bw.write(Integer.toString(WRITECOLOR.getRGB()));
+            bw.newLine();
+            bw.write(skin, 0, skin.length());
+        }
+    }
+    
+    public void writeBoughtFeatures() throws FileNotFoundException, IOException {
+        File f = new File("bought_features.txt");
+        ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(f));
+        writer.writeObject(BOUGHT_FEATURES);
+    }
+    
+    private enum SKINS {
+        DEFAULT,
+        SKIN_1,
+        SKIN_2;
+    }
+    
+    private enum BACKGROUNDS {
+        DEFAULT,
+        BACKGROUND_1,
+        BACKGROUND_2;
     }
 }

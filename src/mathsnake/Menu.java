@@ -2,6 +2,7 @@ package mathsnake;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -10,7 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Menu extends JPanel {
@@ -58,6 +62,20 @@ public class Menu extends JPanel {
     }
 
     private void addListeners() {
+        addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                for(Component component : getComponents()) {
+                    if(component instanceof JLabel)
+                        component.setForeground(Environment.getInstance().WRITECOLOR);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                //DO NOTHING
+            }
+        });
         play.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
