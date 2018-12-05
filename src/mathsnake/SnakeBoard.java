@@ -46,6 +46,7 @@ public class SnakeBoard extends JPanel implements Runnable {
     private boolean stop = false;
     private boolean pause = false;
     private Background background;
+
     
     public SnakeBoard() {
         initSnakeBoard();
@@ -241,6 +242,7 @@ public class SnakeBoard extends JPanel implements Runnable {
             // Wait 1 second
         }
         coinsSaver.saveCoins();
+        this.secondsLeft = 3;
         state = STATE.COUNTDOWN;
         //RESTART BACKGROUND
         background = new Background(Environment.getInstance().PATHBACKGROUND);
@@ -447,5 +449,9 @@ public class SnakeBoard extends JPanel implements Runnable {
         IN_GAME,
         PAUSE,
         GAMEOVER
+    }
+    
+    public int getGameBest() {
+        return gameBest;
     }
 }

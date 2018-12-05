@@ -30,8 +30,9 @@ public class Environment {
     public final String PATHBACKGROUND = "../MathSnake/images/base_background.png";
     public final int DOT_NUM = 7; //numero di dot di cui è composto lo snake
     public final Color WRITECOLOR = Color.BLACK;
+    public final int SCOREBOARD_SIZE = 6;
     
-    public Environment(){
+    private Environment(){
         
     }
     

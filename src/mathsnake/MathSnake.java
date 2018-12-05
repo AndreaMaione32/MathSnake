@@ -4,6 +4,9 @@ import java.awt.CardLayout;
 import java.awt.EventQueue;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -15,12 +18,12 @@ public class MathSnake extends JFrame {
     private CardLayout cl = new CardLayout();
     private JPanel cardsJPanel = new JPanel(cl);
     private FirstPage firstPage = new FirstPage();
-    private GameOver gameOver = new GameOver();
+    private GameOver gameOver;
     private Menu menu = new Menu();
     private SnakeBoard game = new SnakeBoard();
-    private ScoreBoard score = new ScoreBoard();
+    private ScoreBoard score;
     private Market market = new Market();
-    private static MathSnake instance = null;
+    private static MathSnake instance = null; 
     
     public synchronized static MathSnake getInstance() {
         if(instance == null)
@@ -29,6 +32,14 @@ public class MathSnake extends JFrame {
     }
     
     private MathSnake() {
+        try {
+            this.score = new ScoreBoard();
+            this.gameOver = new GameOver(this.game);
+        } catch (IOException ex) {
+            Logger.getLogger(MathSnake.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MathSnake.class.getName()).log(Level.SEVERE, null, ex);
+        }
         initUI();
     }
 
