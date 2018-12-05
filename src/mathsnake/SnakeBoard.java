@@ -203,19 +203,16 @@ public class SnakeBoard extends JPanel implements Runnable {
                     Coin c = coinsManager.getCoin(i);
                     c.drawCoin(g);
                 }
-                Font font = new Font("Arial", Font.BOLD, 14);
+                Font font = new Font("Arial", Font.BOLD, 16);
                 FontMetrics metrics = g.getFontMetrics(font);
                 g.setFont(font);
-                g.setColor(Environment.getInstance().WRITECOLOR);
-                String text = "CURRENT BEST : NULL"; //Dovrà mostrare il miglior punteggio della Scoreboard
-                g.drawString("CURRENT BEST : NULL", Environment.getInstance().JP_WIDTH - (10 + metrics.stringWidth(text)), 20); 
-
-                text = "GAME BEST : " + Integer.toString(gameBest);
+                g.setColor(Environment.getInstance().WRITECOLOR);                    
+                String text = "SCORE : " + Integer.toString(gameBest);
                 g.setFont(font);
                 g.setColor(Environment.getInstance().WRITECOLOR);
                 int textX = Environment.getInstance().JP_WIDTH - (10 + metrics.stringWidth(text));
                 int textY = 20 + metrics.getHeight();
-                g.drawString("GAME BEST : " + Integer.toString(gameBest), textX, textY);
+                g.drawString(text, textX, textY);
                 String textCoin = "x"+coinsSaver.getCurrentCoins();
                 font = new Font("Arial", Font.BOLD, 18);
                 g.setFont(font);
