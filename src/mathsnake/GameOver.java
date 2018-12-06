@@ -55,7 +55,6 @@ public class GameOver extends javax.swing.JPanel {
             @Override
             public void focusGained(FocusEvent e) {
                 for(Component component : getComponents()) {
-                    System.out.println("ciao");
                     if(component instanceof javax.swing.JLabel)
                         component.setForeground(Environment.getInstance().WRITECOLOR);
                 }

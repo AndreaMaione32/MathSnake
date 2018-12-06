@@ -238,11 +238,12 @@ public class SnakeBoard extends JPanel implements Runnable {
             // Wait 1 second
         }
         coinsSaver.saveCoins();
-        state = STATE.COUNTDOWN;
         //RESTART BACKGROUND
         background = new Background(Environment.getInstance().PATHBACKGROUND);
         CardLayout cl = MathSnake.getInstance().getCardLayout();
         cl.show(MathSnake.getInstance().getCardsJPanel(), "gameOver");
+        this.secondsLeft = 3;
+        state = STATE.COUNTDOWN;
     }
     
     private void countdown() {
@@ -252,7 +253,8 @@ public class SnakeBoard extends JPanel implements Runnable {
         countdownTimer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                secondsLeft--;
+                if(hasFocus() && secondsLeft > 0)
+                    secondsLeft--;
             }
         });
     }
@@ -351,7 +353,6 @@ public class SnakeBoard extends JPanel implements Runnable {
         coinsSaver = new CoinsSaver();
         snake.setLife(10);
         gameBest = 0;
-        secondsLeft = 3;
     }
     
     private void moveBlocks(double ds){
