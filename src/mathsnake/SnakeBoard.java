@@ -238,7 +238,6 @@ public class SnakeBoard extends JPanel implements Runnable {
             // Wait 1 second
         }
         coinsSaver.saveCoins();
-        this.secondsLeft = 3;
         state = STATE.COUNTDOWN;
         //RESTART BACKGROUND
         background = new Background(Environment.getInstance().PATHBACKGROUND);

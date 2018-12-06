@@ -34,7 +34,7 @@ public class ScoreBoard extends javax.swing.JPanel {
                 removeAll();
                 createScoreBoard();
                 for(Component component : getComponents()) {
-                    if(component instanceof JLabel)
+                    if(component instanceof JLabel || component instanceof javax.swing.JTextArea )
                         component.setForeground(Environment.getInstance().WRITECOLOR);
                 }
             }
@@ -74,21 +74,22 @@ public class ScoreBoard extends javax.swing.JPanel {
             Logger.getLogger(ScoreBoard.class.getName()).log(Level.SEVERE, null, ex);
         }
         Font font1 =new Font("Arial", Font.BOLD, 16);
-        
         setPreferredSize(new java.awt.Dimension(500, 500));
         setSize(new java.awt.Dimension(500, 500));
 
         jTextArea1.setOpaque(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
+        jTextArea1.setForeground(Environment.getInstance().WRITECOLOR);
         jScrollPane1.setViewportView(jTextArea1);
-        try {
+        /**try {
             jTextArea1.setText(SB.toStringFromDat());
         } catch (IOException ex) {
             Logger.getLogger(ScoreBoard.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ScoreBoard.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
+        jTextArea1.setText(SB.toString());
         jTextArea1.setEditable(false);
         jTextArea1.setFont(font1);
         jScrollPane1.getViewport().setOpaque(false);

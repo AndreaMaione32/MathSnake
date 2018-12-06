@@ -4,13 +4,14 @@ package mathsnake;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JLabel;
 
 
 
@@ -54,7 +55,8 @@ public class GameOver extends javax.swing.JPanel {
             @Override
             public void focusGained(FocusEvent e) {
                 for(Component component : getComponents()) {
-                    if(component instanceof JLabel)
+                    System.out.println("ciao");
+                    if(component instanceof javax.swing.JLabel)
                         component.setForeground(Environment.getInstance().WRITECOLOR);
                 }
             }
@@ -62,6 +64,13 @@ public class GameOver extends javax.swing.JPanel {
             @Override
             public void focusLost(FocusEvent e) {
                 //DO NOTHING
+            }
+        });
+        
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                requestFocusInWindow();
             }
         });
         

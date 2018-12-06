@@ -166,16 +166,24 @@ public class ScoreBoard2 implements Serializable{
     ScoreBoard2 readDB() throws IOException, ClassNotFoundException{
         ScoreBoard2 tmpScoreBoard;
         ObjectInputStream fin = null;
+        OutputStream out = null;
         try{
             fin = new ObjectInputStream(new FileInputStream(this.database));
+            tmpScoreBoard = (ScoreBoard2) fin.readObject();
         }
         catch(FileNotFoundException ex){
-            OutputStream out = new FileOutputStream(this.database);
+            out = new FileOutputStream(this.database);
             this.updateDB(new ScoreBoard2(new LinkedList<Score>()));
             fin = new ObjectInputStream(new FileInputStream(this.database));
+            tmpScoreBoard = (ScoreBoard2) fin.readObject();
+        }
+        finally{
+            if(fin!=null)
+                fin.close();
+            if(out!=null)
+                out.close();
         }
         //System.out.print("====================" + tmpScoreBoard.toString());
-        tmpScoreBoard = (ScoreBoard2) fin.readObject();
         return tmpScoreBoard;
     }
     /**
@@ -264,10 +272,9 @@ public class ScoreBoard2 implements Serializable{
      */
     @Override
     public String toString(){
-        String str = "\n||||\tPlayer Name\t\t\tScore\t\t\tDate\t\t\t\t|||\n";
-        Iterator<Score> itr = this.list.iterator();
-        while(itr.hasNext()){
-            Score score = itr.next();
+        String str = "\n  PLAYER NAME       SCORE\t\tDATE\n";
+        for(int i = this.list.size()-1; i >= 0; i--){
+            Score score = this.list.get(i);
             str += score.toString();
         }
         return str;
