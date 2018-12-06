@@ -36,8 +36,8 @@ public class Market extends JPanel {
     private JButton setDirtBackground = new JButton("SET");
     private JLabel l1 = new JLabel("SKIN 1");
     private JLabel l2 = new JLabel("SKIN 2");
-    private JLabel l3 = new JLabel("BACKGROUND 1");
-    private JLabel l4 = new JLabel("BACKGROUND 2");
+    private JLabel l3 = new JLabel("IN THE CLOUDS");
+    private JLabel l4 = new JLabel("DIRTY DIRT");
     
     public Market() {
         initMarket();
