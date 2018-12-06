@@ -34,6 +34,8 @@ public class Market extends JPanel {
     private JButton setCloudBackground = new JButton("SET");
     private JButton buyDirtBackground = new JButton("200");
     private JButton setDirtBackground = new JButton("SET");
+    private JButton setDefaultBackground_cloud = new JButton("UNSET");
+    private JButton setDefaultBackground_dirt = new JButton("UNSET");
     private JLabel l1 = new JLabel("SKIN 1");
     private JLabel l2 = new JLabel("SKIN 2");
     private JLabel l3 = new JLabel("IN THE CLOUDS");
@@ -114,8 +116,17 @@ public class Market extends JPanel {
         else {
             if(this == buyCloudBackground.getParent())
                 remove(buyCloudBackground);
-            setCloudBackground.setFont(new Font("Arial", 1, 20));
-            add(setCloudBackground, c);
+            if(this == setDefaultBackground_cloud.getParent())
+                remove(setDefaultBackground_cloud);
+            if(this == setCloudBackground.getParent())
+                remove(setCloudBackground);
+            if(Environment.getInstance().PATHBACKGROUND.equals("../MathSnake/images/cloud_background.png")){
+                setDefaultBackground_cloud.setFont(new Font("Arial", 1, 20));
+                add(setDefaultBackground_cloud, c);
+            }else{
+                setCloudBackground.setFont(new Font("Arial", 1, 20));
+                add(setCloudBackground, c);
+            }
         }
         
         c.insets = new Insets(0, 0, 20, 0);
@@ -137,8 +148,17 @@ public class Market extends JPanel {
         else {
             if(this == buyDirtBackground.getParent())
                 remove(buyDirtBackground);
-            setDirtBackground.setFont(new Font("Arial", 1, 20));
-            add(setDirtBackground, c);
+            if(this == setDefaultBackground_dirt.getParent())
+                remove(setDefaultBackground_dirt);
+            if(this == setDirtBackground.getParent())
+                remove(setDirtBackground);
+            if(Environment.getInstance().PATHBACKGROUND.equals("../MathSnake/images/dirt_background.png")){
+                setDefaultBackground_dirt.setFont(new Font("Arial", 1, 20));
+                add(setDefaultBackground_dirt, c);
+            } else{
+                setDirtBackground.setFont(new Font("Arial", 1, 20));
+                add(setDirtBackground, c);
+            }
         }
         
         c.insets = new Insets(0, 0, 0, 0);
@@ -241,6 +261,7 @@ public class Market extends JPanel {
                     if(component instanceof JLabel)
                         component.setForeground(Environment.getInstance().WRITECOLOR);
                 }
+                setComponents();
                 repaint();
             }
         });
@@ -283,6 +304,43 @@ public class Market extends JPanel {
                     if(component instanceof JLabel)
                         component.setForeground(Environment.getInstance().WRITECOLOR);
                 }
+                setComponents();
+                repaint();
+            }
+        });
+        setDefaultBackground_cloud.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Environment.getInstance().PATHBACKGROUND = Environment.getInstance().PATHIMAGES + "base_background.png";
+                Environment.getInstance().WRITECOLOR = Color.black;
+                try {
+                    Environment.getInstance().writeGraphicConfiguration();
+                } catch (IOException ex) {
+                    Logger.getLogger(Market.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                for(Component component : getComponents()) {
+                    if(component instanceof JLabel)
+                        component.setForeground(Environment.getInstance().WRITECOLOR);
+                }
+                setComponents();
+                repaint();
+            }
+        });
+        setDefaultBackground_dirt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Environment.getInstance().PATHBACKGROUND = Environment.getInstance().PATHIMAGES + "base_background.png";
+                Environment.getInstance().WRITECOLOR = Color.black;
+                try {
+                    Environment.getInstance().writeGraphicConfiguration();
+                } catch (IOException ex) {
+                    Logger.getLogger(Market.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                for(Component component : getComponents()) {
+                    if(component instanceof JLabel)
+                        component.setForeground(Environment.getInstance().WRITECOLOR);
+                }
+                setComponents();
                 repaint();
             }
         });
