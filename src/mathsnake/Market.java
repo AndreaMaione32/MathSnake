@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,9 +19,11 @@ import java.awt.event.FocusListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class Market extends JPanel {
     
@@ -36,10 +39,12 @@ public class Market extends JPanel {
     private JButton setDirtBackground = new JButton("SET");
     private JButton setDefaultBackground_cloud = new JButton("UNSET");
     private JButton setDefaultBackground_dirt = new JButton("UNSET");
+    private ImageIcon cloud;
+    private ImageIcon dirt;
     private JLabel l1 = new JLabel("SKIN 1");
     private JLabel l2 = new JLabel("SKIN 2");
     private JLabel l3 = new JLabel("IN THE CLOUDS");
-    private JLabel l4 = new JLabel("DIRTY DIRT");
+    private JLabel l4 = new JLabel("DIRT");
     
     public Market() {
         initMarket();
@@ -54,12 +59,15 @@ public class Market extends JPanel {
         setFocusable(true);
         setPreferredSize(new Dimension(Environment.getInstance().JP_WIDTH, Environment.getInstance().JP_HEIGHT));
         GridBagLayout layout = new GridBagLayout();
-        
         setLayout(layout);
+        loadImages();
         setComponents();
-        
-        
         addListeners();
+    }
+    
+    private void loadImages() {
+        cloud = new ImageIcon(new ImageIcon(Environment.getInstance().PATHIMAGES + "cloud.png").getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT));
+        dirt = new ImageIcon(new ImageIcon(Environment.getInstance().PATHIMAGES + "dirt.png").getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT));
     }
     
     private void setComponents() {
@@ -77,6 +85,7 @@ public class Market extends JPanel {
         c.gridwidth = 2;
         c.ipadx = 20;
         c.ipady = 20;
+        c.anchor = GridBagConstraints.CENTER;
         
         c.insets = new Insets(0, 0, 20, 40);
         c.gridx = 0;
@@ -104,7 +113,7 @@ public class Market extends JPanel {
         l2.setForeground(Environment.getInstance().WRITECOLOR);
         add(l2, c);
         
-        c.insets = new Insets(0, 0, 20, 40);
+        c.insets = new Insets(0, 0, 5, 40);
         c.gridx = 0;
         c.gridy = 3;
         if(Environment.getInstance().BOUGHT_FEATURES.get("cloud_background.png") == false) {
@@ -129,11 +138,14 @@ public class Market extends JPanel {
             }
         }
         
-        c.insets = new Insets(0, 0, 20, 0);
+        c.insets = new Insets(0, 0, 5, 0);
         c.gridx = 2;
         c.gridy = 3;
-        l3.setFont(new Font("Arial", 1, 20));
+        l3.setFont(new Font("Arial", 1, 12));
         l3.setForeground(Environment.getInstance().WRITECOLOR);
+        l3.setHorizontalTextPosition(JLabel.CENTER);
+        l3.setVerticalTextPosition(JLabel.BOTTOM);
+        l3.setIcon(cloud);
         add(l3, c);
         
         c.insets = new Insets(0, 0, 0, 40);
@@ -164,8 +176,11 @@ public class Market extends JPanel {
         c.insets = new Insets(0, 0, 0, 0);
         c.gridx = 2;
         c.gridy = 4;
-        l4.setFont(new Font("Arial", 1, 20));
+        l4.setFont(new Font("Arial", 1, 12));
         l4.setForeground(Environment.getInstance().WRITECOLOR);
+        l4.setHorizontalTextPosition(JLabel.CENTER);
+        l4.setVerticalTextPosition(JLabel.BOTTOM);
+        l4.setIcon(dirt);
         add(l4, c);
         
         c.weighty = 1;
