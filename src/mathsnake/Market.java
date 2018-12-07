@@ -245,14 +245,6 @@ public class Market extends JPanel {
                     coinsSaver.setCurrentCoins(coinsSaver.getCurrentCoins() - price);
                     coinsLabel.setText("Coins: " + Integer.toString(coinsSaver.getCurrentCoins()));
                     Environment.getInstance().BOUGHT_FEATURES.put("cloud_background.png", true);
-                    /**
-                    remove(buyCloudBackground);
-                    GridBagConstraints c = new GridBagConstraints();
-                    c.insets = new Insets(0, 0, 20, 40);
-                    c.gridx = 0;
-                    c.gridy = 3;
-                    add(setCloudBackground, c);
-                    **/
                     setComponents();
                     try {
                         Environment.getInstance().writeBoughtFeatures();
@@ -288,14 +280,6 @@ public class Market extends JPanel {
                     coinsSaver.setCurrentCoins(coinsSaver.getCurrentCoins() - price);
                     coinsLabel.setText("Coins: " + Integer.toString(coinsSaver.getCurrentCoins()));
                     Environment.getInstance().BOUGHT_FEATURES.put("dirt_background.png", true);
-                    /**
-                    remove(buyDirtBackground);
-                    GridBagConstraints c = new GridBagConstraints();
-                    c.insets = new Insets(0, 0, 0, 40);
-                    c.gridx = 0;
-                    c.gridy = 4;
-                    add(setDirtBackground, c);
-                    **/
                     setComponents();
                     try {
                         Environment.getInstance().writeBoughtFeatures();
