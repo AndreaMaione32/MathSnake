@@ -58,34 +58,6 @@ public class Environment {
         return instance;
     }
     
-    public void setBackground(BACKGROUNDS background) {
-        switch(background) {
-            case DEFAULT:
-                PATHSKIN = PATHIMAGES + "base_background.png";
-                break;
-            case BACKGROUND_1:
-                PATHSKIN = PATHIMAGES + "cloud_background.png";
-                break;
-            case BACKGROUND_2:
-                PATHSKIN = PATHIMAGES + "dirt_background.png";
-                break;
-        }
-    }
-    
-    public void setSkin(SKINS skin) {
-        switch(skin) {
-            case DEFAULT:
-                PATHBACKGROUND = PATHIMAGES + "dot.png";
-                break;
-            case SKIN_1:
-                PATHBACKGROUND = PATHIMAGES + "skin1.png";
-                break;
-            case SKIN_2:
-                PATHBACKGROUND = PATHIMAGES + "skin2.png";
-                break;
-        }
-    }
-    
     private void readGraphicConfiguration() throws IOException {
         File f = new File("graphic_configuration.txt");
         if(!f.exists()) {
@@ -137,17 +109,5 @@ public class Environment {
         File f = new File("bought_features.txt");
         ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(f));
         writer.writeObject(BOUGHT_FEATURES);
-    }
-    
-    private enum SKINS {
-        DEFAULT,
-        SKIN_1,
-        SKIN_2;
-    }
-    
-    private enum BACKGROUNDS {
-        DEFAULT,
-        BACKGROUND_1,
-        BACKGROUND_2;
     }
 }
