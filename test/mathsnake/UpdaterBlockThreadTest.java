@@ -19,7 +19,7 @@ public class UpdaterBlockThreadTest {
         
     @Test
     public void testRunThread(){
-        UpdaterBlockThread updaterBlockRunnable = new UpdaterBlockThread(new Snake());
+        UpdaterThread updaterBlockRunnable = new UpdaterThread(new Snake());
         Thread updaterBlockThread = new Thread(updaterBlockRunnable);
         updaterBlockThread.start();
         assertEquals(updaterBlockRunnable.isStop(), false); //verify is thread is running
@@ -28,7 +28,7 @@ public class UpdaterBlockThreadTest {
     
     @Test
     public void stopTest(){
-        UpdaterBlockThread updaterBlockRunnable = new UpdaterBlockThread(new Snake());
+        UpdaterThread updaterBlockRunnable = new UpdaterThread(new Snake());
         Thread updaterBlockThread = new Thread(updaterBlockRunnable);
         updaterBlockThread.start();
         updaterBlockRunnable.stopThread();
@@ -37,7 +37,7 @@ public class UpdaterBlockThreadTest {
     
     @Test
     public void updateTest(){
-        UpdaterBlockThread updaterBlockRunnable = new UpdaterBlockThread(new Snake());
+        UpdaterThread updaterBlockRunnable = new UpdaterThread(new Snake());
         Thread updaterBlockThread = new Thread(updaterBlockRunnable);
         BlocksManager blocksmanager = BlocksManager.getInstance();
         Block block = new Block(1, Operation.ADD, 0, 0);

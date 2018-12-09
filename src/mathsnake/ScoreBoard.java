@@ -1,120 +1,49 @@
 package mathsnake;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.CardLayout;
+import java.awt.Color;
+import static java.awt.Color.white;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.table.DefaultTableModel;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JLabel;
 
-public class ScoreBoard extends JPanel {
+/**
+ *
+ * @author VALE
+ */
+public class ScoreBoard extends javax.swing.JPanel {
 
-    private JLabel jLabel1;
-    private JScrollPane jScrollPane1;
-    private JTable jTable2;
-    private JButton backButton;
 
-    public ScoreBoard() {
+    public ScoreBoard() throws IOException, FileNotFoundException, ClassNotFoundException {
         initComponents();
     }
-
-    private void initComponents() {
-
-        jLabel1 = new JLabel();
-        jScrollPane1 = new JScrollPane();
-        jTable2 = new JTable();
-        backButton = new JButton();
-
-        setBackground(Color.BLACK);
-        setForeground(Color.WHITE);
-        setPreferredSize(new Dimension(500, 500));
-
-        jLabel1.setFont(new Font("Arial", 1, 40)); // NOI18N
-        jLabel1.setForeground(Color.WHITE);
-        jLabel1.setText("SCOREBOARD");
-
-        jScrollPane1.setMinimumSize(new Dimension(450, 450));
-        jScrollPane1.setPreferredSize(new Dimension(450, 450));
-
-        jTable2.setBackground(Color.BLACK);
-        jTable2.setFont(new Font("Arial", 1, 20)); // NOI18N
-        jTable2.setModel(new DefaultTableModel(
-                new Object[][]{
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null}
-                },
-                new String[]{
-                    "Player Name", "Score", "Date"
-                }
-        ));
-        jTable2.setAutoscrolls(false);
-        jTable2.setFocusable(false);
-        jTable2.setGridColor(Color.BLACK);
-        jScrollPane1.setViewportView(jTable2);
-
-        backButton.setFont(new Font("Arial", 1, 20)); // NOI18N
-        backButton.setText("Back");
-        addListeners();
-
-        GroupLayout layout = new GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addGap(99, 99, 99)
-                                .addComponent(jLabel1)
-                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGap(0, 0, Short.MAX_VALUE)
-                                                .addComponent(backButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap(20, Short.MAX_VALUE)
-                                .addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 340, GroupLayout.PREFERRED_SIZE)
-                                .addGap(16, 16, 16)
-                                .addComponent(backButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18))
-        );
-    }
-
-    private void addListeners() {
-        backButton.addActionListener(new ActionListener() {
+    
+    private void initComponents(){
+        addFocusListener(new FocusListener(){
             @Override
-            public void actionPerformed(ActionEvent e) {
-                MathSnake.state = GameState.MENU;
-                CardLayout cl = MathSnake.getInstance().getCardLayout();
-                cl.show(MathSnake.getInstance().getCardsJPanel(), "menu");
+            public void focusGained(FocusEvent e){
+                removeAll();
+                createScoreBoard();
+                for(Component component : getComponents()) {
+                    if(component instanceof JLabel || component instanceof javax.swing.JTextArea )
+                        component.setForeground(Environment.getInstance().WRITECOLOR);
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                //DO NOTHING
             }
         });
+        
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentShown(ComponentEvent e) {
@@ -123,4 +52,100 @@ public class ScoreBoard extends JPanel {
         });
     }
 
+
+   @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        new Background(Environment.getInstance().PATHBACKGROUND).drawBackground(g);
+    }
+                         
+    private void createScoreBoard() {
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        
+        try {
+            SB = new ScoreBoard2();
+          
+        } catch (IOException ex) {
+            Logger.getLogger(ScoreBoard.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ScoreBoard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Font font1 =new Font("Arial", Font.BOLD, 16);
+        setPreferredSize(new java.awt.Dimension(500, 500));
+        setSize(new java.awt.Dimension(500, 500));
+
+        jTextArea1.setOpaque(false);
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jTextArea1.setForeground(Environment.getInstance().WRITECOLOR);
+        jScrollPane1.setViewportView(jTextArea1);
+        /**try {
+            jTextArea1.setText(SB.toStringFromDat());
+        } catch (IOException ex) {
+            Logger.getLogger(ScoreBoard.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ScoreBoard.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+        jTextArea1.setText(SB.toString());
+        jTextArea1.setEditable(false);
+        jTextArea1.setFont(font1);
+        jScrollPane1.getViewport().setOpaque(false);
+        jScrollPane1.setOpaque(false);
+        jScrollPane1.setBorder(null);
+        jButton1.setText("Back");
+        jButton1.setFont(new java.awt.Font("Arial",1,20));
+        jButton1.addActionListener(this::jButton1ActionPerformed);
+
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 40)); // NOI18N
+        jLabel1.setForeground(Environment.getInstance().WRITECOLOR);
+        jLabel1.setText("SCOREBOARD");
+        
+        jLabel1.setHorizontalAlignment( JLabel.CENTER );
+        
+        
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22))
+        );
+    }                      
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+     
+                CardLayout cl = MathSnake.getInstance().getCardLayout();
+                cl.show(MathSnake.getInstance().getCardsJPanel(), "menu");
+    }                                        
+
+
+                   
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
+    private ScoreBoard2 SB;                 
 }

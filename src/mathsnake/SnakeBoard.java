@@ -1,12 +1,15 @@
 package mathsnake;
 
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,32 +17,36 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-
-
-public class SnakeBoard extends JPanel implements ActionListener {
+public class SnakeBoard extends JPanel implements Runnable {
     
     private STATE state = STATE.COUNTDOWN;
     
-    private Timer repaintTimer = new Timer(Environment.DELAY, this);
     private Timer countdownTimer;
     private int secondsLeft = 3;
     private JLabel countdown = new JLabel(Integer.toString(secondsLeft));
     private Image ball;
     private Image head;
+    private Image shield_small;
+    private Image yellow_dot;
+    private Image small_coins;
+    private Image grey_dot;
+    private CoinsSaver coinsSaver = new CoinsSaver();
     private final Snake snake = new Snake();
+    private double snakeSpeed = 300;
+    private boolean leftPressed = false;
+    private boolean rightPressed = false;
+    private double downSpeed = Environment.getInstance().STARTDOWNSPEED; //define velocity of block and power ups
+    private int gameBest = Environment.getInstance().STARTLIFEPOINTS;
+    private ConstructorThread constructorThread = new ConstructorThread(snake);
+    private Thread CThread = new Thread(constructorThread);
+    private boolean stop = false;
+    private boolean pause = false;
+    private Background background;
     
-    private int gameBest = Environment.STARTLIFEPOINTS;
-    private ConstructorBlockThread constructorBlockThread = new ConstructorBlockThread(snake);
-    private UpdaterBlockThread updaterBlockThread = new UpdaterBlockThread(snake);
-    private Thread CBThread = new Thread(constructorBlockThread);
-    private Thread UBThread = new Thread(updaterBlockThread);
-
     public SnakeBoard() {
         initSnakeBoard();
     }
@@ -57,9 +64,9 @@ public class SnakeBoard extends JPanel implements ActionListener {
     }
     
     private void initSnakeBoard() {
-        setBackground(Color.WHITE);
+        background = new Background(Environment.getInstance().PATHBACKGROUND);
         setFocusable(true);
-        setPreferredSize(new Dimension(Environment.JP_WIDTH, Environment.JP_HEIGHT));
+        setPreferredSize(new Dimension(Environment.getInstance().JP_WIDTH, Environment.getInstance().JP_HEIGHT));
         setLayout(new GridBagLayout());
         loadImages();
         initGame();
@@ -68,14 +75,16 @@ public class SnakeBoard extends JPanel implements ActionListener {
     }
    
     private void loadImages() {
-        ball = snake.loadImage(Environment.PATHIMAGES + "dot.png");
-        head = snake.loadImage(Environment.PATHIMAGES + "smiling.png");
+        ball = snake.loadImage(Environment.getInstance().PATHSKIN);
+        shield_small = snake.loadImage(Environment.getInstance().PATHIMAGES + "shield_small.png");
+        yellow_dot = snake.loadImage(Environment.getInstance().PATHIMAGES + "yellow_dot.png");
+        small_coins = snake.loadImage(Environment.getInstance().PATHIMAGES + "small_retro_coins.png");
+        grey_dot = snake.loadImage(Environment.getInstance().PATHIMAGES + "grey_dot.png");
     }
     
     private void initGame() {
         // Viene inizializzato il timer necessario per i repaint
-        repaintTimer = new Timer(Environment.DELAY, this);
-        repaintTimer.start();
+        new Thread(this).start();
     }
 
     @Override
@@ -85,73 +94,166 @@ public class SnakeBoard extends JPanel implements ActionListener {
         Toolkit.getDefaultToolkit().sync();
     }
     
+    @Override
+    public void run(){
+        long beforeTime, delta, sleep; 
+        beforeTime = System.currentTimeMillis();
+        while(!stop){
+            if(!pause){
+                if (hasFocus() && state == STATE.COUNTDOWN) {
+                if(!countdownTimer.isRunning()) {
+                    countdown();
+                    countdownTimer.start();
+                }
+                background = new Background(Environment.getInstance().PATHBACKGROUND);
+            }
+            if (hasFocus() && state == STATE.IN_GAME) {
+                if(!CThread.isAlive()){
+                    initialState();
+                    constructorThread = new ConstructorThread(snake);
+                    CThread = new Thread(constructorThread);
+                    CThread.start();
+                }
+            }
+            if(state == STATE.IN_GAME){
+                checkCollision();
+                snake.move();
+                double ds = determineDownSpeed();
+                this.moveBlocks(ds);
+                this.movePowerUps(ds);
+                this.moveCoins(ds);
+                background.move(ds/2);
+                snake.setHorizontalMovement(0);	
+                if ((leftPressed) && (!rightPressed)) {
+                    snake.setHorizontalMovement(-snakeSpeed);
+                } else if ((rightPressed) && (!leftPressed)) {
+                    snake.setHorizontalMovement(snakeSpeed);
+                }
+            }
+            repaint();
+            }
+            delta = System.currentTimeMillis() - beforeTime;
+            sleep = Environment.getInstance().DELAY - delta;
+
+            if (sleep < 0) {
+                sleep = 2;
+            }
+
+            try {
+                Thread.sleep(sleep);
+            } catch (InterruptedException e) {
+                System.out.println("interrupted");
+            }            
+            beforeTime = System.currentTimeMillis();
+        }
+    }
+    
     private void doDrawing(Graphics g) {
-        int numDots = snake.getDots();
-        int x = snake.getX();
-        int[] yVector = snake.getY();
-     
+        double[] xVector = snake.getX();
+        double[] yVector = snake.getY();
+        //DRAWING BACKGROUND
+        this.background.drawBackground(g);
         switch (state) {
             case COUNTDOWN:
                 countdown.setText(Integer.toString(secondsLeft));
                 checkCountdown();
                 break;
             case IN_GAME:
+                //The rendering hints are used to make the drawing smooth
+                RenderingHints rh= new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                ((Graphics2D) g).setRenderingHints(rh);
+                //DRAWING SNAKE
+                for (int z = 0; z < Environment.getInstance().DOT_NUM - 1; z++){
+                    if(snake.isSpeedUped())
+                        g.drawImage(this.yellow_dot, (int)xVector[z], (int)yVector[z], this);
+                    if(snake.isShielded()){
+                      g.drawImage(this.grey_dot, (int)xVector[z], (int)yVector[z], this);
+                       g.drawImage(this.shield_small, (int)xVector[z], (int)yVector[z], this);
+                    }
+                    if(!(snake.isShielded() || snake.isSpeedUped()))
+                        g.drawImage(this.ball, (int)xVector[z], (int)yVector[z], this);
+                }
+                if(snake.isShielded())
+                    g.drawImage(grey_dot, (int)xVector[Environment.getInstance().DOT_NUM-1], (int)yVector[Environment.getInstance().DOT_NUM - 1], this);
+                if(snake.isSpeedUped())
+                    g.drawImage(yellow_dot, (int)xVector[Environment.getInstance().DOT_NUM-1], (int)yVector[Environment.getInstance().DOT_NUM - 1], this);
+                if(!(snake.isShielded() || snake.isSpeedUped()))
+                    g.drawImage(ball, (int)xVector[Environment.getInstance().DOT_NUM-1], (int)yVector[Environment.getInstance().DOT_NUM - 1], this);
+                g.setFont(new Font("Arial", Font.BOLD, 15));
+                g.setColor(Environment.getInstance().WRITECOLOR);
+                g.drawString(Integer.toString(snake.getLife()), (int)xVector[Environment.getInstance().DOT_NUM-1] + 20, (int)yVector[Environment.getInstance().DOT_NUM - 1] + 10);
                 //DRAWING BLOCK
                 BlocksManager blocksManager = BlocksManager.getInstance();
                 for(int i = 0; i < blocksManager.numBlocks(); i++){
                     Block b = blocksManager.getBlock(i);
                     b.printBlock(g);
                 }
-
-                for (int z = 0; z < numDots - 1; z++){
-                    g.drawImage(ball, x, yVector[z], this);
+                //DRAWING POWER UPS
+                PowerUpsManager powerUpsManager= PowerUpsManager.getInstance();
+                for(int i = 0; i<powerUpsManager.powerUpsnums(); i++){
+                    PowerUps p = powerUpsManager.getPowerUps(i);
+                    p.drawPowerUps(g);
                 }
-                g.drawImage(head, x, yVector[numDots - 1], this);
-
-                g.setColor(Color.black);
-                g.drawString(Integer.toString(snake.getLife()), x + 15, yVector[numDots - 1] + 10);
-
-
-                Font font = new Font("Arial", Font.BOLD, 14);
+                //DRAWING COINS
+                CoinsManager coinsManager = CoinsManager.getInstance();
+                for(int i = 0; i<coinsManager.numCoins(); i++){
+                    Coin c = coinsManager.getCoin(i);
+                    c.drawCoin(g);
+                }
+                Font font = new Font("Arial", Font.BOLD, 16);
                 FontMetrics metrics = g.getFontMetrics(font);
                 g.setFont(font);
-                g.setColor(Color.black);
-                String text = "CURRENT BEST : NULL"; //Dovrà mostrare il miglior punteggio della Scoreboard
-                g.drawString("CURRENT BEST : NULL", Environment.JP_WIDTH - (10 + metrics.stringWidth(text)), 20); 
-
-                text = "GAME BEST : " + Integer.toString(gameBest);
+                g.setColor(Environment.getInstance().WRITECOLOR);                    
+                String text = "SCORE : " + Integer.toString(gameBest);
                 g.setFont(font);
-                g.setColor(Color.black);
-                g.drawString("GAME BEST : " + Integer.toString(gameBest), Environment.JP_WIDTH - (10 + metrics.stringWidth(text)), 20 + metrics.getHeight());
+                g.setColor(Environment.getInstance().WRITECOLOR);
+                int textX = Environment.getInstance().JP_WIDTH - (10 + metrics.stringWidth(text));
+                int textY = 20 + metrics.getHeight();
+                g.drawString(text, textX, textY);
+                String textCoin = "x"+coinsSaver.getCurrentCoins();
+                font = new Font("Arial", Font.BOLD, 18);
+                g.setFont(font);
+                metrics = g.getFontMetrics(font);
+                int textCoinX = Environment.getInstance().JP_WIDTH - (10 + metrics.stringWidth(textCoin));
+                int imgX = textCoinX - this.small_coins.getWidth(null);;
+                int imgY = textY + 10;
+                int textCoinY = imgY + ((this.small_coins.getHeight(null) - metrics.getHeight()) / 2) + metrics.getAscent();;
+                g.drawString(textCoin, textCoinX, textCoinY);
+                g.drawImage(this.small_coins, imgX, imgY, null);
                 break;
             case GAMEOVER:
-                //da implementare
-                gameOver(g);
+                gameOver();
                 break;
             default:
                 break;
         }
     }
 
-    private void gameOver(Graphics g) {
-        // da implementare
-        String msg = "Game Over";
-        Font small = new Font("Helvetica", Font.BOLD, 14);
-        FontMetrics metr = getFontMetrics(small);
-
-        g.setColor(Color.white);
-        g.setFont(small);
-        g.drawString(msg, (Environment.JP_WIDTH - metr.stringWidth(msg)) / 2, Environment.JP_HEIGHT / 2);
+    private void gameOver() {
+        constructorThread.stopThread();
+        long endTime = System.currentTimeMillis() + 1000;
+        while(System.currentTimeMillis() != endTime) {
+            // Wait 1 second
+        }
+        coinsSaver.saveCoins();
+        //RESTART BACKGROUND
+        background = new Background(Environment.getInstance().PATHBACKGROUND);
+        CardLayout cl = MathSnake.getInstance().getCardLayout();
+        cl.show(MathSnake.getInstance().getCardsJPanel(), "gameOver");
+        this.secondsLeft = 3;
+        state = STATE.COUNTDOWN;
     }
     
     private void countdown() {
         countdown.setFont(new Font("Arial", Font.BOLD, 100));
-        countdown.setForeground(Color.BLACK);
+        countdown.setForeground(Environment.getInstance().WRITECOLOR);
         add(countdown);
         countdownTimer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                secondsLeft--;
+                if(hasFocus() && secondsLeft > 0)
+                    secondsLeft--;
             }
         });
     }
@@ -166,9 +268,14 @@ public class SnakeBoard extends JPanel implements ActionListener {
     
     private void checkCollision(){
         BlocksManager blocksManager = BlocksManager.getInstance();
+        PowerUpsManager powerUpsManager = PowerUpsManager.getInstance();
+        CoinsManager coinsManager = CoinsManager.getInstance();
         Block b;
+        PowerUps p;
+        Coin c;
            
         if (state == STATE.IN_GAME){
+            //COLLISIONS WITH BLOCK
             for(int y=0; y<blocksManager.numBlocks(); y++){
                 b = blocksManager.getBlock(y);
                 if(snake.collide(b.getAssociatedRectangle())){     //check if snake's head collide with block's rectangle
@@ -176,8 +283,34 @@ public class SnakeBoard extends JPanel implements ActionListener {
                     blocksManager.removeBlock(b);
                     y--; //decrease y by one because when a block is eliminated the other blocks in list are shifted by one to left, so the next element to check is y again
                 }
-                if(b.getY() > Environment.JP_HEIGHT){   //check if the block is visibile on the screen, if is not the block is removed
+                if(b.getY() > Environment.getInstance().JP_HEIGHT){   //check if the block is visibile on the screen, if is not the block is removed
                     blocksManager.removeBlock(b);
+                    y--;
+                }
+            }
+            //COLLISIONS WITH POWER UPS
+            for(int y=0; y<powerUpsManager.powerUpsnums(); y++){
+                p = powerUpsManager.getPowerUps(y);
+                if(snake.collide(p.getAssociatedRectangle())){
+                    p.action(snake);
+                    powerUpsManager.removePowerUps(p);
+                    y--;
+                }
+                if(p.getY() > Environment.getInstance().JP_HEIGHT){
+                    powerUpsManager.removePowerUps(p);
+                    y--;
+                }
+            }
+            //COLLISION WITH COINS
+            for(int y = 0; y<coinsManager.numCoins(); y++){
+                c = coinsManager.getCoin(y);
+                if(snake.collide(c.getAssociatedRectangle())){
+                    coinsSaver.setCurrentCoins(coinsSaver.getCurrentCoins()+1);
+                    coinsManager.removeCoin(c);
+                    y--;
+                }
+                if(c.getY() > Environment.getInstance().JP_HEIGHT){
+                    coinsManager.removeCoin(c);
                     y--;
                 }
             }
@@ -186,28 +319,80 @@ public class SnakeBoard extends JPanel implements ActionListener {
     
     private void changeLife(String op, int value, Snake snake){
         int actualLife = snake.getLife();
+        
 
-        if (op.equals("+")){
+        if (op.equals("+"))
             snake.setLife(actualLife + value);
-        }
-        if (op.equals("x")){
+        if (op.equals("x"))
             snake.setLife(actualLife * value);
-        }
-        if (op.equals("-")){
+        if (op.equals("-"))
             snake.setLife(actualLife - value);
-        }
-        if (op.equals("/")){
+        if (op.equals("/"))
             snake.setLife(actualLife / value);
-        }
         
         actualLife = snake.getLife();
-        if (actualLife < 0){
+        if (actualLife < 0)
             snake.setLife(0);
-        } else{
-            if (actualLife > gameBest){
+        else {
+            if (actualLife > gameBest)
                 gameBest = actualLife;
+        }
+        if (snake.getLife() == 0)
+            state = STATE.GAMEOVER;
+        
+    }
+    
+    private void initialState() {
+        BlocksManager.getInstance().flush();
+        PowerUpsManager.getInstance().flush();
+        loadImages();
+        
+        this.leftPressed = false;
+        this.rightPressed = false;
+        coinsSaver = new CoinsSaver();
+        snake.setLife(10);
+        gameBest = 0;
+    }
+    
+    private void moveBlocks(double ds){
+        BlocksManager bm = BlocksManager.getInstance();
+        for(int i=0; i<bm.numBlocks(); i++){
+            bm.getBlock(i).move(ds);
+        }
+    }  
+    
+    private void movePowerUps(double ds){
+        PowerUpsManager pm = PowerUpsManager.getInstance();
+        for(int i=0; i< pm.powerUpsnums(); i++){
+            pm.getPowerUps(i).move(ds);
+        }
+    }
+    
+    private void moveCoins(double ds){
+        CoinsManager cm = CoinsManager.getInstance();
+        for(int i = 0; i< cm.numCoins(); i++){
+            cm.getCoin(i).move(ds);
+        }
+    }
+    
+    private double determineDownSpeed(){
+        if (snake.getLife() < Environment.getInstance().LIFEINCREASING){
+            return this.downSpeed;
+        }
+        else {
+            int actualShift = (snake.getLife())/Environment.getInstance().LIFEINCREASING;
+            if (actualShift > (Environment.getInstance().MAXINCREMENT)){
+                return this.downSpeed + Environment.getInstance().MAXVELOCITYSHIFT;
+            }
+            else {
+                int actualDown = (Environment.getInstance().MAXVELOCITYSHIFT/Environment.getInstance().MAXINCREMENT)*actualShift;
+                return this.downSpeed + actualDown;
             }
         }
+    }
+    
+    public void stop(){
+        this.stop = true;
     }
     
     private void addListeners() {
@@ -215,32 +400,37 @@ public class SnakeBoard extends JPanel implements ActionListener {
             @Override
             public void keyPressed(KeyEvent e) {
                 int key = e.getKeyCode();
-                if ((key == KeyEvent.VK_LEFT) && (!snake.isMovingRight()) && state == STATE.IN_GAME) {
-                    snake.setLeftDirection(true);
-                    snake.setRightDirection(false);
+                if (e.getKeyCode() == KeyEvent.VK_LEFT && state == STATE.IN_GAME) {
+                    leftPressed = true;
                 }
-
-                if ((key == KeyEvent.VK_RIGHT) && (!snake.isMovingLeft()) && state == STATE.IN_GAME) {
-                    snake.setLeftDirection(false);
-                    snake.setRightDirection(true);
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT && state == STATE.IN_GAME) {
+                    rightPressed = true;
                 }
                 if (key == KeyEvent.VK_P)
-                    if(state == STATE.IN_GAME) {
+                    if(state == STATE.IN_GAME){
                         state = STATE.PAUSE;
-                        repaintTimer.stop();
-                        constructorBlockThread.stopThread();
-                        updaterBlockThread.stopThread();
+                        pause = true;
+                        constructorThread.stopThread();
                     }
-                    else if(state == STATE.PAUSE) {
+                    else if(state == STATE.PAUSE){
                         state = STATE.IN_GAME;
-                        repaintTimer.start();
-                        constructorBlockThread = new ConstructorBlockThread(snake);
-                        updaterBlockThread = new UpdaterBlockThread(snake);
-                        CBThread = new Thread(constructorBlockThread);
-                        UBThread = new Thread(updaterBlockThread);
-                        CBThread.start();
-                        UBThread.start();
+                        pause = false;
+                        constructorThread = new ConstructorThread(snake);
+                        CThread = new Thread(constructorThread);
+                        CThread.start();
                     }
+            }
+            
+            @Override
+            public void keyReleased(KeyEvent e) {
+                int key = e.getKeyCode();
+                if ((key == KeyEvent.VK_LEFT) && state == STATE.IN_GAME){
+                    leftPressed = false;   
+                }
+                if ((key == KeyEvent.VK_RIGHT) && state == STATE.IN_GAME){
+                    rightPressed = false;   
+                }
+                
             }
         });
         addComponentListener(new ComponentAdapter() {
@@ -251,30 +441,10 @@ public class SnakeBoard extends JPanel implements ActionListener {
         });
     }
     
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (hasFocus()) {
-            if(!countdownTimer.isRunning()) {
-                countdownTimer.start();
-            }
-        }
-        if (hasFocus() && state == STATE.IN_GAME) {
-            if(!CBThread.isAlive() && !UBThread.isAlive()) {
-                CBThread.start();
-                UBThread.start();
-            }
-        }
-        if (state == STATE.IN_GAME) {
-            try {
-                snake.move();
-                checkCollision();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(SnakeBoard.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        repaint();
+    public int getGameBest() {
+        return gameBest;
     }
-     
+    
     private enum STATE {
         COUNTDOWN,
         IN_GAME,

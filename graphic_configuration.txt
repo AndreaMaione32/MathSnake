@@ -1,0 +1,3 @@
+base_background.png
+-16777216
+red_dot.png
