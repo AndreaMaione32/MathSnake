@@ -41,14 +41,16 @@ public class SnakeBoard extends JPanel implements Runnable {
     private boolean rightPressed = false;
     private double downSpeed = Environment.getInstance().STARTDOWNSPEED; //define velocity of block and power ups
     private int gameBest = Environment.getInstance().STARTLIFEPOINTS;
-    private ConstructorThread constructorThread = new ConstructorThread(snake);
+    private ConstructorThread constructorThread;
     private Thread CThread = new Thread(constructorThread);
     private boolean stop = false;
     private boolean pause = false;
     private Background background;
+    private final SnakeBoard instance;
     
     public SnakeBoard() {
         initSnakeBoard();
+        this.instance = this;
     }
 
     public Image getBall() {
@@ -64,6 +66,7 @@ public class SnakeBoard extends JPanel implements Runnable {
     }
     
     private void initSnakeBoard() {
+        setBackground(Color.WHITE);
         background = new Background(Environment.getInstance().PATHBACKGROUND);
         setFocusable(true);
         setPreferredSize(new Dimension(Environment.getInstance().JP_WIDTH, Environment.getInstance().JP_HEIGHT));
@@ -110,7 +113,7 @@ public class SnakeBoard extends JPanel implements Runnable {
             if (hasFocus() && state == STATE.IN_GAME) {
                 if(!CThread.isAlive()){
                     initialState();
-                    constructorThread = new ConstructorThread(snake);
+                    constructorThread = new ConstructorThread(instance);
                     CThread = new Thread(constructorThread);
                     CThread.start();
                 }
@@ -119,9 +122,7 @@ public class SnakeBoard extends JPanel implements Runnable {
                 checkCollision();
                 snake.move();
                 double ds = determineDownSpeed();
-                this.moveBlocks(ds);
-                this.movePowerUps(ds);
-                this.moveCoins(ds);
+                this.moveElements(determineDownSpeed());
                 background.move(ds/2);
                 snake.setHorizontalMovement(0);	
                 if ((leftPressed) && (!rightPressed)) {
@@ -183,23 +184,11 @@ public class SnakeBoard extends JPanel implements Runnable {
                 g.setFont(new Font("Arial", Font.BOLD, 15));
                 g.setColor(Environment.getInstance().WRITECOLOR);
                 g.drawString(Integer.toString(snake.getLife()), (int)xVector[Environment.getInstance().DOT_NUM-1] + 20, (int)yVector[Environment.getInstance().DOT_NUM - 1] + 10);
-                //DRAWING BLOCK
-                BlocksManager blocksManager = BlocksManager.getInstance();
-                for(int i = 0; i < blocksManager.numBlocks(); i++){
-                    Block b = blocksManager.getBlock(i);
-                    b.printBlock(g);
-                }
-                //DRAWING POWER UPS
-                PowerUpsManager powerUpsManager= PowerUpsManager.getInstance();
-                for(int i = 0; i<powerUpsManager.powerUpsnums(); i++){
-                    PowerUps p = powerUpsManager.getPowerUps(i);
-                    p.drawPowerUps(g);
-                }
-                //DRAWING COINS
-                CoinsManager coinsManager = CoinsManager.getInstance();
-                for(int i = 0; i<coinsManager.numCoins(); i++){
-                    Coin c = coinsManager.getCoin(i);
-                    c.drawCoin(g);
+                //DRAW ELEMENT
+                ElementManager elementManager = ElementManager.getInstance();
+                for(int i = 0; i<elementManager.numElements(); i++){
+                    DownElement d = elementManager.getElement(i);
+                    d.draw(g);
                 }
                 Font font = new Font("Arial", Font.BOLD, 16);
                 FontMetrics metrics = g.getFontMetrics(font);
@@ -267,84 +256,25 @@ public class SnakeBoard extends JPanel implements Runnable {
     }
     
     private void checkCollision(){
-        BlocksManager blocksManager = BlocksManager.getInstance();
-        PowerUpsManager powerUpsManager = PowerUpsManager.getInstance();
-        CoinsManager coinsManager = CoinsManager.getInstance();
-        Block b;
-        PowerUps p;
-        Coin c;
-           
+        ElementManager elementManager = ElementManager.getInstance();
         if (state == STATE.IN_GAME){
-            //COLLISIONS WITH BLOCK
-            for(int y=0; y<blocksManager.numBlocks(); y++){
-                b = blocksManager.getBlock(y);
-                if(snake.collide(b.getAssociatedRectangle())){     //check if snake's head collide with block's rectangle
-                    changeLife(b.getStrOp(), b.getValue(), snake);
-                    blocksManager.removeBlock(b);
+            for(int y=0; y<elementManager.numElements(); y++){
+                DownElement de = elementManager.getElement(y);
+                if(snake.collide(de.getAssociatedRectangle())){     //check if snake's head collide with block's rectangle
+                    de.collsionAction(this);
+                    elementManager.removeElement(de);
                     y--; //decrease y by one because when a block is eliminated the other blocks in list are shifted by one to left, so the next element to check is y again
                 }
-                if(b.getY() > Environment.getInstance().JP_HEIGHT){   //check if the block is visibile on the screen, if is not the block is removed
-                    blocksManager.removeBlock(b);
-                    y--;
-                }
-            }
-            //COLLISIONS WITH POWER UPS
-            for(int y=0; y<powerUpsManager.powerUpsnums(); y++){
-                p = powerUpsManager.getPowerUps(y);
-                if(snake.collide(p.getAssociatedRectangle())){
-                    p.action(snake);
-                    powerUpsManager.removePowerUps(p);
-                    y--;
-                }
-                if(p.getY() > Environment.getInstance().JP_HEIGHT){
-                    powerUpsManager.removePowerUps(p);
-                    y--;
-                }
-            }
-            //COLLISION WITH COINS
-            for(int y = 0; y<coinsManager.numCoins(); y++){
-                c = coinsManager.getCoin(y);
-                if(snake.collide(c.getAssociatedRectangle())){
-                    coinsSaver.setCurrentCoins(coinsSaver.getCurrentCoins()+1);
-                    coinsManager.removeCoin(c);
-                    y--;
-                }
-                if(c.getY() > Environment.getInstance().JP_HEIGHT){
-                    coinsManager.removeCoin(c);
+                if(de.getY() > Environment.getInstance().JP_HEIGHT){   //check if the block is visibile on the screen, if is not the block is removed
+                    elementManager.removeElement(de);
                     y--;
                 }
             }
         }        
     }
     
-    private void changeLife(String op, int value, Snake snake){
-        int actualLife = snake.getLife();
-        
-
-        if (op.equals("+"))
-            snake.setLife(actualLife + value);
-        if (op.equals("x"))
-            snake.setLife(actualLife * value);
-        if (op.equals("-"))
-            snake.setLife(actualLife - value);
-        if (op.equals("/"))
-            snake.setLife(actualLife / value);
-        
-        actualLife = snake.getLife();
-        if (actualLife < 0)
-            snake.setLife(0);
-        else {
-            if (actualLife > gameBest)
-                gameBest = actualLife;
-        }
-        if (snake.getLife() == 0)
-            state = STATE.GAMEOVER;
-        
-    }
-    
     private void initialState() {
-        BlocksManager.getInstance().flush();
-        PowerUpsManager.getInstance().flush();
+        ElementManager.getInstance().flush();
         loadImages();
         
         this.leftPressed = false;
@@ -354,33 +284,19 @@ public class SnakeBoard extends JPanel implements Runnable {
         gameBest = 0;
     }
     
-    private void moveBlocks(double ds){
-        BlocksManager bm = BlocksManager.getInstance();
-        for(int i=0; i<bm.numBlocks(); i++){
-            bm.getBlock(i).move(ds);
+    private void moveElements(double ds){
+        ElementManager em = ElementManager.getInstance();
+        for(int i=0; i<em.numElements(); i++){
+            em.getElement(i).move(ds);
         }
     }  
     
-    private void movePowerUps(double ds){
-        PowerUpsManager pm = PowerUpsManager.getInstance();
-        for(int i=0; i< pm.powerUpsnums(); i++){
-            pm.getPowerUps(i).move(ds);
-        }
-    }
-    
-    private void moveCoins(double ds){
-        CoinsManager cm = CoinsManager.getInstance();
-        for(int i = 0; i< cm.numCoins(); i++){
-            cm.getCoin(i).move(ds);
-        }
-    }
-    
     private double determineDownSpeed(){
-        if (snake.getLife() < Environment.getInstance().LIFEINCREASING){
+        if (this.gameBest < Environment.getInstance().LIFEINCREASING){
             return this.downSpeed;
         }
         else {
-            int actualShift = (snake.getLife())/Environment.getInstance().LIFEINCREASING;
+            int actualShift = (this.gameBest)/Environment.getInstance().LIFEINCREASING;
             if (actualShift > (Environment.getInstance().MAXINCREMENT)){
                 return this.downSpeed + Environment.getInstance().MAXVELOCITYSHIFT;
             }
@@ -389,10 +305,6 @@ public class SnakeBoard extends JPanel implements Runnable {
                 return this.downSpeed + actualDown;
             }
         }
-    }
-    
-    public void stop(){
-        this.stop = true;
     }
     
     private void addListeners() {
@@ -415,7 +327,7 @@ public class SnakeBoard extends JPanel implements Runnable {
                     else if(state == STATE.PAUSE){
                         state = STATE.IN_GAME;
                         pause = false;
-                        constructorThread = new ConstructorThread(snake);
+                        constructorThread = new ConstructorThread(instance);
                         CThread = new Thread(constructorThread);
                         CThread.start();
                     }
@@ -444,8 +356,33 @@ public class SnakeBoard extends JPanel implements Runnable {
     public int getGameBest() {
         return gameBest;
     }
+
+    public CoinsSaver getCoinsSaver() {
+        return coinsSaver;
+    }
+
+    public void setCoinsSaver(CoinsSaver coinsSaver) {
+        this.coinsSaver = coinsSaver;
+    }
+
+    public STATE getState() {
+        return state;
+    }
+
+    public void setState(STATE state) {
+        this.state = state;
+    }
+
+    public void setGameBest(int gameBest) {
+        this.gameBest = gameBest;
+    }
     
-    private enum STATE {
+    
+    public void stop(){
+        this.stop = true;
+    }
+    
+    public enum STATE {
         COUNTDOWN,
         IN_GAME,
         PAUSE,
