@@ -2,15 +2,14 @@ package mathsnake;
 
 import java.awt.Image;
 
-public class PowerUpsIncreaseLife extends PowerUps {
+public class PowerUpsIncreaseLife extends DownElement {
    
     public PowerUpsIncreaseLife(int x, int y){
-        super(x, y);
-        this.img = this.loadImage(Environment.getInstance().PATHIMAGES+"heart.png");
+        super(x, y, Environment.getInstance().PATHIMAGES+"heart.png");
     }
-
+    
     @Override
-    public void action(Snake snake) {
-        snake.setLife(snake.getLife() + 100);  //increases snake's life
+    public void collsionAction(SnakeBoard snakeBoard) {
+        snakeBoard.getSnake().setLife(snakeBoard.getSnake().getLife() + 100);  //increases snake's life
     }
 }

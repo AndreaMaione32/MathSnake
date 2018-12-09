@@ -39,7 +39,7 @@ public class UpdaterBlockThreadTest {
     public void updateTest(){
         UpdaterThread updaterBlockRunnable = new UpdaterThread(new Snake());
         Thread updaterBlockThread = new Thread(updaterBlockRunnable);
-        BlocksManager blocksmanager = BlocksManager.getInstance();
+        ElementManager blocksmanager = ElementManager.getInstance();
         Block block = new Block(1, Operation.ADD, 0, 0);
         int old_y = block.getY();
         blocksmanager.addBlock(block);

@@ -16,14 +16,14 @@ public class BlocksManagerTest {
     
     @Test
     public void testUniqueInstance(){
-        BlocksManager bm1 = BlocksManager.getInstance();
-        BlocksManager bm2 = BlocksManager.getInstance();
+        ElementManager bm1 = ElementManager.getInstance();
+        ElementManager bm2 = ElementManager.getInstance();
         assertSame(bm1,bm2);    //the instance must to be the same
     }
     
     @Test
     public void addTest(){
-    BlocksManager bm = BlocksManager.getInstance();
+    ElementManager bm = ElementManager.getInstance();
     Block b = new Block(1, Operation.ADD,0,0);
     bm.addBlock(b);
     assertTrue(bm.numBlocks() >= 1);  //the block must to be equalst to one at least 
@@ -31,7 +31,7 @@ public class BlocksManagerTest {
     
     @Test
     public void removeTest(){
-        BlocksManager bm = BlocksManager.getInstance();
+        ElementManager bm = ElementManager.getInstance();
         Block b = new Block(1, Operation.ADD,0,0);
         bm.addBlock(b);
         int old_num_blocks = bm.numBlocks();
@@ -41,7 +41,7 @@ public class BlocksManagerTest {
     
     @Test
     public void getTestWithIndex(){
-        BlocksManager bm = BlocksManager.getInstance();
+        ElementManager bm = ElementManager.getInstance();
         Block b = new Block(1, Operation.ADD,0,0);
         bm.addBlock(b);
         Block bGet = bm.getBlock(bm.numBlocks() - 1); //get last block
@@ -50,7 +50,7 @@ public class BlocksManagerTest {
     
     @Test
     public void getTestWith(){
-        BlocksManager bm = BlocksManager.getInstance();
+        ElementManager bm = ElementManager.getInstance();
         Block b = new Block(1, Operation.ADD,0,0);
         bm.addBlock(b);
         Block bGet = bm.getBlock(b);

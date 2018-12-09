@@ -7,53 +7,26 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
-public class Block {
+public class Block extends DownElement {
     private final int value; //indicates the value of operation
     private final Operation op; //indicates the operation
     private Color color;
-    private double x;
-    private double y;
-    private Image img;
-    private Rectangle rectangle;   //Rect associated to Block, it's used to mange collision
     
     public Block(int value, Operation op, int x, int y){
+        super(x,y,defineBlockPathImage(op));
         this.value = value;
         this.op = op;
-        //color = defineColor(op);   //define color accordint to operation
-        if(op == Operation.ADD || op == Operation.MUL){
-            img = this.loadImage(Environment.getInstance().PATHIMAGES+"retro_block_p.png");
-        }
+    }
+    
+    private static String defineBlockPathImage(Operation op){
+        String pathImage = null;
+        if(op == Operation.ADD || op == Operation.MUL)
+            pathImage = Environment.getInstance().PATHIMAGES+"retro_block_p.png";
         if(op == Operation.DEA)
-            img = this.loadImage(Environment.getInstance().PATHIMAGES+"retro_block_d.png");
+            pathImage = Environment.getInstance().PATHIMAGES+"retro_block_d.png";
         if(op == Operation.DIV || op == Operation.SUB)
-            img = this.loadImage(Environment.getInstance().PATHIMAGES+"retro_block_n.png");
-        this.x = x;
-        this.y = y;
-        this.rectangle = new Rectangle(x,y,Environment.getInstance().BLOCK_WIDTH, Environment.getInstance().BLOCK_HEIGHT);
-    }
-    
-    //block must to be thread safe on X and Y, only two fields that can be modify
-    private synchronized void setX(double x) {     
-        this.x = x;
-        rectangle.setLocation((int)x, (int)this.y); //Move also Rectangle assoicated
-    }
-
-    private  synchronized void setY(double y) {   
-        this.y = y;
-        rectangle.setLocation((int)this.x, (int)y);  //Move also Rectangle assoicated
-    }
-
-    public synchronized int getX() {
-        return (int)x;
-    }
-
-    public synchronized int getY() {
-        return (int)y;
-    }
-    
-    public void move(double velocity){
-        double shift = (Environment.getInstance().DELAY * velocity) / 1000; 
-        this.setY(y + shift);
+            pathImage = Environment.getInstance().PATHIMAGES+"retro_block_n.png";
+        return pathImage;
     }
     
     private Color defineColor(Operation op){
@@ -105,24 +78,10 @@ public class Block {
     public Operation getOp() {
         return op;
     }
-
-    public Rectangle getAssociatedRectangle() {
-        return rectangle;
-    }
     
-    public boolean collide(Rectangle rect){        //return true if rect intersect block associated rectangle
-        return this.rectangle.intersects(rect);
-    }
-    
-    protected Image loadImage(String PATH) {
-        ImageIcon iid = new ImageIcon(PATH);
-        Image icon = iid.getImage();
-        return icon;
-    }
-    
-    
-    public void printBlock(Graphics g){ 
-       g.drawImage(this.img, (int) x, (int) y, null);
+    @Override
+    public void draw(Graphics g){ 
+        super.draw(g);
        if(this.op == Operation.DEA){
           Image img_d = this.loadImage(Environment.getInstance().PATHIMAGES+"retro_skull.png");
           int img_d_X = (int)x + (Environment.getInstance().BLOCK_WIDTH - img_d.getWidth(null))/2;
@@ -143,4 +102,30 @@ public class Block {
             g.drawString(text, textX, textY);
        }
    }
+
+    @Override
+    public void collsionAction(SnakeBoard snakeBoard){
+        Snake snake = snakeBoard.getSnake();
+        int actualLife = snake.getLife();
+        String op = this.getStrOp();
+        if (op.equals("+"))
+            snake.setLife(actualLife + value);
+        if (op.equals("x"))
+            snake.setLife(actualLife * value);
+        if (op.equals("-"))
+            snake.setLife(actualLife - value);
+        if (op.equals("/"))
+            snake.setLife(actualLife / value);
+        
+        actualLife = snake.getLife();
+        if (actualLife < 0)
+            snake.setLife(0);
+        else {
+            if (actualLife > snakeBoard.getGameBest())
+                snakeBoard.setGameBest(actualLife);
+        }
+        if (snake.getLife() == 0)
+            snakeBoard.setState(SnakeBoard.STATE.GAMEOVER);
+    }
+    
 }

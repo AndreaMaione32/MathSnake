@@ -39,7 +39,7 @@ public class ConstructorBlockThreadTest {
         ConstructorThread constructorBlockRunnable = new ConstructorThread(new Snake());
         Thread constructorBlockThread = new Thread(constructorBlockRunnable);
         constructorBlockThread.start();
-        BlocksManager blocksmanager = BlocksManager.getInstance();
+        ElementManager blocksmanager = ElementManager.getInstance();
         try {
             Thread.sleep(2*Environment.CREATEBLOCKDELAY);
         } catch (InterruptedException ex) {
