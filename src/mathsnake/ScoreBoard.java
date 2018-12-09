@@ -82,13 +82,6 @@ public class ScoreBoard extends javax.swing.JPanel {
         jTextArea1.setRows(5);
         jTextArea1.setForeground(Environment.getInstance().WRITECOLOR);
         jScrollPane1.setViewportView(jTextArea1);
-        /**try {
-            jTextArea1.setText(SB.toStringFromDat());
-        } catch (IOException ex) {
-            Logger.getLogger(ScoreBoard.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ScoreBoard.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
         jTextArea1.setText(SB.toString());
         jTextArea1.setEditable(false);
         jTextArea1.setFont(font1);

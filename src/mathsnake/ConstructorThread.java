@@ -426,7 +426,7 @@ public class ConstructorThread implements Runnable {
     }
     
     private void createPowerUps(){
-        if(counterPowerUps == 5){   //create power ups every four block creations
+        if(counterPowerUps == 4){   //create power ups every four block creations
         int rand = (int)(Math.random()*10);
         if(rand >= 6){ //powerups is created with probability of 40%
         }
