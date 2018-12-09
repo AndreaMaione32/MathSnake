@@ -66,7 +66,6 @@ public class SnakeBoard extends JPanel implements Runnable {
     }
     
     private void initSnakeBoard() {
-        setBackground(Color.WHITE);
         background = new Background(Environment.getInstance().PATHBACKGROUND);
         setFocusable(true);
         setPreferredSize(new Dimension(Environment.getInstance().JP_WIDTH, Environment.getInstance().JP_HEIGHT));
