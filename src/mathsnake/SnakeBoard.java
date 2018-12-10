@@ -185,9 +185,8 @@ public class SnakeBoard extends JPanel implements Runnable {
                 g.drawString(Integer.toString(snake.getLife()), (int)xVector[Environment.getInstance().DOT_NUM-1] + 20, (int)yVector[Environment.getInstance().DOT_NUM - 1] + 10);
                 //DRAW ELEMENT
                 ElementManager elementManager = ElementManager.getInstance();
-                for(int i = 0; i<elementManager.numElements(); i++){
-                    DownElement d = elementManager.getElement(i);
-                    d.draw(g);
+                for(DownElement e : elementManager){
+                    e.draw(g);
                 }
                 Font font = new Font("Arial", Font.BOLD, 16);
                 FontMetrics metrics = g.getFontMetrics(font);
@@ -257,16 +256,13 @@ public class SnakeBoard extends JPanel implements Runnable {
     private void checkCollision(){
         ElementManager elementManager = ElementManager.getInstance();
         if (state == STATE.IN_GAME){
-            for(int y=0; y<elementManager.numElements(); y++){
-                DownElement de = elementManager.getElement(y);
-                if(snake.collide(de.getAssociatedRectangle())){     //check if snake's head collide with block's rectangle
-                    de.collsionAction(this);
-                    elementManager.removeElement(de);
-                    y--; //decrease y by one because when a block is eliminated the other blocks in list are shifted by one to left, so the next element to check is y again
+            for(DownElement e : elementManager){
+                if(snake.collide(e.getAssociatedRectangle())){     //check if snake's head collide with block's rectangle
+                    e.collsionAction(this);
+                    elementManager.removeElement(e);
                 }
-                if(de.getY() > Environment.getInstance().JP_HEIGHT){   //check if the block is visibile on the screen, if is not the block is removed
-                    elementManager.removeElement(de);
-                    y--;
+                if(e.getY() > Environment.getInstance().JP_HEIGHT){   //check if the block is visibile on the screen, if is not the block is removed
+                    elementManager.removeElement(e);
                 }
             }
         }        
@@ -285,8 +281,8 @@ public class SnakeBoard extends JPanel implements Runnable {
     
     private void moveElements(double ds){
         ElementManager em = ElementManager.getInstance();
-        for(int i=0; i<em.numElements(); i++){
-            em.getElement(i).move(ds);
+        for(DownElement e : em){
+            e.move(ds);
         }
     }  
     
