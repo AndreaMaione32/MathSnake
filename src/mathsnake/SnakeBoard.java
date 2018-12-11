@@ -25,6 +25,15 @@ public class SnakeBoard extends JPanel implements Runnable {
     
     private STATE state = STATE.COUNTDOWN;
     
+    private double movementSecond = 20.0;
+    private Timer countdownMovement = new Timer(500, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(hasFocus() && movementSecond > 0)
+                    movementSecond = movementSecond - 0.5;
+                }
+            });;
+     
     private Timer countdownTimer;
     private int secondsLeft = 3;
     private JLabel countdown = new JLabel(Integer.toString(secondsLeft));
@@ -124,6 +133,10 @@ public class SnakeBoard extends JPanel implements Runnable {
                 this.moveElements(determineDownSpeed());
                 background.move(ds/2);
                 snake.setHorizontalMovement(0);	
+                 if(!countdownMovement.isRunning()) {
+                    //countdownMove();
+                    countdownMovement.start();
+                }
                 if ((leftPressed) && (!rightPressed)) {
                     snake.setHorizontalMovement(-snakeSpeed);
                 } else if ((rightPressed) && (!leftPressed)) {
@@ -159,6 +172,7 @@ public class SnakeBoard extends JPanel implements Runnable {
                 checkCountdown();
                 break;
             case IN_GAME:
+                checkMovement();
                 //The rendering hints are used to make the drawing smooth
                 RenderingHints rh= new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -246,6 +260,115 @@ public class SnakeBoard extends JPanel implements Runnable {
         });
     }
     
+    /*
+    private void countdownMove() {
+        countdownMovement = new Timer(10000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(hasFocus() && movementSecond > 0)
+                    movementSecond--;
+            }
+        });
+    }
+    */
+    
+    private void checkMovement() {
+        //double[] xVector = snake.getX();
+        System.out.println(movementSecond);
+        //System.out.println(xVector[0]);
+        
+        if (movementSecond == 0) {
+            countdownMovement.stop();
+        }
+        if (movementSecond == 18) {
+            startMovingLeft();
+        }
+        if (movementSecond == 17.5) {
+            stopMoving();
+        }
+        if (movementSecond == 15.0) {
+            startMovingRight();
+        }
+        if (movementSecond == 14.0) {
+            startMovingLeft();
+        }
+        if (movementSecond == 13.0) {
+            stopMoving();
+        }
+        if (movementSecond == 10.5) {
+            startMovingRight();
+        }
+        if (movementSecond == 10.0) {
+            stopMoving();
+        }
+        if (movementSecond == 9.5) {
+            startMovingRight();
+        }
+        /*
+        if (movementSecond == 9.0) {
+            stopMoving();
+        }
+        */
+        if (movementSecond == 8.0) {
+            startMovingLeft();
+        }
+        
+    }
+    
+    private void startMovingRight() {
+        leftPressed = false;
+        rightPressed = true;
+    }
+    
+    private void startMovingLeft() {
+        leftPressed = true;
+        rightPressed = false;
+    }
+    
+    private void stopMoving() {
+        leftPressed = false;
+        rightPressed = false;
+    }
+    
+    /*
+    private void movement(String move, int timer) {
+        if(move.equals("left")){
+            System.out.println("left");
+            countdownMovement = new Timer(timer, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    leftPressed = true;
+                    rightPressed = false;
+                }
+            });
+            countdownMovement.stop();
+        } 
+        if(move.equals("right")){
+            System.out.println("right");
+            countdownMovement = new Timer(timer, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    leftPressed = false;
+                    rightPressed = true;
+                }
+            });
+            countdownMovement.stop();
+        } 
+        if(move.equals("null")){
+            System.out.println("null");
+            countdownMovement = new Timer(timer, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    leftPressed = false;
+                    rightPressed = false;
+                }
+            });
+            countdownMovement.stop();
+        }
+        
+    }
+    */
+    
     private void checkCountdown() {
         if (secondsLeft == 0) {
             remove(countdown);
@@ -307,6 +430,7 @@ public class SnakeBoard extends JPanel implements Runnable {
     }
     
     private void addListeners() {
+        
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -344,6 +468,7 @@ public class SnakeBoard extends JPanel implements Runnable {
                 
             }
         });
+        
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentShown(ComponentEvent e) {

@@ -9,6 +9,8 @@ import java.util.logging.Logger;
  */
 
 public class ConstructorThread implements Runnable {
+    private int blockRow;
+            
     private  ElementManager elementManager; 
     private boolean stop = false;
     private boolean pause = false;
@@ -20,6 +22,7 @@ public class ConstructorThread implements Runnable {
         super();
         this.elementManager = ElementManager.getInstance();
         this.snakeBoard = snakeBoard;
+        this.blockRow = 0;
     }
     
     @Override
@@ -54,7 +57,8 @@ public class ConstructorThread implements Runnable {
         int y=5;
         boolean dea = false;
         boolean positive = false;
-
+        
+        System.out.println(blockRow);
         for(int i=0; i<7; i++){
             Random random = new Random();
             int casuale = random.nextInt(99);
@@ -62,6 +66,289 @@ public class ConstructorThread implements Runnable {
 
 
             if(gameBest <= 299){ //primo livello di difficoltà
+                if(blockRow == 0){
+                    if(i==0){
+                        
+                    }
+                    
+                    if(i==1){
+                        elementManager.addElement(new Block(2,Operation.DIV,y+(70*i),-100));
+                    }
+
+                    if(i==2){
+                        elementManager.addElement(new Block(10,Operation.ADD,y+(70*i),-100));
+                    }
+
+                    if(i==3){
+                        elementManager.addElement(new Block(10,Operation.ADD,y+(70*i),-100));
+                    }
+
+                    if(i==4){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+
+                    if(i==5){
+                        
+                    }
+
+                    if(i==6){
+                        elementManager.addElement(new Block(2,Operation.DIV,y+(70*i),-100));
+                    }
+                        
+                }
+                
+                if(blockRow == 1){
+                    if(i==0){
+                        
+                    }
+                    
+                    if(i==1){
+                        elementManager.addElement(new Block(10,Operation.ADD,y+(70*i),-100));
+                    }
+
+                    if(i==2){
+                        elementManager.addElement(new Block(10,Operation.ADD,y+(70*i),-100));
+                    }
+
+                    if(i==3){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+
+                    if(i==4){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+
+                    if(i==5){
+                        
+                    }
+
+                    if(i==6){
+                        elementManager.addElement(new Block(2,Operation.DIV,y+(70*i),-100));
+                    }
+                        
+                }
+                
+                if(blockRow == 2){
+                    if(i==0){
+                        elementManager.addElement(new Block(10,Operation.ADD,y+(70*i),-100));
+                    }
+                    
+                    if(i==1){
+                        elementManager.addElement(new Block(10,Operation.ADD,y+(70*i),-100));
+                    }
+
+                    if(i==2){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+
+                    if(i==3){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+
+                    if(i==4){
+                        
+                    }
+
+                    if(i==5){
+                        elementManager.addElement(new Block(2,Operation.DIV,y+(70*i),-100));
+                    }
+
+                    if(i==6){
+                        elementManager.addElement(new Block(2,Operation.DIV,y+(70*i),-100));
+                    }
+                        
+                }
+                
+                if(blockRow == 3){
+                    if(i==0){
+                        elementManager.addElement(new Block(0,Operation.DEA,y+(70*i),-100));
+                    }
+                    
+                    if(i==1){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+
+                    if(i==2){
+                        elementManager.addElement(new Block(2,Operation.DIV,y+(70*i),-100));
+                    }
+
+                    if(i==3){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+
+                    if(i==4){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+
+                    if(i==5){
+                        
+                    }
+
+                    if(i==6){
+                        elementManager.addElement(new Block(2,Operation.DIV,y+(70*i),-100));
+                    }
+                    
+                }
+                
+                if(blockRow == 4){
+                    if(i==0){
+                        
+                    }
+                    
+                    if(i==1){
+                        elementManager.addElement(new Block(10,Operation.ADD,y+(70*i),-100));
+                    }
+
+                    if(i==2){
+                        elementManager.addElement(new Block(10,Operation.ADD,y+(70*i),-100));
+                    }
+
+                    if(i==3){
+                        elementManager.addElement(new Block(10,Operation.ADD,y+(70*i),-100));
+                    }
+
+                    if(i==4){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+
+                    if(i==5){
+                        
+                    }
+
+                    if(i==6){
+                        elementManager.addElement(new Block(2,Operation.DIV,y+(70*i),-100));
+                    }
+                    
+                }
+                 
+                if(blockRow == 5){
+                    if(i==0){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+                    
+                    if(i==1){
+                        
+                    }
+
+                    if(i==2){
+                        elementManager.addElement(new Block(2,Operation.DIV,y+(70*i),-100));
+                    }
+
+                    if(i==3){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+
+                    if(i==4){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+
+                    if(i==5){
+                        
+                    }
+
+                    if(i==6){
+                        elementManager.addElement(new Block(2,Operation.DIV,y+(70*i),-100));
+                    }
+                    
+                }
+                
+                if(blockRow == 6){
+                    if(i==0){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+                    
+                    if(i==1){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+
+                    if(i==2){
+                        elementManager.addElement(new Block(10,Operation.ADD,y+(70*i),-100));
+                    }
+
+                    if(i==3){
+                        elementManager.addElement(new Block(10,Operation.ADD,y+(70*i),-100));
+                    }
+
+                    if(i==4){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+
+                    if(i==5){
+                        elementManager.addElement(new Block(2,Operation.DIV,y+(70*i),-100));
+                    }
+
+                    if(i==6){
+                        
+                    }
+                    
+                }
+                
+                if(blockRow == 7){
+                    if(i==0){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+                    
+                    if(i==1){
+                        elementManager.addElement(new Block(2,Operation.DIV,y+(70*i),-100));
+                    }
+
+                    if(i==2){
+                        elementManager.addElement(new Block(2,Operation.DIV,y+(70*i),-100));
+                    }
+
+                    if(i==3){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+
+                    if(i==4){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+
+                    if(i==5){
+                        elementManager.addElement(new Block(0,Operation.DEA,y+(70*i),-100));
+                    }
+
+                    if(i==6){
+                        
+                    }
+                    
+                }
+                
+                if(blockRow == 8){
+                    if(i==0){
+                        
+                    }
+                    
+                    if(i==1){
+                        elementManager.addElement(new Block(2,Operation.DIV,y+(70*i),-100));
+                    }
+
+                    if(i==2){
+                        elementManager.addElement(new Block(0,Operation.DEA,y+(70*i),-100));
+                    }
+
+                    if(i==3){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+
+                    if(i==4){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+
+                    if(i==5){
+                        elementManager.addElement(new Block(0,Operation.DEA,y+(70*i),-100));
+                    }
+
+                    if(i==6){
+                        elementManager.addElement(new Block(10,Operation.SUB,y+(70*i),-100));
+                    }
+                    
+                }
+                
+                
+                
+                
+                /*
                 if (casuale >= 0 && casuale <= 29){ //30% BLOCCO VUOTO 
                     positive = true;
                 }
@@ -106,6 +393,7 @@ public class ConstructorThread implements Runnable {
                         elementManager.addElement(new Block(2,Operation.DIV,y+(70*i),-100));
                     }
                 }
+                */
             }
 
 
@@ -423,6 +711,7 @@ public class ConstructorThread implements Runnable {
                 }
             }
         }
+        blockRow++;
     }
     
     private void createPowerUps(){
