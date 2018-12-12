@@ -21,8 +21,8 @@ public class Coin extends DownElement{
     }
 
     @Override
-    public void collsionAction(SnakeBoard snakeBoard){
-        CoinsSaver coinsSaver = snakeBoard.getCoinsSaver();
+    public void collsionAction(Board board){
+        CoinsSaver coinsSaver = board.getCoinsSaver();
         coinsSaver.setCurrentCoins(coinsSaver.getCurrentCoins()+1);
     }
 }

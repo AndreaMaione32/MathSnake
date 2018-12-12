@@ -104,8 +104,8 @@ public class Block extends DownElement {
    }
 
     @Override
-    public void collsionAction(SnakeBoard snakeBoard){
-        Snake snake = snakeBoard.getSnake();
+    public void collsionAction(Board board){
+        Snake snake = board.getSnake();
         int actualLife = snake.getLife();
         String op = this.getStrOp();
         if (op.equals("+"))
@@ -121,11 +121,11 @@ public class Block extends DownElement {
         if (actualLife < 0)
             snake.setLife(0);
         else {
-            if (actualLife > snakeBoard.getGameBest())
-                snakeBoard.setGameBest(actualLife);
+            if (actualLife > board.getGameBest())
+                board.setGameBest(actualLife);
         }
         if (snake.getLife() == 0)
-            snakeBoard.setState(SnakeBoard.STATE.GAMEOVER);
+            board.setState(Board.STATE.GAMEOVER);
     }
     
 }

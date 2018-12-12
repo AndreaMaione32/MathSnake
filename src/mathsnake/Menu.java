@@ -22,6 +22,7 @@ public class Menu extends JPanel {
     private JButton play = new JButton("Play");
     private JButton scoreBoard = new JButton("Scores");
     private JButton market = new JButton("Market");
+    private JButton demo = new JButton("Demo");
 
     public Menu() {
         initMenu();
@@ -34,6 +35,7 @@ public class Menu extends JPanel {
         add(play);
         add(scoreBoard);
         add(market);
+        add(demo);
         addListeners();
     }
     
@@ -56,9 +58,11 @@ public class Menu extends JPanel {
         play.setFont(font2);
         scoreBoard.setFont(font2);
         market.setFont(font2);
-        play.setLocation(Environment.getInstance().JP_WIDTH / 2 - play.getSize().width / 2, 200);
-        scoreBoard.setLocation(Environment.getInstance().JP_WIDTH / 2 - scoreBoard.getSize().width / 2, 300);
-        market.setLocation(Environment.getInstance().JP_WIDTH / 2 - market.getSize().width / 2, 400);
+        demo.setFont(font2);
+        play.setLocation(Environment.getInstance().JP_WIDTH / 2 - play.getSize().width / 2, 150);
+        scoreBoard.setLocation(Environment.getInstance().JP_WIDTH / 2 - scoreBoard.getSize().width / 2, 250);
+        market.setLocation(Environment.getInstance().JP_WIDTH / 2 - market.getSize().width / 2, 350);
+        demo.setLocation(Environment.getInstance().JP_WIDTH / 2 - market.getSize().width / 2, 450);
     }
 
     private void addListeners() {
@@ -98,6 +102,14 @@ public class Menu extends JPanel {
                 MathSnake.state = GameState.MARKET;
                 CardLayout cl = MathSnake.getInstance().getCardLayout();
                 cl.show(MathSnake.getInstance().getCardsJPanel(), "market");
+            }
+        });
+        demo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MathSnake.state = GameState.GAME;
+                CardLayout cl = MathSnake.getInstance().getCardLayout();
+                cl.show(MathSnake.getInstance().getCardsJPanel(), "demo");
             }
         });
         addComponentListener(new ComponentAdapter() {

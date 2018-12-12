@@ -21,6 +21,7 @@ public class MathSnake extends JFrame {
     private GameOver gameOver;
     private Menu menu = new Menu();
     private SnakeBoard game = new SnakeBoard();
+    private DemoBoard demo = new DemoBoard();
     private ScoreBoard score;
     private Market market = new Market();
     private static MathSnake instance = null; 
@@ -70,6 +71,7 @@ public class MathSnake extends JFrame {
         cardsJPanel.add(score,"score");
         cardsJPanel.add(gameOver,"gameOver");
         cardsJPanel.add(market,"market");
+        cardsJPanel.add(demo,"demo");
         add(cardsJPanel);
         cl.show(this.cardsJPanel, "firstPage");
         pack();

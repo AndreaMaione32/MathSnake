@@ -18,7 +18,7 @@ public class ConstructorBlockThreadTest {
     
     @Test
     public void testRunThread(){
-        ConstructorThread constructorBlockRunnable = new ConstructorThread(new Snake());
+        ConstructorThread2 constructorBlockRunnable = new ConstructorThread2(new Snake());
         Thread constructorBlockThread = new Thread(constructorBlockRunnable);
         constructorBlockThread.start();
         assertEquals(constructorBlockRunnable.isStop(), false); //verify is thread is running
@@ -27,7 +27,7 @@ public class ConstructorBlockThreadTest {
     
     @Test
     public void stopTest(){
-        ConstructorThread constructorBlockRunnable = new ConstructorThread(new Snake());
+        ConstructorThread2 constructorBlockRunnable = new ConstructorThread2(new Snake());
         Thread constructorBlockThread = new Thread(constructorBlockRunnable);
         constructorBlockThread.start();
         constructorBlockRunnable.stopThread();
@@ -36,7 +36,7 @@ public class ConstructorBlockThreadTest {
     
     @Test
     public void creationTest(){
-        ConstructorThread constructorBlockRunnable = new ConstructorThread(new Snake());
+        ConstructorThread2 constructorBlockRunnable = new ConstructorThread2(new Snake());
         Thread constructorBlockThread = new Thread(constructorBlockRunnable);
         constructorBlockThread.start();
         BlocksManager blocksmanager = BlocksManager.getInstance();

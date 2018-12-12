@@ -1,6 +1,7 @@
 package mathsnake;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * For this reason we use Singleton Design Pattern
  */
 
-public class ElementManager {
+public class ElementManager implements Iterable<DownElement>{
     private final List<DownElement> elementList;
     private static ElementManager instance = null;
     
@@ -34,19 +35,52 @@ public class ElementManager {
         return elementList.remove(element);
     }
     
-    public synchronized int numElements(){           //THREAD SAFE
+    private synchronized int numElements(){           //THREAD SAFE
         return elementList.size();
     }
     
-    public synchronized DownElement getElement(int i){     //THREAD SAFE
+    private synchronized DownElement getElement(int i){     //THREAD SAFE
         return elementList.get(i);
-    }
-    
-    public synchronized DownElement getBlock(DownElement downElement){     //THREAD SAFE
-        return elementList.get(elementList.indexOf(downElement));
     }
     
     public synchronized void flush(){
         elementList.clear();
+    }
+    
+    //Iterator Pattern used to iterate the elements of element list in a synchronized way 
+    
+    private class ElementManagerIterator implements Iterator<DownElement>{
+        private ElementManager em;
+        private int current;
+        
+        public ElementManagerIterator(ElementManager em){
+            this.current = 0;
+            this.em = em;
+        }
+        
+        @Override
+        public boolean hasNext() {
+            synchronized(em){
+                if(current < em.numElements())
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        @Override
+        public  DownElement next() {
+            synchronized(em){
+               DownElement e = em.getElement(current);
+               current ++;
+               return e;
+            }
+        }
+        
+    }
+
+    @Override
+    public Iterator<DownElement> iterator() {
+        return new ElementManagerIterator(this);
     }
 }
