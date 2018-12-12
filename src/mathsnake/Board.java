@@ -15,6 +15,10 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import javax.swing.JPanel;
 
 /**
@@ -39,7 +43,7 @@ public abstract class Board extends JPanel implements Runnable{
     protected int gameBest = Environment.getInstance().STARTLIFEPOINTS;
     protected ConstructorThread constructorThread;
     protected Thread CThread = new Thread(constructorThread);
-    protected boolean stop = false;
+    protected boolean stop = true;
     protected boolean pause = false;
     protected Background background;
     
@@ -61,7 +65,6 @@ public abstract class Board extends JPanel implements Runnable{
         setPreferredSize(new Dimension(Environment.getInstance().JP_WIDTH, Environment.getInstance().JP_HEIGHT));
         setLayout(new GridBagLayout());
         loadImages();
-        initGame();
         addListeners();
     }
     
@@ -74,7 +77,7 @@ public abstract class Board extends JPanel implements Runnable{
     }
     
     protected void initGame() {
-        // Viene inizializzato il timer necessario per i repaint
+        // Viene inizializzato il timer necessario per i repaint+
         new Thread(this).start();
     }
 
@@ -194,7 +197,6 @@ public abstract class Board extends JPanel implements Runnable{
         }
     }
     
-    protected abstract void addListeners();
     
     public int getGameBest() {
         return gameBest;
@@ -231,5 +233,27 @@ public abstract class Board extends JPanel implements Runnable{
         this.coinsSaver = coinsSaver;
     }
     
-    
+    protected void addListeners(){
+        addFocusListener(new FocusListener(){
+            @Override
+            public void focusGained(FocusEvent e) {
+                if(stop){
+                Board b = (Board)e.getSource();
+                new Thread((Board)e.getSource()).start();
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                
+            }
+        });
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                requestFocusInWindow();
+            }
+        });
+    }
+
 }

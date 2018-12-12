@@ -23,37 +23,33 @@ public class DemoBoard extends Board {
     private Timer countdownMovement = new Timer(500, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(hasFocus() && movementSecond > 0)
+            if(movementSecond > 0)
                 movementSecond = movementSecond - 0.5;
             }
         });
-    private final DemoBoard instance;
      
     public DemoBoard() {
-        initDemoBoard();
-        this.instance = this;
         super.state = STATE.IN_GAME;
-    }
-    
-    private void initDemoBoard() {
         super.initBoard();
     }
     
     @Override
     public void run(){
+        System.out.println("ciao");
         long beforeTime, delta, sleep; 
         beforeTime = System.currentTimeMillis();
+        stop = false;
         while(!stop){
             if(!pause){
-            if (hasFocus() && state == STATE.IN_GAME) {
+            if (state == STATE.IN_GAME) {
                 if(!CThread.isAlive()){
                     initialState();
-                    constructorThread = new ConstructorThreadDemoBoard(instance);
+                    constructorThread = new ConstructorThreadDemoBoard(this);
                     CThread = new Thread(constructorThread);
                     CThread.start();
                 }
             }
-            if(hasFocus() && state == STATE.IN_GAME){
+            if(state == STATE.IN_GAME){
                 super.checkCollision();
                 snake.move();
                 double ds = determineDownSpeed();
@@ -97,6 +93,7 @@ public class DemoBoard extends Board {
         countdownMovement.stop();
         movementSecond = 25.0;
         stopMoving();
+        stop();
     }
     
     
@@ -178,19 +175,12 @@ public class DemoBoard extends Board {
     
     @Override
     protected void addListeners() {
-        
+        super.addListeners();
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 state = STATE.GAMEOVER;
                 gameOver();
-            }
-        });
-        
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentShown(ComponentEvent e) {
-                requestFocusInWindow();
             }
         });
     }

@@ -17,12 +17,10 @@ public class SnakeBoard extends Board {
     private Timer countdownTimer;
     private int secondsLeft = 3;
     private JLabel countdown = new JLabel(Integer.toString(secondsLeft));
-    private final SnakeBoard instance;
     
     public SnakeBoard() {
-        initSnakeBoard();
-        this.instance = this;
         super.state = STATE.COUNTDOWN;
+        initSnakeBoard();
     }
     
     private void initSnakeBoard() {
@@ -34,24 +32,25 @@ public class SnakeBoard extends Board {
     public void run(){
         long beforeTime, delta, sleep; 
         beforeTime = System.currentTimeMillis();
+        stop = false;
         while(!stop){
             if(!pause){
-                if (hasFocus() && state == STATE.COUNTDOWN) {
+                if (state == STATE.COUNTDOWN) {
                 if(!countdownTimer.isRunning()) {
                     countdown();
                     countdownTimer.start();
                 }
                 background = new Background(Environment.getInstance().PATHBACKGROUND);
             }
-            if (hasFocus() && state == STATE.IN_GAME) {
+            if (state == STATE.IN_GAME) {
                 if(!CThread.isAlive()){
                     super.initialState();
-                    constructorThread = new ConstructorThreadSnakeBoard(instance);
+                    constructorThread = new ConstructorThreadSnakeBoard(this);
                     CThread = new Thread(constructorThread);
                     CThread.start();
                 }
             }
-            if(hasFocus() && state == STATE.IN_GAME){
+            if(state == STATE.IN_GAME){
                 super.checkCollision();
                 snake.move();
                 double ds = determineDownSpeed();
@@ -99,6 +98,7 @@ public class SnakeBoard extends Board {
         cl.show(MathSnake.getInstance().getCardsJPanel(), "gameOver");
         coinsSaver.saveCoins();
         state = STATE.COUNTDOWN;
+        stop();
     }
     
     private void countdown() {
@@ -140,6 +140,7 @@ public class SnakeBoard extends Board {
     
     @Override
     protected void addListeners() {
+        super.addListeners();
         
         addKeyListener(new KeyAdapter() {
             @Override
@@ -160,7 +161,7 @@ public class SnakeBoard extends Board {
                     else if(state == STATE.PAUSE){
                         state = STATE.IN_GAME;
                         pause = false;
-                        constructorThread = new ConstructorThreadSnakeBoard(instance);
+                        constructorThread = new ConstructorThreadSnakeBoard((SnakeBoard)e.getSource());
                         CThread = new Thread(constructorThread);
                         CThread.start();
                     }
@@ -176,13 +177,6 @@ public class SnakeBoard extends Board {
                     rightPressed = false;   
                 }
                 
-            }
-        });
-        
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentShown(ComponentEvent e) {
-                requestFocusInWindow();
             }
         });
     }
