@@ -1,5 +1,6 @@
 package mathsnake;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -17,20 +18,16 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-
-/**
- * 
- * @author Antonino Durazzo
- */
-public class ScoreBoard2 implements Serializable{
+public class ScoreBoard2 implements Serializable {
     
     private final LinkedList<Score> list;
-    private final String database= "database.dat";
+    private String databaseDAT = "database.dat";
+    private String databaseTXT = "database.txt";
     
     /**
-     * classe score annidata 
+     * classe Score annidata 
      */
-    public class Score implements Serializable{
+    public class Score implements Serializable {
         
         private final float score;
         private final Date score_date;
@@ -42,7 +39,7 @@ public class ScoreBoard2 implements Serializable{
          * @param score_date
          * @param name_player 
          */
-        public Score(float score, Date score_date, String name_player){
+        public Score(float score, Date score_date, String name_player) {
             this.score = score;
             this.score_date = score_date;
             this.name_player = name_player;
@@ -83,20 +80,32 @@ public class ScoreBoard2 implements Serializable{
     }
     
     /**
-     * costruttore della classe che inizializza una linkedlist di score vuota come suo attributo
+     * Costruttore della classe che inizializza una linkedlist di score vuota come suo attributo
      * @throws IOException
      * @throws FileNotFoundException
      * @throws ClassNotFoundException 
      */
-    public ScoreBoard2() throws IOException, FileNotFoundException, ClassNotFoundException{
-       list = this.readDB().list; //inizializzo la mia lista
+    public ScoreBoard2() throws IOException, FileNotFoundException, ClassNotFoundException {
+        list = this.readDB().list; //inizializzo la mia lista
     }
     
-    public ScoreBoard2(LinkedList<Score> list){
+    /**
+     * Costruttore della classe che inizializza una linkedlist di score vuota come suo attributo
+     * e prende in ingresso il nome del database (utilizzato per il test della classe)
+     * @param database
+     * @throws IOException
+     * @throws FileNotFoundException
+     * @throws ClassNotFoundException 
+     */
+    public ScoreBoard2(String database) throws IOException, FileNotFoundException, ClassNotFoundException {
+        this.databaseDAT = database + ".dat";
+        this.databaseTXT = database + ".txt";
+        list = this.readDB().list; //inizializzo la mia lista
+    }
+    
+    public ScoreBoard2(LinkedList<Score> list) {
         this.list = list;
     }
-    
-    
     
     /**
      * 
@@ -104,7 +113,6 @@ public class ScoreBoard2 implements Serializable{
      */
     public int len(){
         return this.list.size();
-        
     }
     
     /**
@@ -114,8 +122,11 @@ public class ScoreBoard2 implements Serializable{
     public boolean isEmpty(){
         return this.list.isEmpty();
     }
-    
 
+    public LinkedList<Score> getList() {
+        return list;
+    }
+    
     /**
      * Questa funzione permette di poter memorizzare una scoreboard all'interno del file binario,
      * in più viene invocata la funzione copiDbIntoTxt().
@@ -124,15 +135,13 @@ public class ScoreBoard2 implements Serializable{
      * @throws IOException
      * @throws ClassNotFoundException 
      */
-    void updateDB(ScoreBoard2 board) throws FileNotFoundException, IOException, ClassNotFoundException{
+    public void updateDB(ScoreBoard2 board) throws FileNotFoundException, IOException, ClassNotFoundException {
         ObjectOutputStream fbinarioOut;
-        fbinarioOut = new ObjectOutputStream(new FileOutputStream(this.database));
+        fbinarioOut = new ObjectOutputStream(new FileOutputStream(this.databaseDAT));
         fbinarioOut.writeObject(board);
-        //System.out.print("HEIIIItttt" + board.toString());
         fbinarioOut.flush();
         fbinarioOut.close();
         this.copyDbIntoTxt();
-        
     }
     
     /**
@@ -143,16 +152,18 @@ public class ScoreBoard2 implements Serializable{
      * @throws FileNotFoundException
      * @throws ClassNotFoundException 
      */
-    public void copyDbIntoTxt() throws IOException, FileNotFoundException, ClassNotFoundException{
+    public void copyDbIntoTxt() throws IOException, FileNotFoundException, ClassNotFoundException {
         ScoreBoard2 board;
         board = this.readDB();
-        //System.out.print("ciao" + board.toString());
         //Scrive l'oggetto in file di testo, sfruttando  (implicitamente) il suo metodo toString()
-        try (PrintWriter ftestoOut = new PrintWriter(new FileWriter("database.txt"))) {
-            ftestoOut.println(board);
-            ftestoOut.flush();
+//        try (PrintWriter ftestoOut = new PrintWriter(new FileWriter(databaseTXT))) {
+//            ftestoOut.println(board);
+//            ftestoOut.flush();
+//        }
+        File f = new File(databaseTXT);
+        try (ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(f))) {
+            writer.writeObject(board);
         }
-        
     }
     
     /**
@@ -163,18 +174,18 @@ public class ScoreBoard2 implements Serializable{
      * @throws IOException
      * @throws ClassNotFoundException 
      */
-    ScoreBoard2 readDB() throws IOException, ClassNotFoundException{
+    public ScoreBoard2 readDB() throws IOException, ClassNotFoundException {
         ScoreBoard2 tmpScoreBoard;
         ObjectInputStream fin = null;
         OutputStream out = null;
         try{
-            fin = new ObjectInputStream(new FileInputStream(this.database));
+            fin = new ObjectInputStream(new FileInputStream(this.databaseDAT));
             tmpScoreBoard = (ScoreBoard2) fin.readObject();
         }
         catch(FileNotFoundException ex){
-            out = new FileOutputStream(this.database);
+            out = new FileOutputStream(this.databaseDAT);
             this.updateDB(new ScoreBoard2(new LinkedList<Score>()));
-            fin = new ObjectInputStream(new FileInputStream(this.database));
+            fin = new ObjectInputStream(new FileInputStream(this.databaseDAT));
             tmpScoreBoard = (ScoreBoard2) fin.readObject();
         }
         finally{
@@ -183,7 +194,6 @@ public class ScoreBoard2 implements Serializable{
             if(out!=null)
                 out.close();
         }
-        //System.out.print("====================" + tmpScoreBoard.toString());
         return tmpScoreBoard;
     }
     /**
@@ -198,7 +208,7 @@ public class ScoreBoard2 implements Serializable{
      * @throws FileNotFoundException
      * @throws ClassNotFoundException 
      */
-    public void insert_score(Score score) throws IOException, FileNotFoundException, ClassNotFoundException{
+    public void insert_score(Score score) throws IOException, FileNotFoundException, ClassNotFoundException {
         if (this.list.isEmpty()){
             this.list.addLast(score);
             this.updateDB(this);
@@ -250,7 +260,7 @@ public class ScoreBoard2 implements Serializable{
      * @throws FileNotFoundException
      * @throws ClassNotFoundException 
      */
-    public String toStringFromDat() throws IOException, FileNotFoundException, ClassNotFoundException{
+    public String toStringFromDat() throws IOException, FileNotFoundException, ClassNotFoundException {
         String str = "\n  PLAYER NAME       SCORE\t\tDATE\n";
         ScoreBoard2 list_score = this.readDB();
         if (!list_score.isEmpty()){
@@ -263,7 +273,6 @@ public class ScoreBoard2 implements Serializable{
         }else{
             return null;
         }
-        
     }
     
     /**
@@ -271,7 +280,7 @@ public class ScoreBoard2 implements Serializable{
      * @return String str: rappresenta l'oggetto ScoreBoard sotto forma di caratteri
      */
     @Override
-    public String toString(){
+    public String toString() {
         String str = "\n  PLAYER NAME       SCORE\t\tDATE\n";
         for(int i = this.list.size()-1; i >= 0; i--){
             Score score = this.list.get(i);

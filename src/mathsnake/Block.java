@@ -25,7 +25,7 @@ public class Block extends DownElement {
             pathImage = Environment.getInstance().PATHIMAGES+"retro_block_n.png";
         return pathImage;
     }
-    
+
     public int getValue() {
         return value;
     }
@@ -48,7 +48,7 @@ public class Block extends DownElement {
                 return "";
         }
     }
-    
+
     public Operation getOp() {
         return op;
     }
@@ -64,7 +64,7 @@ public class Block extends DownElement {
        }
        else{
             Font font = new Font("Arial", Font.BOLD, 30);
-            String text = this.getStrOp()+Integer.toString(this.getValue());
+            String text = this.getStrOp() + Integer.toString(this.getValue());
             // Get the FontMetrics
             FontMetrics metrics = g.getFontMetrics(font);
             // Determine the X coordinate for the text
@@ -78,7 +78,7 @@ public class Block extends DownElement {
    }
 
     @Override
-    public void collsionAction(SnakeBoard snakeBoard){
+    public void collisionAction(SnakeBoard snakeBoard){
         Snake snake = snakeBoard.getSnake();
         int actualLife = snake.getLife();
         String op = this.getStrOp();

@@ -262,7 +262,6 @@ public class Market extends JPanel {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MathSnake.state = GameState.MENU;
                 coinsSaver.saveCoins();
                 CardLayout cl = MathSnake.getInstance().getCardLayout();
                 cl.show(MathSnake.getInstance().getCardsJPanel(), "menu");

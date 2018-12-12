@@ -5,11 +5,6 @@
  */
 package mathsnake;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Rectangle;
-import javax.swing.ImageIcon;
-
 /**
  *
  * @author antoniocoppola
@@ -21,7 +16,7 @@ public class Coin extends DownElement{
     }
 
     @Override
-    public void collsionAction(SnakeBoard snakeBoard){
+    public void collisionAction(SnakeBoard snakeBoard){
         CoinsSaver coinsSaver = snakeBoard.getCoinsSaver();
         coinsSaver.setCurrentCoins(coinsSaver.getCurrentCoins()+1);
     }

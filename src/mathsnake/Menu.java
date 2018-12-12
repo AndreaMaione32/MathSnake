@@ -79,7 +79,6 @@ public class Menu extends JPanel {
         play.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MathSnake.state = GameState.GAME;
                 CardLayout cl = MathSnake.getInstance().getCardLayout();
                 cl.show(MathSnake.getInstance().getCardsJPanel(), "game");
             }
@@ -87,7 +86,6 @@ public class Menu extends JPanel {
         scoreBoard.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MathSnake.state = GameState.SCOREBOARD;
                 CardLayout cl = MathSnake.getInstance().getCardLayout();
                 cl.show(MathSnake.getInstance().getCardsJPanel(), "score");
             }
@@ -95,7 +93,6 @@ public class Menu extends JPanel {
         market.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MathSnake.state = GameState.MARKET;
                 CardLayout cl = MathSnake.getInstance().getCardLayout();
                 cl.show(MathSnake.getInstance().getCardsJPanel(), "market");
             }

@@ -18,7 +18,7 @@ public class Background {
     private double x;
     private double y;
     
-    public Background(String pathImg){
+    public Background(String pathImg) {
          this.img = this.loadImage(pathImg);
          this.x = 0;
          this.y = -this.img.getHeight(null)+Environment.getInstance().JP_HEIGHT;
@@ -30,16 +30,16 @@ public class Background {
         return icon;
     }
     
-    public void move(double velocity){
+    public void move(double velocity) {
         double shift = (Environment.getInstance().DELAY * velocity) / 1000;
         if(y + shift >= 0){
-            this.y = -this.img.getHeight(null)+Environment.getInstance().JP_HEIGHT;
+            this.y = Environment.getInstance().JP_HEIGHT - this.img.getHeight(null);
         }
         else
             this.y += shift;
     }
     
-    public void drawBackground(Graphics g){
-      g.drawImage(img,(int) x, (int)y, null);  
+    public void drawBackground(Graphics g) {
+        g.drawImage(img, (int) x, (int)y, null);  
     }
 }

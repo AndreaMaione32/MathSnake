@@ -1,62 +1,79 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mathsnake;
 
 import java.awt.Color;
-import java.awt.Rectangle;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.lang.reflect.Field;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static org.junit.Assert.*;
 import org.junit.Test;
+import static org.mockito.Mockito.*;
 
-/**
- *
- * @author antoniocoppola
- */
 public class BlockTest {
-    
+
+    /**
+     * Test of getStrOp method, of class Block.
+     */
     @Test
-    public void setXTest(){
+    public void testGetStrOp() {
         Block b = new Block(1, Operation.ADD, 0, 0);
-        b.setX(20);
-        assertEquals(b.getX(), 20);   //check if x value is expected one
+        String expResult = "+";
+        String result = b.getStrOp();
+        assertEquals(expResult, result);
     }
+
+    /**
+     * Test of draw method, of class Block.
     
     @Test
-    public void setYTest(){
+    public void testDraw() {
+        try {
+            Graphics gMock = mock(Graphics.class);
+            Block b = new Block(1, Operation.ADD, 0, 0);
+            b.draw(gMock);
+            Field xField = getField("x");
+            xField.setAccessible(true);
+            Field yField = getField("y");
+            yField.setAccessible(true);
+            int x = (int) (double) xField.get(b);
+            int y = (int) (double) yField.get(b);
+            String text = b.getStrOp() + Integer.toString(b.getValue());
+            Font expectedFont = new Font("Arial", Font.BOLD, 30);
+            String expectedText = b.getStrOp() + Integer.toString(b.getValue());
+            FontMetrics metrics = MathSnake.getInstance().getCardsJPanel().getComponent(2).getFontMetrics(expectedFont);
+            int textX = x + (Environment.getInstance().BLOCK_WIDTH - metrics.stringWidth(text)) / 2;
+            int textY = (int)y + ((Environment.getInstance().BLOCK_HEIGHT - metrics.getHeight()) / 2) + metrics.getAscent();
+            verify(gMock).setFont(expectedFont);
+            verify(gMock).setColor(Color.WHITE);
+            verify(gMock).drawString(text, textX, textY);
+        } catch (IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(BlockTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }**/
+
+    /**
+     * Test of collsionAction method, of class Block.
+     */
+    @Test
+    public void testCollisionAction() {
+        SnakeBoard snakeBoard = new SnakeBoard();
         Block b = new Block(1, Operation.ADD, 0, 0);
-        b.setY(20);
-        assertEquals(b.getY(), 20);   //check if Y value is expected one
+        int actualLife = snakeBoard.getSnake().getLife();
+        b.collisionAction(snakeBoard);
+        int expectedLife = actualLife + b.getValue();
+        assertEquals(expectedLife, snakeBoard.getSnake().getLife());
     }
     
-    @Test
-    public void differentColorTest(){
-        Block b1 = new Block(1, Operation.ADD, 0, 0);
-        Block b2 = new Block(2, Operation.MUL, 0, 0);
-        assertTrue(b1.getColor() != b2.getColor());   //blocks with different operation must to have different colors
+    private Field getField(String nameField) {
+        Field field = null;
+        try {
+            field = Block.class.getDeclaredField(nameField);
+        } catch (NoSuchFieldException | SecurityException ex) {
+            Logger.getLogger(BackgroundTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return field;
     }
     
-    @Test
-    public void ColorTest(){
-        Block b = new Block(1, Operation.ADD, 0, 0);
-        assertEquals(b.getColor(), Color.ORANGE);  //ADD Block must to be orange
-    }
-    
-    //TEST IF BLOCK, in (x,y) point, COLLIDES WITH RECTANGLE THAT IS IN ONE OF THE EXTREME POINT x, y OR x+BLOCKWIDTH and y+BLOCKHEIGHT
-    
-    @Test
-    public void fristExtremeCollide(){
-    Block b = new Block(1, Operation.ADD, 0, 0);
-    Rectangle rect = new Rectangle(0,0, 10, 10);
-    assertTrue(b.collide(rect));
-    }
-    
-    @Test
-    public void secondExtremeCollide(){
-    Block b = new Block(1, Operation.ADD, 0, 0);
-    Rectangle rect = new Rectangle(0 + Environment.BLOCK_WIDTH -10,0 + Environment.BLOCK_HEIGHT-10, 10, 10);
-    assertTrue(b.collide(rect));
-    }
 }
