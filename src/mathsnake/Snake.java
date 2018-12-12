@@ -54,7 +54,7 @@ public class Snake implements ActionListener{
     
     public void setLife(int lifepoints){
         if(shield){  
-            if(this.lifepoints > lifepoints){} //if the snake has a shield its life must to don't decrease
+            if(this.lifepoints > lifepoints){} //if the snake has a shield its life must not decrease
             else
                 this.lifepoints = lifepoints;
         }

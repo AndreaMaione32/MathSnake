@@ -21,10 +21,10 @@ import javax.swing.ImageIcon;
  * 
  */
 public abstract class DownElement {
-    protected final Image img;
-    protected double x;
-    protected double y;
-    protected final Rectangle rectangle;
+    private final Image img;
+    private double x;
+    private double y;
+    private final Rectangle rectangle;
     
         public DownElement(int x, int y, String pathImage){
         this.x = x;
