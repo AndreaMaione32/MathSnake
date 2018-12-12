@@ -1,7 +1,6 @@
 package mathsnake;
 
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -258,7 +257,7 @@ public class SnakeBoard extends JPanel implements Runnable {
         if (state == STATE.IN_GAME){
             for(DownElement e : elementManager){
                 if(snake.collide(e.getAssociatedRectangle())){     //check if snake's head collide with block's rectangle
-                    e.collsionAction(this);
+                    e.collisionAction(this);
                     elementManager.removeElement(e);
                 }
                 if(e.getY() > Environment.getInstance().JP_HEIGHT){   //check if the block is visibile on the screen, if is not the block is removed

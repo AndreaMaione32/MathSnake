@@ -7,7 +7,7 @@ public class PowerUpsShield extends DownElement {
     }
     
     @Override
-    public void collsionAction(SnakeBoard snakeBoard) {
+    public void collisionAction(SnakeBoard snakeBoard) {
         snakeBoard.getSnake().shield();
     }
     

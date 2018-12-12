@@ -15,11 +15,11 @@ public class ElementManager implements Iterable<DownElement>{
     private final List<DownElement> elementList;
     private static ElementManager instance = null;
     
-    private ElementManager(){
+    private ElementManager() {
         elementList = new ArrayList<DownElement>();
     }
     
-    public static ElementManager getInstance(){
+    public static ElementManager getInstance() {
         synchronized(ElementManager.class){          //THREAD SAFE
             if(instance==null)
                     instance = new ElementManager();
@@ -27,29 +27,29 @@ public class ElementManager implements Iterable<DownElement>{
             }
     }
     
-    public synchronized void addElement(DownElement element){  //THREAD SAFE
+    public synchronized void addElement(DownElement element) {  //THREAD SAFE
         elementList.add(element);
     }
     
-    public synchronized boolean removeElement(DownElement element){  //THREAD SAFE
+    public synchronized boolean removeElement(DownElement element) {  //THREAD SAFE
         return elementList.remove(element);
     }
     
-    private synchronized int numElements(){           //THREAD SAFE
+    private synchronized int numElements() {           //THREAD SAFE
         return elementList.size();
     }
     
-    private synchronized DownElement getElement(int i){     //THREAD SAFE
+    private synchronized DownElement getElement(int i) {     //THREAD SAFE
         return elementList.get(i);
     }
     
-    public synchronized void flush(){
+    public synchronized void flush() {
         elementList.clear();
     }
     
     //Iterator Pattern used to iterate the elements of element list in a synchronized way 
     
-    private class ElementManagerIterator implements Iterator<DownElement>{
+    private class ElementManagerIterator implements Iterator<DownElement> {
         private ElementManager em;
         private int current;
         

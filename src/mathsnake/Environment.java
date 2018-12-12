@@ -92,6 +92,7 @@ public class Environment {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Environment.class.getName()).log(Level.SEVERE, null, ex);
         }
+        reader.close();
     }
     
     public void writeGraphicConfiguration() throws IOException {

@@ -72,7 +72,6 @@ public class FirstPage extends JPanel {
             public void keyPressed(KeyEvent e) {
                 int key = e.getKeyCode();
                 if(key == KeyEvent.VK_SPACE) {
-                    MathSnake.state = GameState.MENU;
                     CardLayout cl = MathSnake.getInstance().getCardLayout();
                     cl.show(MathSnake.getInstance().getCardsJPanel(), "menu");
                 }

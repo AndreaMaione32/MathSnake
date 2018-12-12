@@ -13,8 +13,6 @@ import javax.swing.JPanel;
 
 public class MathSnake extends JFrame {
     
-    public static GameState state = GameState.FIRST_PAGE;
-    
     private CardLayout cl = new CardLayout();
     private JPanel cardsJPanel = new JPanel(cl);
     private FirstPage firstPage = new FirstPage();

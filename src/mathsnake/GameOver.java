@@ -2,16 +2,25 @@
 package mathsnake;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.GroupLayout;
+import javax.swing.JPanel;
+import javax.swing.LayoutStyle;
 
 
 
@@ -20,7 +29,7 @@ import java.util.logging.Logger;
  *
  *author VALE
  */
-public class GameOver extends javax.swing.JPanel {
+public class GameOver extends JPanel {
     
     private SnakeBoard sb;
     private javax.swing.JButton jButton1;
@@ -48,8 +57,8 @@ public class GameOver extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         
 
-        setBackground(new java.awt.Color(0, 0, 0));
-        setPreferredSize(new java.awt.Dimension(500, 500));
+        setBackground(new Color(0, 0, 0));
+        setPreferredSize(new Dimension(500, 500));
        
         addFocusListener(new FocusListener() {
             @Override
@@ -58,11 +67,12 @@ public class GameOver extends javax.swing.JPanel {
                     if(component instanceof javax.swing.JLabel)
                         component.setForeground(Environment.getInstance().WRITECOLOR);
                 }
+                jTextField1.requestFocusInWindow();
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                //DO NOTHING
+                jTextField1.setText("");
             }
         });
         
@@ -74,28 +84,21 @@ public class GameOver extends javax.swing.JPanel {
         });
         
         jTextField1.setFont(new java.awt.Font("Arial", 1, 18));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 50));
         jLabel1.setForeground(Environment.getInstance().WRITECOLOR);
         jLabel1.setText("GAME OVER :(");
 
         jButton1.setText("OK");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-                
+                jButton1ActionPerformed();
             }
         });
         
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
+            public void keyTyped(KeyEvent evt) {
                 jTextField1KeyTyped(evt);
             }
         });
@@ -106,55 +109,58 @@ public class GameOver extends javax.swing.JPanel {
         jLabel2.setText("INSERT YOUR NAME");
         
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(213, 213, 213)
                 .addComponent(jButton1)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(65, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(GroupLayout.Alignment.TRAILING, layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 401, GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1, GroupLayout.PREFERRED_SIZE, 370, GroupLayout.PREFERRED_SIZE)
                             .addGap(65, 65, 65)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(129, 129, 129))))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(89, 89, 89)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
                 .addGap(76, 76, 76)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(65, 65, 65)
                 .addComponent(jButton1)
                 .addContainerGap(103, Short.MAX_VALUE))
         );
-    }                      
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {                                            
-      
-        jTextField1.setText("");
-    }             
+        
+        jTextField1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if(key == KeyEvent.VK_ENTER)
+                    jButton1ActionPerformed();
+            }
+        });
+    }           
     
-    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {
+    private void jTextField1KeyTyped(KeyEvent evt) {
     boolean max = jTextField1.getText().length() > 9;
     if ( max ){
         evt.consume();
     }        
 }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)  {                                         
-       
+    private void jButton1ActionPerformed()  {
         String name;
         
             
@@ -177,21 +183,11 @@ public class GameOver extends javax.swing.JPanel {
             jTextField1.setText("");
             
         }    
-        } catch (IOException ex) {
-            Logger.getLogger(GameOver.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(GameOver.class.getName()).log(Level.SEVERE, null, ex);
         }
     
         CardLayout cl = MathSnake.getInstance().getCardLayout();
         cl.show(MathSnake.getInstance().getCardsJPanel(), "menu");
-    }                                        
-
-
-
-
-
-                      
-
-                      
+    }           
 }
