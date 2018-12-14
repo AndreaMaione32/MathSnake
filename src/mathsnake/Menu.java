@@ -5,8 +5,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -19,21 +20,20 @@ import javax.swing.JPanel;
 
 public class Menu extends JPanel {
     
+    private JLabel mathSnakeLabel = new JLabel("MATH SNAKE");
     private JButton play = new JButton("Play");
     private JButton scoreBoard = new JButton("Scores");
     private JButton market = new JButton("Market");
+    private JButton demo = new JButton("Demo");
 
     public Menu() {
         initMenu();
     }
     
     private void initMenu() {
-        setBackground(Color.BLACK);
+        setLayout(new GridBagLayout());
         setFocusable(true);
         setPreferredSize(new Dimension(Environment.getInstance().JP_WIDTH, Environment.getInstance().JP_HEIGHT));
-        add(play);
-        add(scoreBoard);
-        add(market);
         addListeners();
     }
     
@@ -46,21 +46,42 @@ public class Menu extends JPanel {
     private void doDrawing(Graphics g) {
         
         new Background(Environment.getInstance().PATHBACKGROUND).drawBackground(g);
-        Font font1 = new Font("Arial", Font.BOLD, 40);
-        FontMetrics metrics1 = g.getFontMetrics(font1);
-        int x1 = (Environment.getInstance().JP_WIDTH - metrics1.stringWidth("MATH SNAKE")) / 2; //Stringa centrata nel panel
-        g.setFont(font1);
-        g.setColor(Environment.getInstance().WRITECOLOR);
-        g.drawString("MATH SNAKE", x1, 100);
-        Font font2 = new Font("Arial", Font.BOLD, 20);
-        play.setFont(font2);
-        scoreBoard.setFont(font2);
-        market.setFont(font2);
-        play.setLocation(Environment.getInstance().JP_WIDTH / 2 - play.getSize().width / 2, 200);
-        scoreBoard.setLocation(Environment.getInstance().JP_WIDTH / 2 - scoreBoard.getSize().width / 2, 300);
-        market.setLocation(Environment.getInstance().JP_WIDTH / 2 - market.getSize().width / 2, 400);
-    }
 
+        GridBagConstraints c = new GridBagConstraints();
+        
+        c.gridx = 1;
+        c.gridy = 0;
+        c.gridwidth = 3;
+        c.anchor = GridBagConstraints.PAGE_START;
+        c.weighty = 1.0;
+        mathSnakeLabel.setFont(new Font("Arial", Font.BOLD, 40));
+        mathSnakeLabel.setForeground(Environment.getInstance().WRITECOLOR);
+        add(mathSnakeLabel, c);
+        
+        c.gridwidth = 3;
+        c.anchor = GridBagConstraints.CENTER;
+        
+        c.gridx = 1;
+        c.gridy = 1;
+        play.setFont(new Font("Arial", Font.BOLD, 20));
+        add(play, c);
+        
+        c.gridx = 1;
+        c.gridy = 2;
+        scoreBoard.setFont(new Font("Arial", Font.BOLD, 20));
+        add(scoreBoard, c);
+        
+        c.gridx = 1;
+        c.gridy = 3;
+        market.setFont(new Font("Arial", Font.BOLD, 20));
+        add(market, c);
+        
+        c.gridx = 1;
+        c.gridy = 4;
+        demo.setFont(new Font("Arial", Font.BOLD, 20));
+        add(demo, c); 
+    }
+    
     private void addListeners() {
         addFocusListener(new FocusListener() {
             @Override
@@ -95,6 +116,13 @@ public class Menu extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 CardLayout cl = MathSnake.getInstance().getCardLayout();
                 cl.show(MathSnake.getInstance().getCardsJPanel(), "market");
+            }
+        });
+        demo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cl = MathSnake.getInstance().getCardLayout();
+                cl.show(MathSnake.getInstance().getCardsJPanel(), "demo");
             }
         });
         addComponentListener(new ComponentAdapter() {

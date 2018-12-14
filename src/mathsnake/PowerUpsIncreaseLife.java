@@ -1,5 +1,7 @@
 package mathsnake;
 
+import java.awt.Image;
+
 public class PowerUpsIncreaseLife extends DownElement {
    
     public PowerUpsIncreaseLife(int x, int y){
@@ -7,7 +9,7 @@ public class PowerUpsIncreaseLife extends DownElement {
     }
     
     @Override
-    public void collisionAction(SnakeBoard snakeBoard) {
-        snakeBoard.getSnake().setLife(snakeBoard.getSnake().getLife() + 100);  //increases snake's life
+    public void collisionAction(Board board) {
+        board.getSnake().setLife(board.getSnake().getLife() + 100);  //increases snake's life
     }
 }

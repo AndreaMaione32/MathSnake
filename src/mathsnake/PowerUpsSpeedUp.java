@@ -7,7 +7,7 @@ public class PowerUpsSpeedUp extends DownElement {
     }
     
     @Override
-    public void collisionAction(SnakeBoard snakeBoard) {
-        snakeBoard.getSnake().speed_up();
+    public void collisionAction(Board board) {
+        board.getSnake().speed_up();
     }
 }

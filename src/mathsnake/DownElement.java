@@ -21,16 +21,16 @@ import javax.swing.ImageIcon;
  * 
  */
 public abstract class DownElement {
-    private final Image img;
+    protected final Image img;
     protected double x;
     protected double y;
-    private final Rectangle rectangle;
+    protected final Rectangle rectangle;
     
-    public DownElement(int x, int y, String pathImage){
+        public DownElement(int x, int y, String pathImage){
         this.x = x;
         this.y = y;
         this.img = this.loadImage(pathImage);
-        this.rectangle = new Rectangle((int) x, (int) y, this.img.getWidth(null), this.img.getHeight(null));
+        this.rectangle = new Rectangle((int)x,(int)y,this.img.getWidth(null), this.img.getHeight(null));
     }
     
     protected Image loadImage(String PATH) {
@@ -41,12 +41,12 @@ public abstract class DownElement {
     
     private void setX(double x) {
         this.x = x;
-        rectangle.setLocation((int) x, (int) this.y);   //Move also Rectangle assoicated
+        rectangle.setLocation((int)x, (int)this.y);   //Move also Rectangle assoicated
     }
 
     private void setY(double y) {
         this.y = y;
-        rectangle.setLocation((int) this.x, (int) y);  //Move also Rectangle assoicated
+        rectangle.setLocation((int)this.x, (int)y);  //Move also Rectangle assoicated
     }
     
     public void move(double velocity){
@@ -67,8 +67,8 @@ public abstract class DownElement {
     } 
     
     public void draw(Graphics g){
-      g.drawImage(img, (int) this.getX(), (int) this.getY(), null);  
+      g.drawImage(img, (int)this.getX(), (int)this.getY(), null);  
     }
     
-    public abstract void collisionAction(SnakeBoard snakeBoard); //this method define the action linked to a collision with the element. 
+    public abstract void collisionAction(Board board); //this method define the action linked to a collision with the element. 
 }

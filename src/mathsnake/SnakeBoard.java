@@ -1,15 +1,8 @@
 package mathsnake;
 
 import java.awt.CardLayout;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridBagLayout;
-import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -17,110 +10,51 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class SnakeBoard extends JPanel implements Runnable {
-    
-    private STATE state = STATE.COUNTDOWN;
+public class SnakeBoard extends Board {
     
     private Timer countdownTimer;
     private int secondsLeft = 3;
     private JLabel countdown = new JLabel(Integer.toString(secondsLeft));
-    private Image ball;
-    private Image head;
-    private Image shield_small;
-    private Image yellow_dot;
-    private Image small_coins;
-    private Image grey_dot;
-    private CoinsSaver coinsSaver = new CoinsSaver();
-    private final Snake snake = new Snake();
-    private double snakeSpeed = 300;
-    private boolean leftPressed = false;
-    private boolean rightPressed = false;
-    private double downSpeed = Environment.getInstance().STARTDOWNSPEED; //define velocity of block and power ups
-    private int gameBest = Environment.getInstance().STARTLIFEPOINTS;
-    private ConstructorThread constructorThread;
-    private Thread CThread = new Thread(constructorThread);
-    private boolean stop = false;
-    private boolean pause = false;
-    private Background background;
-    private final SnakeBoard instance;
     
     public SnakeBoard() {
+        super.state = STATE.COUNTDOWN;
         initSnakeBoard();
-        this.instance = this;
-    }
-
-    public Image getBall() {
-        return ball;
-    }
-
-    public Image getHead() {
-        return head;
-    }
-
-    public Snake getSnake() {
-        return snake;
     }
     
     private void initSnakeBoard() {
-        background = new Background(Environment.getInstance().PATHBACKGROUND);
-        setFocusable(true);
-        setPreferredSize(new Dimension(Environment.getInstance().JP_WIDTH, Environment.getInstance().JP_HEIGHT));
-        setLayout(new GridBagLayout());
-        loadImages();
-        initGame();
+        super.initBoard();
         countdown();
-        addListeners();
-    }
-   
-    private void loadImages() {
-        ball = snake.loadImage(Environment.getInstance().PATHSKIN);
-        shield_small = snake.loadImage(Environment.getInstance().PATHIMAGES + "shield_small.png");
-        yellow_dot = snake.loadImage(Environment.getInstance().PATHIMAGES + "yellow_dot.png");
-        small_coins = snake.loadImage(Environment.getInstance().PATHIMAGES + "small_retro_coins.png");
-        grey_dot = snake.loadImage(Environment.getInstance().PATHIMAGES + "grey_dot.png");
-    }
-    
-    private void initGame() {
-        // Viene inizializzato il timer necessario per i repaint
-        new Thread(this).start();
-    }
-
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        doDrawing(g);
-        Toolkit.getDefaultToolkit().sync();
     }
     
     @Override
     public void run(){
         long beforeTime, delta, sleep; 
         beforeTime = System.currentTimeMillis();
+        stop = false;
         while(!stop){
             if(!pause){
-                if (hasFocus() && state == STATE.COUNTDOWN) {
+                if (state == STATE.COUNTDOWN) {
                 if(!countdownTimer.isRunning()) {
                     countdown();
                     countdownTimer.start();
                 }
                 background = new Background(Environment.getInstance().PATHBACKGROUND);
             }
-            if (hasFocus() && state == STATE.IN_GAME) {
+            if (state == STATE.IN_GAME) {
                 if(!CThread.isAlive()){
-                    initialState();
-                    constructorThread = new ConstructorThread(instance);
+                    super.initialState();
+                    constructorThread = new ConstructorThreadSnakeBoard(this);
                     CThread = new Thread(constructorThread);
                     CThread.start();
                 }
             }
             if(state == STATE.IN_GAME){
-                checkCollision();
+                super.checkCollision();
                 snake.move();
                 double ds = determineDownSpeed();
-                this.moveElements(determineDownSpeed());
+                super.moveElements(ds);
                 background.move(ds/2);
                 snake.setHorizontalMovement(0);	
                 if ((leftPressed) && (!rightPressed)) {
@@ -147,88 +81,24 @@ public class SnakeBoard extends JPanel implements Runnable {
         }
     }
     
-    private void doDrawing(Graphics g) {
-        double[] xVector = snake.getX();
-        double[] yVector = snake.getY();
-        //DRAWING BACKGROUND
-        this.background.drawBackground(g);
-        switch (state) {
-            case COUNTDOWN:
-                countdown.setText(Integer.toString(secondsLeft));
-                checkCountdown();
-                break;
-            case IN_GAME:
-                //The rendering hints are used to make the drawing smooth
-                RenderingHints rh= new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-                ((Graphics2D) g).setRenderingHints(rh);
-                //DRAWING SNAKE
-                for (int z = 0; z < Environment.getInstance().DOT_NUM - 1; z++){
-                    if(snake.isSpeedUped())
-                        g.drawImage(this.yellow_dot, (int)xVector[z], (int)yVector[z], this);
-                    if(snake.isShielded()){
-                      g.drawImage(this.grey_dot, (int)xVector[z], (int)yVector[z], this);
-                       g.drawImage(this.shield_small, (int)xVector[z], (int)yVector[z], this);
-                    }
-                    if(!(snake.isShielded() || snake.isSpeedUped()))
-                        g.drawImage(this.ball, (int)xVector[z], (int)yVector[z], this);
-                }
-                if(snake.isShielded())
-                    g.drawImage(grey_dot, (int)xVector[Environment.getInstance().DOT_NUM-1], (int)yVector[Environment.getInstance().DOT_NUM - 1], this);
-                if(snake.isSpeedUped())
-                    g.drawImage(yellow_dot, (int)xVector[Environment.getInstance().DOT_NUM-1], (int)yVector[Environment.getInstance().DOT_NUM - 1], this);
-                if(!(snake.isShielded() || snake.isSpeedUped()))
-                    g.drawImage(ball, (int)xVector[Environment.getInstance().DOT_NUM-1], (int)yVector[Environment.getInstance().DOT_NUM - 1], this);
-                g.setFont(new Font("Arial", Font.BOLD, 15));
-                g.setColor(Environment.getInstance().WRITECOLOR);
-                g.drawString(Integer.toString(snake.getLife()), (int)xVector[Environment.getInstance().DOT_NUM-1] + 20, (int)yVector[Environment.getInstance().DOT_NUM - 1] + 10);
-                //DRAW ELEMENT
-                ElementManager elementManager = ElementManager.getInstance();
-                for(DownElement e : elementManager){
-                    e.draw(g);
-                }
-                Font font = new Font("Arial", Font.BOLD, 16);
-                FontMetrics metrics = g.getFontMetrics(font);
-                g.setFont(font);
-                g.setColor(Environment.getInstance().WRITECOLOR);                    
-                String text = "SCORE : " + Integer.toString(gameBest);
-                g.setFont(font);
-                g.setColor(Environment.getInstance().WRITECOLOR);
-                int textX = Environment.getInstance().JP_WIDTH - (10 + metrics.stringWidth(text));
-                int textY = 20 + metrics.getHeight();
-                g.drawString(text, textX, textY);
-                String textCoin = "x"+coinsSaver.getCurrentCoins();
-                font = new Font("Arial", Font.BOLD, 18);
-                g.setFont(font);
-                metrics = g.getFontMetrics(font);
-                int textCoinX = Environment.getInstance().JP_WIDTH - (10 + metrics.stringWidth(textCoin));
-                int imgX = textCoinX - this.small_coins.getWidth(null);;
-                int imgY = textY + 10;
-                int textCoinY = imgY + ((this.small_coins.getHeight(null) - metrics.getHeight()) / 2) + metrics.getAscent();;
-                g.drawString(textCoin, textCoinX, textCoinY);
-                g.drawImage(this.small_coins, imgX, imgY, null);
-                break;
-            case GAMEOVER:
-                gameOver();
-                break;
-            default:
-                break;
+    @Override
+    protected void doDrawing(Graphics g) {
+        super.doDrawing(g);
+        if(state == STATE.COUNTDOWN){
+            countdown.setText(Integer.toString(secondsLeft));
+            checkCountdown();
         }
     }
 
-    private void gameOver() {
-        constructorThread.stopThread();
-        long endTime = System.currentTimeMillis() + 1000;
-        while(System.currentTimeMillis() != endTime) {
-            // Wait 1 second
-        }
-        coinsSaver.saveCoins();
-        //RESTART BACKGROUND
-        background = new Background(Environment.getInstance().PATHBACKGROUND);
+    @Override
+    protected void gameOver() {
+        super.gameOver();
         CardLayout cl = MathSnake.getInstance().getCardLayout();
-        cl.show(MathSnake.getInstance().getCardsJPanel(), "gameOver");
         this.secondsLeft = 3;
+        cl.show(MathSnake.getInstance().getCardsJPanel(), "gameOver");
+        coinsSaver.saveCoins();
         state = STATE.COUNTDOWN;
+        stop();
     }
     
     private void countdown() {
@@ -250,40 +120,7 @@ public class SnakeBoard extends JPanel implements Runnable {
             countdownTimer.stop();
             state = STATE.IN_GAME;
         }
-    }
-    
-    private void checkCollision(){
-        ElementManager elementManager = ElementManager.getInstance();
-        if (state == STATE.IN_GAME){
-            for(DownElement e : elementManager){
-                if(snake.collide(e.getAssociatedRectangle())){     //check if snake's head collide with block's rectangle
-                    e.collisionAction(this);
-                    elementManager.removeElement(e);
-                }
-                if(e.getY() > Environment.getInstance().JP_HEIGHT){   //check if the block is visibile on the screen, if is not the block is removed
-                    elementManager.removeElement(e);
-                }
-            }
-        }        
-    }
-    
-    private void initialState() {
-        ElementManager.getInstance().flush();
-        loadImages();
-        
-        this.leftPressed = false;
-        this.rightPressed = false;
-        coinsSaver = new CoinsSaver();
-        snake.setLife(10);
-        gameBest = 0;
-    }
-    
-    private void moveElements(double ds){
-        ElementManager em = ElementManager.getInstance();
-        for(DownElement e : em){
-            e.move(ds);
-        }
-    }  
+    } 
     
     private double determineDownSpeed(){
         if (this.gameBest < Environment.getInstance().LIFEINCREASING){
@@ -301,7 +138,10 @@ public class SnakeBoard extends JPanel implements Runnable {
         }
     }
     
-    private void addListeners() {
+    @Override
+    protected void addListeners() {
+        super.addListeners();
+        
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -321,7 +161,7 @@ public class SnakeBoard extends JPanel implements Runnable {
                     else if(state == STATE.PAUSE){
                         state = STATE.IN_GAME;
                         pause = false;
-                        constructorThread = new ConstructorThread(instance);
+                        constructorThread = new ConstructorThreadSnakeBoard((SnakeBoard)e.getSource());
                         CThread = new Thread(constructorThread);
                         CThread.start();
                     }
@@ -339,47 +179,6 @@ public class SnakeBoard extends JPanel implements Runnable {
                 
             }
         });
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentShown(ComponentEvent e) {
-                requestFocusInWindow();
-            }
-        });
     }
     
-    public int getGameBest() {
-        return gameBest;
-    }
-
-    public CoinsSaver getCoinsSaver() {
-        return coinsSaver;
-    }
-
-    public void setCoinsSaver(CoinsSaver coinsSaver) {
-        this.coinsSaver = coinsSaver;
-    }
-
-    public STATE getState() {
-        return state;
-    }
-
-    public void setState(STATE state) {
-        this.state = state;
-    }
-
-    public void setGameBest(int gameBest) {
-        this.gameBest = gameBest;
-    }
-    
-    
-    public void stop(){
-        this.stop = true;
-    }
-    
-    public enum STATE {
-        COUNTDOWN,
-        IN_GAME,
-        PAUSE,
-        GAMEOVER
-    }
 }

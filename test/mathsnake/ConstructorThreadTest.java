@@ -30,7 +30,7 @@ public class ConstructorThreadTest {
     @Test
     public void creationTest(){
         try {
-            constructorBlockRunnable = new ConstructorThread(new SnakeBoard());
+            constructorBlockRunnable = new ConstructorThreadSnakeBoard(new SnakeBoard());
             Thread constructorBlockThread = new Thread(constructorBlockRunnable);
             constructorBlockThread.start();
             ElementManager em = ElementManager.getInstance();

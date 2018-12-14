@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
+import javax.swing.ImageIcon;
 
 public class Block extends DownElement {
     private final int value; //indicates the value of operation
@@ -57,7 +59,7 @@ public class Block extends DownElement {
     public void draw(Graphics g){ 
         super.draw(g);
        if(this.op == Operation.DEA){
-          Image img_d = this.loadImage(Environment.getInstance().PATHIMAGES+"retro_skull.png");
+          Image img_d = this.loadImage(Environment.getInstance().PATHIMAGES + "retro_skull.png");
           int img_d_X = (int)x + (Environment.getInstance().BLOCK_WIDTH - img_d.getWidth(null))/2;
           int img_d_Y = (int)y + (Environment.getInstance().BLOCK_HEIGHT - img_d.getHeight(null))/2;
           g.drawImage(img_d, img_d_X, img_d_Y, null);
@@ -68,9 +70,9 @@ public class Block extends DownElement {
             // Get the FontMetrics
             FontMetrics metrics = g.getFontMetrics(font);
             // Determine the X coordinate for the text
-            int textX = (int)x + (Environment.getInstance().BLOCK_WIDTH - metrics.stringWidth(text)) / 2;
+            int textX = (int) x + (Environment.getInstance().BLOCK_WIDTH - metrics.stringWidth(text)) / 2;
            // Determine the Y coordinate for the text
-            int textY = (int)y + ((Environment.getInstance().BLOCK_HEIGHT - metrics.getHeight()) / 2) + metrics.getAscent();
+            int textY = (int) y + ((Environment.getInstance().BLOCK_HEIGHT - metrics.getHeight()) / 2) + metrics.getAscent();
             g.setFont(font);
             g.setColor(Color.WHITE);
             g.drawString(text, textX, textY);
@@ -78,8 +80,8 @@ public class Block extends DownElement {
    }
 
     @Override
-    public void collisionAction(SnakeBoard snakeBoard){
-        Snake snake = snakeBoard.getSnake();
+    public void collisionAction(Board board){
+        Snake snake = board.getSnake();
         int actualLife = snake.getLife();
         String op = this.getStrOp();
         if (op.equals("+"))
@@ -95,11 +97,11 @@ public class Block extends DownElement {
         if (actualLife < 0)
             snake.setLife(0);
         else {
-            if (actualLife > snakeBoard.getGameBest())
-                snakeBoard.setGameBest(actualLife);
+            if (actualLife > board.getGameBest())
+                board.setGameBest(actualLife);
         }
         if (snake.getLife() == 0)
-            snakeBoard.setState(SnakeBoard.STATE.GAMEOVER);
+            board.setState(Board.STATE.GAMEOVER);
     }
     
 }
