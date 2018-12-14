@@ -1,13 +1,7 @@
-<<<<<<< HEAD
-
-*.xml
-*.properties
-=======
-<<<<<<< HEAD
 /dist/
 /build/
 /nbproject/private/
-=======
+
 # Compiled class file
 *.class
 
@@ -21,7 +15,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
@@ -31,8 +24,7 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
->>>>>>> 5f9993d1518bd8c9a2cf2e65cd4499b1518dc38b
->>>>>>> ebbbc59484491428948c108129070b4ea4a703be
 .DS_Store
 *.properties
 *.xml
+*.txt
