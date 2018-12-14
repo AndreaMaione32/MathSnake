@@ -1,3 +1,0 @@
-cloud_background.png
--16777216
-dot.png

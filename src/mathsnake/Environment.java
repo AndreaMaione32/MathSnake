@@ -37,6 +37,7 @@ public class Environment {
     public Map<String, Boolean> BOUGHT_FEATURES = new HashMap();
     public final int DOT_NUM = 7; //numero di dot di cui è composto lo snake
     public final int SCOREBOARD_SIZE = 6;
+    public final String UTILITY_FILES_PATH = "utility_files/";
     public Color WRITECOLOR;
     
     private Environment(){
@@ -61,7 +62,7 @@ public class Environment {
     }
     
     private void readGraphicConfiguration() throws IOException {
-        File f = new File("graphic_configuration.txt");
+        File f = new File(this.UTILITY_FILES_PATH+"graphic_configuration.txt");
         if(!f.exists()) {
             f.createNewFile();
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
@@ -80,7 +81,7 @@ public class Environment {
             }
         }
         
-        f = new File("bought_features.txt");
+        f = new File(this.UTILITY_FILES_PATH+"bought_features.txt");
         if(!f.exists()) {
             f.createNewFile();
             ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(f));
@@ -97,7 +98,7 @@ public class Environment {
     public void writeGraphicConfiguration() throws IOException {
         String background = PATHBACKGROUND.split("/")[3];
         String skin = PATHSKIN.split("/")[3];
-        File f = new File("graphic_configuration.txt");
+        File f = new File(this.UTILITY_FILES_PATH+"graphic_configuration.txt");
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(f, false))) {
             bw.write(background, 0, background.length());
             bw.newLine();
@@ -108,7 +109,7 @@ public class Environment {
     }
     
     public void writeBoughtFeatures() throws FileNotFoundException, IOException {
-        File f = new File("bought_features.txt");
+        File f = new File(this.UTILITY_FILES_PATH+"bought_features.txt");
         ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(f));
         writer.writeObject(BOUGHT_FEATURES);
     }

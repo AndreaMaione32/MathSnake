@@ -21,8 +21,8 @@ import java.util.LinkedList;
 public class ScoreBoard2 implements Serializable {
     
     private final LinkedList<Score> list;
-    private String databaseDAT = "database.dat";
-    private String databaseTXT = "database.txt";
+    private String databaseDAT = Environment.getInstance().UTILITY_FILES_PATH+"scoreboard.dat";
+    private String databaseTXT = Environment.getInstance().UTILITY_FILES_PATH+"scoreboard.txt";
     
     /**
      * classe Score annidata 

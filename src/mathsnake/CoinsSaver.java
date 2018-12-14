@@ -7,10 +7,13 @@ import java.util.logging.Logger;
 public class CoinsSaver {
     
     private int currentCoins;
-    private File file;
     
     public CoinsSaver() {
-        file = new File("coins.txt");
+        try {
+            currentCoins = readCoins();
+        } catch (IOException ex) {
+            Logger.getLogger(CoinsSaver.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public int getCurrentCoins() {
@@ -19,22 +22,6 @@ public class CoinsSaver {
     
     public void setCurrentCoins(int coins) {
         currentCoins = coins;
-    }
-
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
-    }
-    
-    public void readCoins() {
-        try {
-            currentCoins = read();
-        } catch (IOException ex) {
-            Logger.getLogger(CoinsSaver.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
     public void saveCoins() {
@@ -45,7 +32,8 @@ public class CoinsSaver {
         }
     }
     
-    private int read() throws FileNotFoundException, IOException {
+    public int readCoins() throws FileNotFoundException, IOException {
+        File file = new File(Environment.getInstance().UTILITY_FILES_PATH+"coins.txt");
         if(!file.exists()) {
             try {
                 file.createNewFile();
@@ -65,6 +53,7 @@ public class CoinsSaver {
     }
     
     private void writeCoins(int coins) throws IOException {
+        File file = new File(Environment.getInstance().UTILITY_FILES_PATH+"coins.txt");
         if(!file.exists()) {
             try {
                 file.createNewFile();

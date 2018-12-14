@@ -5,17 +5,16 @@
  */
 package mathsnake;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.junit.After;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 import static org.mockito.Mockito.*;
@@ -28,46 +27,36 @@ public class CoinsSaverTest {
     
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
-
+    private boolean fileModified = false;
     /**
      * Test of saveCoins method, of class CoinsSaver.
      */
+    @Before
+    public void copyFile() throws IOException{
+        //copy content of coins in coins_copy in order to restore the state after the test
+        Files.copy(new File(Environment.getInstance().UTILITY_FILES_PATH+"coins.txt").toPath(),new File(Environment.getInstance().UTILITY_FILES_PATH+"coins_copy.txt").toPath() , StandardCopyOption.REPLACE_EXISTING);
+    }
+    
+    @After
+    public void undoModificationTest(){
+        //restore the state before the test
+        new File(Environment.getInstance().UTILITY_FILES_PATH+"coins.txt").delete();
+        new File(Environment.getInstance().UTILITY_FILES_PATH+"coins_copy.txt").renameTo(new File(Environment.getInstance().UTILITY_FILES_PATH+"coins.txt"));
+    }
+    
     @Test
     public void testSaveCoins() {
+        int coinsSaved = 0;
+        CoinsSaver coinsSaver = new CoinsSaver();
+        coinsSaver.setCurrentCoins(20);
+        coinsSaver.saveCoins();
         try {
-            CoinsSaver instance = new CoinsSaver();
-            File f = folder.newFile("temp.txt");
-            int expectedCoins = 10;
-            int coinsRead;
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
-                bw.write(Integer.toString(expectedCoins));
-            }
-            instance.setFile(f);
-            instance.setCurrentCoins(10);
-            instance.saveCoins();
-            try (BufferedReader br = new BufferedReader(new FileReader(f))) {
-                coinsRead = Integer.parseInt(br.readLine());
-            }
-            assertEquals(expectedCoins, coinsRead);
+            coinsSaved = coinsSaver.readCoins();
         } catch (IOException ex) {
             Logger.getLogger(CoinsSaverTest.class.getName()).log(Level.SEVERE, null, ex);
         }
+        assertEquals(coinsSaved, 20);
     }
-
-    /**
-     * Test of readCoins method, of class CoinsSaver.
-     */
-    @Test
-    public void testReadCoins() {
-        try {
-            CoinsSaver instance = new CoinsSaver();
-            instance.readCoins();
-            BufferedReader br = new BufferedReader(new FileReader(instance.getFile()));
-            int expectedCoins = Integer.parseInt(br.readLine());
-            assertEquals(expectedCoins, instance.getCurrentCoins());
-        } catch (IOException ex) {
-            Logger.getLogger(CoinsSaverTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    
     
 }
