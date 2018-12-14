@@ -60,21 +60,17 @@ public class ElementManager implements Iterable<DownElement>{
         
         @Override
         public boolean hasNext() {
-            synchronized(em){
-                if(current < em.numElements())
-                    return true;
-                else
-                    return false;
-            }
+            if(current < em.numElements())
+                return true;
+            else
+                return false;
         }
 
         @Override
         public  DownElement next() {
-            synchronized(em){
-               DownElement e = em.getElement(current);
-               current ++;
-               return e;
-            }
+            DownElement e = em.getElement(current);
+            current ++;
+            return e;
         }
         
     }

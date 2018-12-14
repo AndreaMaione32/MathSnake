@@ -96,7 +96,6 @@ public class SnakeBoard extends Board {
         CardLayout cl = MathSnake.getInstance().getCardLayout();
         this.secondsLeft = 3;
         cl.show(MathSnake.getInstance().getCardsJPanel(), "gameOver");
-        System.out.println(coinsSaver.getCurrentCoins());
         coinsSaver.saveCoins();
         state = STATE.COUNTDOWN;
         stop();
