@@ -8,8 +8,6 @@ package mathsnake;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.Timer;
@@ -19,7 +17,9 @@ import javax.swing.Timer;
  * @author edoardocossentino
  */
 public class DemoBoard extends Board {
-    private double movementSecond = 25.0;
+    private double movementSecond = 50.0;
+    private final double SECOND = movementSecond - 2.0;
+
     private Timer countdownMovement = new Timer(500, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -35,7 +35,6 @@ public class DemoBoard extends Board {
     
     @Override
     public void run(){
-        System.out.println("ciao");
         long beforeTime, delta, sleep; 
         beforeTime = System.currentTimeMillis();
         stop = false;
@@ -91,65 +90,93 @@ public class DemoBoard extends Board {
         cl.show(MathSnake.getInstance().getCardsJPanel(), "menu");
         state = STATE.IN_GAME;
         countdownMovement.stop();
-        movementSecond = 25.0;
+        movementSecond = SECOND + 2.0;
         stopMoving();
         stop();
     }
     
     
    private void checkMovement() { 
-        if (movementSecond == 23) {
+        if (movementSecond == SECOND) {
             startMovingLeft();
         }
-        if (movementSecond == 22.5) {
+        if (movementSecond == SECOND - 0.5) {
             stopMoving();
         }
-        if (movementSecond == 20.0) {
+        if (movementSecond == SECOND - 3.0) {
             startMovingRight();
         }
-        if (movementSecond == 19.0) {
+        if (movementSecond == SECOND - 4.0) {
             startMovingLeft();
         }
-        if (movementSecond == 18.0) {
+        if (movementSecond == SECOND - 5.0) {
             stopMoving();
         }
-        if (movementSecond == 15.5) {
+        if (movementSecond == SECOND - 7.5) {
             startMovingRight();
         }
-        if (movementSecond == 15.0) {
+        if (movementSecond == SECOND - 8.0) {
             stopMoving();
         }
-        if (movementSecond == 14.5) {
+        if (movementSecond == SECOND - 8.5) {
             startMovingRight();
         }
-        if (movementSecond == 14.0) {
+        if (movementSecond == SECOND - 9.0) {
             stopMoving();
         }
-        if (movementSecond == 13.5) {
+        if (movementSecond == SECOND - 9.5) {
             startMovingLeft();
         }
-        if (movementSecond == 12.5) {
+        if (movementSecond == SECOND - 10.5) {
             startMovingRight();
         }
-        if (movementSecond == 11.5) {
+        if (movementSecond == SECOND - 11.5) {
             stopMoving();
         }
-        if (movementSecond == 9.5) {
+        if (movementSecond == SECOND - 13.5) {
             startMovingLeft();
         }
-        if (movementSecond == 8.5) {
+        if (movementSecond == SECOND - 14.5) {
             startMovingRight();
         }
-        if (movementSecond == 7.5) {
+        if (movementSecond == SECOND - 15.5) {
             stopMoving();
         }
-        if (movementSecond == 6.5) {
+        if (movementSecond == SECOND - 16.5) {
             startMovingLeft();
         }
-        if (movementSecond == 5.0) {
+        if (movementSecond == SECOND - 18.0) {
             startMovingRight();
-            countdownMovement.stop();
-            movementSecond = 25.0;
+        }
+        if (movementSecond == SECOND - 19.0) {
+            stopMoving();
+        }
+        if (movementSecond == SECOND - 22.5) {
+            startMovingLeft();
+        }
+        if (movementSecond == SECOND - 23.0) {
+            stopMoving();
+        }
+        if (movementSecond == SECOND - 25.0) {
+            startMovingRight();
+        }
+        if (movementSecond == SECOND - 26.0) {
+            stopMoving();
+        }
+        if (movementSecond == SECOND - 28.0) {
+            startMovingLeft();
+        }
+        if (movementSecond == SECOND - 28.5) {
+            stopMoving();
+        }
+        if (movementSecond == SECOND - 29.0) {
+            startMovingRight();
+        }
+        if (movementSecond == SECOND - 29.5) {
+            stopMoving();
+        }
+        if (movementSecond == SECOND - 30.5) {
+            startMovingLeft();
         }
 
     }
