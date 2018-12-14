@@ -6,6 +6,12 @@ import java.util.logging.Logger;
 
 /**
  * The Runnable, that is called Thread in order to explain better its function, creates the Block
+ * The run method of constructorThread creates the elements on the screen and sleep for a certain time that depends on
+ * the game best in game.
+ * The method that creates the elements are different for the construction during the demo and the contruction during the game.
+ * Thus, the run algorithms for the different constructorThreads have the same structure and differ for the constrcutor methods implementation.
+ * We use the template method.
+ * Create methods are hook methods.
  */
 
 public abstract class ConstructorThread implements Runnable {
@@ -23,9 +29,9 @@ public abstract class ConstructorThread implements Runnable {
     @Override
     public void run() {
         while(!stop){
-            createBlocks();
-            createPowerUps();
-            createCoins();
+            createBlocks(); //hook method
+            createPowerUps(); //hook method
+            createCoins(); //hook method
             try {
                 if (board.getGameBest() < Environment.getInstance().LIFEINCREASING){
                     Thread.sleep(Environment.getInstance().MINTHREADDELAY);
@@ -48,11 +54,11 @@ public abstract class ConstructorThread implements Runnable {
         
     }
     
-    protected abstract void createBlocks();
+    protected abstract void createBlocks();  //hook method
     
-    protected abstract void createPowerUps();
+    protected abstract void createPowerUps(); //hook method
     
-    protected abstract void createCoins();
+    protected abstract void createCoins(); //hook method
     
     public boolean isStop() {
         return stop;
