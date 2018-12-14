@@ -9,7 +9,7 @@ public class PowerUpsIncreaseLife extends DownElement {
     }
     
     @Override
-    public void collsionAction(Board board) {
+    public void collisionAction(Board board) {
         board.getSnake().setLife(board.getSnake().getLife() + 100);  //increases snake's life
     }
 }

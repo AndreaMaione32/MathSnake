@@ -104,7 +104,7 @@ public class Block extends DownElement {
    }
 
     @Override
-    public void collsionAction(Board board){
+    public void collisionAction(Board board){
         Snake snake = board.getSnake();
         int actualLife = snake.getLife();
         String op = this.getStrOp();

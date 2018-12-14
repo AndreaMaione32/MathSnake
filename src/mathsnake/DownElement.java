@@ -70,5 +70,5 @@ public abstract class DownElement {
       g.drawImage(img, (int)this.getX(), (int)this.getY(), null);  
     }
     
-    public abstract void collsionAction(Board board); //this method define the action linked to a collision with the element. 
+    public abstract void collisionAction(Board board); //this method define the action linked to a collision with the element. 
 }
