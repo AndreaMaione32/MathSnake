@@ -17,8 +17,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
-import static org.mockito.Mockito.*;
-
 /**
  *
  * @author andreamaione
