@@ -18,6 +18,8 @@ public class Snake implements ActionListener {
     private int lifepoints; 
     private boolean speed_uped = false; //if true increase snake's velocity of 70%
     private boolean shield = false; //if true the snake's life don't decreases
+    private double radius = Environment.getInstance().DOT_SIZE/2;
+
     
     // Costruttore con paramtetro di deafult di dots
     public Snake() {
@@ -32,16 +34,21 @@ public class Snake implements ActionListener {
         this.speedUpTimer = new Timer(Environment.getInstance().SPEED_UP_DURATION, this);
         for (int z = 0; z < Environment.getInstance().DOT_NUM; z++) {
             x[z] = Environment.getInstance().JP_WIDTH / 2;
-            y[z] = (Environment.getInstance().JP_HEIGHT-2*Environment.getInstance().DOT_SIZE) - (z * Environment.getInstance().DOT_SIZE); // Poichè la dimensione di ogni dot è DOT_SIZE px la differenza fra due coordinate adiacenti nel vettore è pari a 10, il primo elemento del vettore è il primo dot della coda, mentre l'ultimo è la testa dello snake; il primo dot ha y = JP_WIDTH, il secondo JP_WIDTH - 10 e così via
+            y[z] = (Environment.getInstance().JP_HEIGHT-2*Environment.getInstance().DOT_SIZE) - (z * Environment.getInstance().DOT_SIZE); 
             this.rectangle = new Rectangle((int)x[Environment.getInstance().DOT_NUM-1],(int)y[Environment.getInstance().DOT_NUM-1], Environment.getInstance().DOT_SIZE,Environment.getInstance().DOT_SIZE);  //coordinates are the coordinates of the head
         }
     }
     
     private void setX(double x) {
-        double[] xCopy = this.x.clone();
         this.x[Environment.getInstance().DOT_NUM - 1] = x;
         for(int z = Environment.getInstance().DOT_NUM - 2; z >= 0; z--) {
-            this.x[z] = xCopy[z+1];
+            double curr = this.x[z];
+            double last = this.x[z+1]; 
+            double diffX = curr - last;
+            double diffY = this.y[z] - this.y[z+1];
+            double angle = Math.atan2(diffY, diffX);
+            double nx = 2*(this.radius-2)*Math.cos(angle);
+            this.x[z] = nx + last;
         }
         rectangle.setLocation((int)this.x[Environment.getInstance().DOT_NUM-1], (int)this.y[Environment.getInstance().DOT_NUM-1]); //Move also Rectangle assoicated
     }

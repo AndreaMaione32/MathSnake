@@ -167,18 +167,18 @@ public class GameOver extends JPanel {
         String s = jTextField1.getText();
         
         try {
-            ScoreBoard2 SB = new ScoreBoard2();
+            ScoreBoard SB = new ScoreBoard();
                 if(s.isEmpty()){
                     
             s = "UNKNOWN";
-            ScoreBoard2.Score a = SB.new Score(sb.getGameBest(),new Date(),s);
+            ScoreBoard.Score a = SB.new Score(sb.getGameBest(),new Date(),s);
             SB.insert_score(a);
             jTextField1.setText("");
             
         }
         else{
             name=s;
-            ScoreBoard2.Score a = SB.new Score(sb.getGameBest(),new Date(),s);
+            ScoreBoard.Score a = SB.new Score(sb.getGameBest(),new Date(),s);
             SB.insert_score(a);
             jTextField1.setText("");
             

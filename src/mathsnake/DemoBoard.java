@@ -30,16 +30,19 @@ public class DemoBoard extends Board {
         beforeTime = System.currentTimeMillis();
         stop = false;
         while(!stop){
-            if(!pause){
-            if (state == STATE.IN_GAME) {
+            if(state == STATE.IN_GAME){
                 if(!CThread.isAlive()){
                     initialState();
                     constructorThread = new ConstructorThreadDemoBoard(this);
                     CThread = new Thread(constructorThread);
                     CThread.start();
                 }
-            }
-            if(state == STATE.IN_GAME){
+                if(!CThread.isAlive()){
+                    initialState();
+                    constructorThread = new ConstructorThreadDemoBoard(this);
+                    CThread = new Thread(constructorThread);
+                    CThread.start();
+                }
                 super.checkCollision();
                 snake.move();
                 double ds = determineDownSpeed();
@@ -57,7 +60,6 @@ public class DemoBoard extends Board {
                 }
             }
             repaint();
-            }
             delta = System.currentTimeMillis() - beforeTime;
             sleep = Environment.getInstance().DELAY - delta;
 

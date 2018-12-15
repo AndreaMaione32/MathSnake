@@ -15,6 +15,9 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -23,6 +26,7 @@ import javax.swing.JPanel;
 public class Menu extends JPanel{
     
     private JLabel mathSnakeLabel = new JLabel("MATH SNAKE");
+    private JLabel gameBestLabel = new JLabel();
     private JButton play = new JButton("Play");
     private JButton scoreBoard = new JButton("Scores");
     private JButton market = new JButton("Market");
@@ -63,27 +67,30 @@ public class Menu extends JPanel{
         
         c.gridx = 1;
         c.gridy = 1;
+        gameBestLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        gameBestLabel.setForeground(Environment.getInstance().WRITECOLOR);
+        add(gameBestLabel,c);
         
         c.gridwidth = 3;
         c.anchor = GridBagConstraints.CENTER;
         
         c.gridx = 1;
-        c.gridy = 1;
+        c.gridy = 2;
         play.setFont(new Font("Arial", Font.BOLD, 20));
         add(play, c);
         
         c.gridx = 1;
-        c.gridy = 2;
+        c.gridy = 3;
         scoreBoard.setFont(new Font("Arial", Font.BOLD, 20));
         add(scoreBoard, c);
         
         c.gridx = 1;
-        c.gridy = 3;
+        c.gridy = 4;
         market.setFont(new Font("Arial", Font.BOLD, 20));
         add(market, c);
         
         c.gridx = 1;
-        c.gridy = 4;
+        c.gridy = 5;
         demo.setFont(new Font("Arial", Font.BOLD, 20));
         add(demo, c); 
     }
@@ -95,6 +102,13 @@ public class Menu extends JPanel{
                 for(Component component : getComponents()) {
                     if(component instanceof JLabel)
                         component.setForeground(Environment.getInstance().WRITECOLOR);
+                    try {
+                        gameBestLabel.setText(Float.toString(new ScoreBoard().getBestScore()));
+                    } catch (IOException ex) {
+                        Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
 

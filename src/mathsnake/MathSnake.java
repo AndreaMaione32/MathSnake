@@ -20,7 +20,7 @@ public class MathSnake extends JFrame {
     private Menu menu = new Menu();
     private SnakeBoard game = new SnakeBoard();
     private DemoBoard demo = new DemoBoard();
-    private ScoreBoard score;
+    private ScoreBoardInterface score;
     private Market market = new Market();
     private static MathSnake instance = null; 
     
@@ -32,7 +32,7 @@ public class MathSnake extends JFrame {
     
     private MathSnake() {
         try {
-            this.score = new ScoreBoard();
+            this.score = new ScoreBoardInterface();
             this.gameOver = new GameOver(this.game);
         } catch (IOException ex) {
             Logger.getLogger(MathSnake.class.getName()).log(Level.SEVERE, null, ex);

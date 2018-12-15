@@ -40,7 +40,6 @@ public class SnakeBoard extends Board {
                     countdown();
                     countdownTimer.start();
                 }
-                background = new Background(Environment.getInstance().PATHBACKGROUND);
             }
             if (state == STATE.IN_GAME) {
                 if(!CThread.isAlive()){
@@ -51,8 +50,8 @@ public class SnakeBoard extends Board {
                 }
             }
             if(state == STATE.IN_GAME){
-                super.checkCollision();
                 snake.move();
+                super.checkCollision();
                 double ds = determineDownSpeed();
                 super.moveElements(ds);
                 background.move(ds/2);

@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import mathsnake.ScoreBoard2.Score;
+import mathsnake.ScoreBoard.Score;
 import org.junit.After;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -32,18 +32,18 @@ public class ScoreBoard2Test {
     }
 
     /**
-     * Test of updateDB method, of class ScoreBoard2.
+     * Test of updateDB method, of class ScoreBoard.
      */
     @Test
     public void testUpdateDB() {
         try {
             String tmpFile = "prova";
             String tmpFileDAT = tmpFile + ".dat";
-            ScoreBoard2 board = new ScoreBoard2();
-            ScoreBoard2 instance = new ScoreBoard2(tmpFile);
+            ScoreBoard board = new ScoreBoard();
+            ScoreBoard instance = new ScoreBoard(tmpFile);
             instance.updateDB(board);
             ObjectInputStream reader = new ObjectInputStream(new FileInputStream(tmpFileDAT));
-            ScoreBoard2 readInstance = (ScoreBoard2) reader.readObject();
+            ScoreBoard readInstance = (ScoreBoard) reader.readObject();
             reader.close();
             assertEquals(readInstance.toString(), board.toString());
         } catch (IOException | ClassNotFoundException ex) {
@@ -74,15 +74,15 @@ public class ScoreBoard2Test {
     }**/
 
     /**
-     * Test of readDB method, of class ScoreBoard2.
+     * Test of readDB method, of class ScoreBoard.
      */
     @Test
     public void testReadDB() {
         try {
-            ScoreBoard2 instance = new ScoreBoard2();
-            ScoreBoard2 result = instance.readDB();
+            ScoreBoard instance = new ScoreBoard();
+            ScoreBoard result = instance.readDB();
             ObjectInputStream reader = new ObjectInputStream(new FileInputStream("database.dat"));
-            ScoreBoard2 readInstance = (ScoreBoard2) reader.readObject();
+            ScoreBoard readInstance = (ScoreBoard) reader.readObject();
             reader.close();
             assertEquals(readInstance.toString(), result.toString());
         } catch (IOException | ClassNotFoundException ex) {
@@ -91,14 +91,14 @@ public class ScoreBoard2Test {
     }
 
     /**
-     * Test of insert_score method, of class ScoreBoard2.
+     * Test of insert_score method, of class ScoreBoard.
      */
     @Test
     public void testInsertScore() {
         try {
             String tmpFile = "prova";
             boolean flag = true;
-            ScoreBoard2 instance = new ScoreBoard2(tmpFile);
+            ScoreBoard instance = new ScoreBoard(tmpFile);
             Score s1 = instance.new Score(10000, new Date(), "Player1");
             Score s2 = instance.new Score(9000, new Date(), "Player2");
             Score s3 = instance.new Score(12000, new Date(), "Player3");

@@ -228,6 +228,7 @@ public abstract class Board extends JPanel implements Runnable{
             @Override
             public void focusGained(FocusEvent e) {
                 if(stop){
+                background = new Background(Environment.getInstance().PATHBACKGROUND);
                 Board b = (Board)e.getSource();
                 new Thread((Board)e.getSource()).start();
                 }
