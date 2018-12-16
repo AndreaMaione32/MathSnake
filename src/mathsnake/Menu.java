@@ -67,11 +67,11 @@ public class Menu extends JPanel{
         
         c.gridx = 1;
         c.gridy = 1;
-        gameBestLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        gameBestLabel.setFont(new Font("Arial", Font.BOLD, 25));
         gameBestLabel.setForeground(Environment.getInstance().WRITECOLOR);
+        gameBestLabel.setIcon(new ImageIcon(Environment.getInstance().PATHIMAGES+"trophy.png"));
         add(gameBestLabel,c);
         
-        c.gridwidth = 3;
         c.anchor = GridBagConstraints.CENTER;
         
         c.gridx = 1;
@@ -103,7 +103,7 @@ public class Menu extends JPanel{
                     if(component instanceof JLabel)
                         component.setForeground(Environment.getInstance().WRITECOLOR);
                     try {
-                        gameBestLabel.setText(Float.toString(new ScoreBoard().getBestScore()));
+                        gameBestLabel.setText(Integer.toString(new ScoreBoard().getBestScore()));
                     } catch (IOException ex) {
                         Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (ClassNotFoundException ex) {

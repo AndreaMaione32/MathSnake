@@ -28,7 +28,7 @@ public class ScoreBoard implements Serializable {
      */
     public class Score implements Serializable {
         
-        private final float score;
+        private final int score;
         private final Date score_date;
         private final String name_player;
         
@@ -38,7 +38,7 @@ public class ScoreBoard implements Serializable {
          * @param score_date
          * @param name_player 
          */
-        public Score(float score, Date score_date, String name_player) {
+        public Score(int score, Date score_date, String name_player) {
             this.score = score;
             this.score_date = score_date;
             this.name_player = name_player;
@@ -48,7 +48,7 @@ public class ScoreBoard implements Serializable {
          * 
          * @return restituisce l'attributo score della classe
          */
-        public float getScore(){
+        public int getScore(){
             return this.score;
         }
         /**
@@ -228,12 +228,14 @@ public class ScoreBoard implements Serializable {
         }
     }
     
-    public float getBestScore(){
+    public int getBestScore(){
         if(this.list.isEmpty())
             return 0;
         else
             return this.list.get(this.list.size()-1).score;
     }
+    
+    
     
     /**
      * 

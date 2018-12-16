@@ -24,7 +24,6 @@ import org.junit.rules.TemporaryFolder;
 public class CoinsSaverTest {
     
     @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
     private boolean fileModified = false;
     /**
      * Test of saveCoins method, of class CoinsSaver.

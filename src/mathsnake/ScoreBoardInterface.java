@@ -2,38 +2,56 @@ package mathsnake;
 
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import mathsnake.ScoreBoard.Score;
 
 /**
  *
  * @author VALE
  */
 public class ScoreBoardInterface extends javax.swing.JPanel {
-
-
+    
+    private JButton jButton1 = new JButton();    
+    
     public ScoreBoardInterface() throws IOException, FileNotFoundException, ClassNotFoundException {
+        setLayout(new GridBagLayout());
+        setPreferredSize(new Dimension(Environment.getInstance().JP_WIDTH, Environment.getInstance().JP_HEIGHT));
         initComponents();
     }
     
     private void initComponents(){
+        jButton1.setText("Back");
+        jButton1.setFont(new java.awt.Font("Arial",1,20));
+        jButton1.addActionListener(this::jButton1ActionPerformed);
+        
         addFocusListener(new FocusListener(){
             @Override
             public void focusGained(FocusEvent e){
                 removeAll();
-                createScoreBoard();
-                for(Component component : getComponents()) {
-                    if(component instanceof JLabel || component instanceof javax.swing.JTextArea )
-                        component.setForeground(Environment.getInstance().WRITECOLOR);
+                repaint();
+                try {
+                    createScoreBoard();
+                } catch (IOException ex) {
+                    Logger.getLogger(ScoreBoardInterface.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(ScoreBoardInterface.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             @Override
@@ -57,86 +75,86 @@ public class ScoreBoardInterface extends javax.swing.JPanel {
         new Background(Environment.getInstance().PATHBACKGROUND).drawBackground(g);
     }
                          
-    private void createScoreBoard() {
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+    private void createScoreBoard() throws IOException, FileNotFoundException, ClassNotFoundException {
+        JLabel scoreBoardLabel = new JLabel("SCOREBOARD");
+        JLabel jLabelName = new JLabel("NAME");
+        JLabel jLabelScore = new JLabel("SCORE");
+        JLabel jLabelDate = new JLabel("DATE");
+    
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridwidth = 6;
+        c.gridy = 0;
+        c.anchor = GridBagConstraints.PAGE_START;
+        c.weighty = 1.0;
+        scoreBoardLabel.setFont(new Font("Arial", Font.BOLD, 40));
+        scoreBoardLabel.setForeground(Environment.getInstance().WRITECOLOR);
+        add(scoreBoardLabel, c);
+        c.weightx = 1.0;
+        c.gridwidth = 2;
+        c.gridx = 0;
+        c.gridy = 1;
+        jLabelName.setFont(new Font("Arial", Font.BOLD, 25));
+        jLabelName.setForeground(Environment.getInstance().WRITECOLOR);
+        add(jLabelName, c);
+        c.gridx = 2;
+        jLabelScore.setFont(new Font("Arial", Font.BOLD, 25));
+        jLabelScore.setForeground(Environment.getInstance().WRITECOLOR);
+        add(jLabelScore, c);
+        c.gridx = 4;
+        jLabelDate.setFont(new Font("Arial", Font.BOLD, 25));
+        jLabelDate.setForeground(Environment.getInstance().WRITECOLOR);
+        add(jLabelDate, c);
+        //FILL THE SCOREBOARD
+        fillScoreBoard(c);
         
-        try {
-            SB = new ScoreBoard();
-          
-        } catch (IOException ex) {
-            Logger.getLogger(ScoreBoardInterface.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ScoreBoardInterface.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Font font1 =new Font("Arial", Font.BOLD, 16);
-        setPreferredSize(new java.awt.Dimension(500, 500));
-        setSize(new java.awt.Dimension(500, 500));
-
-        jTextArea1.setOpaque(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setForeground(Environment.getInstance().WRITECOLOR);
-        jScrollPane1.setViewportView(jTextArea1);
-        jTextArea1.setText(SB.toString());
-        jTextArea1.setEditable(false);
-        jTextArea1.setFont(font1);
-        jScrollPane1.getViewport().setOpaque(false);
-        jScrollPane1.setOpaque(false);
-        jScrollPane1.setBorder(null);
-        jButton1.setText("Back");
-        jButton1.setFont(new java.awt.Font("Arial",1,20));
-        jButton1.addActionListener(this::jButton1ActionPerformed);
-
-        jLabel1.setFont(new java.awt.Font("Arial", 1, 40)); // NOI18N
-        jLabel1.setForeground(Environment.getInstance().WRITECOLOR);
-        jLabel1.setText("SCOREBOARD");
-        
-        jLabel1.setHorizontalAlignment( JLabel.CENTER );
-        
-        
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
-        );
+        c.weighty = 2;
+        c.insets = new Insets(0, 0, 5, 10);
+        c.anchor = GridBagConstraints.LAST_LINE_END;
+        jButton1.setFont(new Font("Arial", 1, 20));
+        add(jButton1, c);
     }                      
 
+    private void fillScoreBoard(GridBagConstraints c) throws IOException, FileNotFoundException, ClassNotFoundException{
+        ScoreBoard SB = new ScoreBoard();
+        List<Score> list = SB.getList();
+        for(int i = 0; i<Environment.getInstance().SCOREBOARD_SIZE; i++){
+            if(i >= list.size()){
+                JLabel empty = new JLabel("");
+                c.gridy ++;
+                c.gridx = 0;
+                this.add(empty, c);
+                c.gridx = 2;
+                this.add(empty, c);
+                c.gridx = 4;
+                this.add(empty, c);
+            }
+            else{
+           Score s = list.get((list.size()-1)-i);
+           JLabel name = new JLabel(s.getNamePlayer());
+           JLabel score = new JLabel(Integer.toString(s.getScore()));
+           String str_date = new SimpleDateFormat().format(s.getDateScore());
+           JLabel date = new JLabel(str_date);
+           c.gridy ++;
+           c.gridx = 0;
+           name.setFont(new Font("Arial", Font.BOLD, 22));
+           name.setForeground(Environment.getInstance().WRITECOLOR);
+           this.add(name,c);
+           c.gridx = 2;
+           this.add(score,c);
+           score.setFont(new Font("Arial", Font.BOLD, 24));
+           score.setForeground(Environment.getInstance().WRITECOLOR);
+           c.gridx = 4;
+           date.setFont(new Font("Arial", Font.BOLD, 18));
+           date.setForeground(Environment.getInstance().WRITECOLOR);
+           this.add(date, c);
+            }
+        }
+    }
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
      
                 CardLayout cl = MathSnake.getInstance().getCardLayout();
                 cl.show(MathSnake.getInstance().getCardsJPanel(), "menu");
     }                                        
-
-
                    
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private ScoreBoard SB;                 
 }

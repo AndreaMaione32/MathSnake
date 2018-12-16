@@ -28,7 +28,7 @@ public class Market extends JPanel {
     
     private CoinsSaver coinsSaver = new CoinsSaver();
     private JLabel marketLabel = new JLabel("MARKET");
-    private JLabel coinsLabel = new JLabel("Coins: " + Integer.toString(coinsSaver.getCurrentCoins()));
+    private JLabel coinsLabel = new JLabel();
     private JButton backButton = new JButton("Back");
     private JButton buyBlackSkin = new JButton("100");
     private JButton setBlackSkin = new JButton("SET");
@@ -84,7 +84,7 @@ public class Market extends JPanel {
         c.gridwidth = 3;
         c.anchor = GridBagConstraints.PAGE_START;
         c.weighty = 1.0;
-        marketLabel.setFont(new Font("Arial", Font.BOLD, 50));
+        marketLabel.setFont(new Font("Arial", Font.BOLD, 40));
         marketLabel.setForeground(Environment.getInstance().WRITECOLOR);
         add(marketLabel, c);
         
@@ -237,7 +237,7 @@ public class Market extends JPanel {
         l4.setIcon(dirt);
         add(l4, c);
         
-        c.weighty = 1;
+        c.weighty = 2;
         c.weightx = 1;
         c.ipadx = 0;
         c.ipady = 0;
@@ -246,8 +246,10 @@ public class Market extends JPanel {
         c.gridx = 0;
         c.gridy = 5;
         c.anchor = GridBagConstraints.LAST_LINE_START;
+        coinsLabel.setText(Integer.toString(coinsSaver.getCurrentCoins()));
         coinsLabel.setFont(new Font("Arial", 1, 20));
         coinsLabel.setForeground(Environment.getInstance().WRITECOLOR);
+        coinsLabel.setIcon(new ImageIcon(Environment.getInstance().PATHIMAGES+"medium_retro_coins.png"));
         add(coinsLabel, c);
         
         c.insets = new Insets(0, 0, 5, 10);
@@ -271,7 +273,7 @@ public class Market extends JPanel {
             @Override
             public void focusGained(FocusEvent e) {
                 coinsSaver = new CoinsSaver();
-                coinsLabel.setText("Coins: " + Integer.toString(coinsSaver.getCurrentCoins()));
+                coinsLabel.setText(Integer.toString(coinsSaver.getCurrentCoins()));
                 for(Component component : getComponents()) {
                     if(component instanceof JLabel)
                         component.setForeground(Environment.getInstance().WRITECOLOR);
@@ -296,7 +298,7 @@ public class Market extends JPanel {
                 int price = Integer.parseInt(buyBlackSkin.getText());
                 if(coinsSaver.getCurrentCoins() >= price) {
                     coinsSaver.setCurrentCoins(coinsSaver.getCurrentCoins() - price);
-                    coinsLabel.setText("Coins: " + Integer.toString(coinsSaver.getCurrentCoins()));
+                    coinsLabel.setText(Integer.toString(coinsSaver.getCurrentCoins()));
                     Environment.getInstance().BOUGHT_FEATURES.put("black_dot.png", true);
                     setComponents();
                     try {
@@ -326,7 +328,7 @@ public class Market extends JPanel {
                 int price = Integer.parseInt(buyRedSkin.getText());
                 if(coinsSaver.getCurrentCoins() >= price) {
                     coinsSaver.setCurrentCoins(coinsSaver.getCurrentCoins() - price);
-                    coinsLabel.setText("Coins: " + Integer.toString(coinsSaver.getCurrentCoins()));
+                    coinsLabel.setText(Integer.toString(coinsSaver.getCurrentCoins()));
                     Environment.getInstance().BOUGHT_FEATURES.put("red_dot.png", true);
                     setComponents();
                     try {
@@ -356,7 +358,7 @@ public class Market extends JPanel {
                 int price = Integer.parseInt(buyCloudBackground.getText());
                 if(coinsSaver.getCurrentCoins() >= price) {
                     coinsSaver.setCurrentCoins(coinsSaver.getCurrentCoins() - price);
-                    coinsLabel.setText("Coins: " + Integer.toString(coinsSaver.getCurrentCoins()));
+                    coinsLabel.setText(Integer.toString(coinsSaver.getCurrentCoins()));
                     Environment.getInstance().BOUGHT_FEATURES.put("cloud_background.png", true);
                     setComponents();
                     try {
@@ -391,7 +393,7 @@ public class Market extends JPanel {
                 int price = Integer.parseInt(buyDirtBackground.getText());
                 if(coinsSaver.getCurrentCoins() >= price) {
                     coinsSaver.setCurrentCoins(coinsSaver.getCurrentCoins() - price);
-                    coinsLabel.setText("Coins: " + Integer.toString(coinsSaver.getCurrentCoins()));
+                    coinsLabel.setText(Integer.toString(coinsSaver.getCurrentCoins()));
                     Environment.getInstance().BOUGHT_FEATURES.put("dirt_background.png", true);
                     setComponents();
                     try {

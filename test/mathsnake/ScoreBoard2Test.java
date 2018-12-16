@@ -51,31 +51,6 @@ public class ScoreBoard2Test {
         }
     }
 
-    /**
-     * Test of copyDbIntoTxt method, of class ScoreBoard2.
-     */
-    /**
-    @Test
-    public void testCopyDbIntoTxt() {
-        try {
-            String tmpFile = "prova";
-            String tmpFileTXT = tmpFile + ".txt";
-            ScoreBoard2 instance = new ScoreBoard2(tmpFile);
-            ScoreBoard2 board = new ScoreBoard2();
-            instance.updateDB(board);
-            instance.copyDbIntoTxt();
-            ObjectInputStream reader = new ObjectInputStream(new FileInputStream(new File(tmpFileTXT)));
-            ScoreBoard2 readInstance = (ScoreBoard2) reader.readObject();
-            reader.close();
-            assertEquals(readInstance.toString(), instance.toString());
-        } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(ScoreBoard2Test.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }**/
-
-    /**
-     * Test of readDB method, of class ScoreBoard.
-     */
     @Test
     public void testReadDB() {
         try {

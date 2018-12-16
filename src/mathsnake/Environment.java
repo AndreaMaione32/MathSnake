@@ -36,7 +36,7 @@ public class Environment {
     public String PATHSKIN = "../MathSnake/images/dot.png"; //Skin di default
     public Map<String, Boolean> BOUGHT_FEATURES = new HashMap();
     public final int DOT_NUM = 7; //numero di dot di cui è composto lo snake
-    public final int SCOREBOARD_SIZE = 6;
+    public final int SCOREBOARD_SIZE = 5;
     public final String UTILITY_FILES_PATH = "utility_files/";
     public Color WRITECOLOR;
     
