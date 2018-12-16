@@ -15,9 +15,11 @@ import javax.swing.ImageIcon;
  * @author antoniocoppola
  */
 public class Coin extends DownElement{
+    private Animation animation;
     
     public Coin(int x, int y){
-        super(x,y,Environment.getInstance().PATHIMAGES+"retro_coins.png" );
+        super(x,y,Environment.getInstance().PATHIMAGES+"coin_animation/coin_animation_1.png" );
+        this.animation = new Animation(Environment.getInstance().PATHIMAGES+"coin_animation/","coin_animation", 7, 1, 6);
     }
 
     @Override
@@ -25,4 +27,12 @@ public class Coin extends DownElement{
         CoinsSaver coinsSaver = board.getCoinsSaver();
         coinsSaver.setCurrentCoins(coinsSaver.getCurrentCoins()+1);
     }
+    
+    @Override
+    public void draw(Graphics g){
+        animation.update();
+        super.img = animation.getImage();
+        super.draw(g);
+    }
+    
 }

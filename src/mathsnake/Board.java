@@ -124,7 +124,7 @@ public abstract class Board extends JPanel implements Runnable{
                 int textX = Environment.getInstance().JP_WIDTH - (10 + metrics.stringWidth(text));
                 int textY = 20 + metrics.getHeight();
                 g.drawString(text, textX, textY);
-                String textCoin = "x"+coinsSaver.getCurrentCoins();
+                String textCoin = " "+Integer.toString(coinsSaver.getCurrentCoins());
                 font = new Font("Arial", Font.BOLD, 18);
                 g.setFont(font);
                 metrics = g.getFontMetrics(font);

@@ -21,7 +21,7 @@ import javax.swing.ImageIcon;
  * 
  */
 public abstract class DownElement {
-    protected final Image img;
+    protected Image img;
     protected double x;
     protected double y;
     protected final Rectangle rectangle;
