@@ -23,22 +23,23 @@ import org.junit.rules.TemporaryFolder;
  */
 public class CoinsSaverTest {
     
-    @Rule
-    private boolean fileModified = false;
     /**
      * Test of saveCoins method, of class CoinsSaver.
      */
     @Before
     public void copyFile() throws IOException{
-        //copy content of coins in coins_copy in order to restore the state after the test
-        Files.copy(new File(Environment.getInstance().UTILITY_FILES_PATH+"coins.txt").toPath(),new File(Environment.getInstance().UTILITY_FILES_PATH+"coins_copy.txt").toPath() , StandardCopyOption.REPLACE_EXISTING);
+        //if coins file exists copy content of coins in coins_copy in order to restore the state after the test
+        if(new File(Environment.getInstance().UTILITY_FILES_PATH+"coins.txt").exists())
+            Files.copy(new File(Environment.getInstance().UTILITY_FILES_PATH+"coins.txt").toPath(),new File(Environment.getInstance().UTILITY_FILES_PATH+"coins_copy.txt").toPath() , StandardCopyOption.REPLACE_EXISTING);
     }
     
     @After
     public void undoModificationTest(){
-        //restore the state before the test
+        //restore the state existing before the test
         new File(Environment.getInstance().UTILITY_FILES_PATH+"coins.txt").delete();
-        new File(Environment.getInstance().UTILITY_FILES_PATH+"coins_copy.txt").renameTo(new File(Environment.getInstance().UTILITY_FILES_PATH+"coins.txt"));
+        //if coins_copy exists rename it in coins
+        if(new File(Environment.getInstance().UTILITY_FILES_PATH+"coins_copy.txt").exists())
+            new File(Environment.getInstance().UTILITY_FILES_PATH+"coins_copy.txt").renameTo(new File(Environment.getInstance().UTILITY_FILES_PATH+"coins.txt"));
     }
     
     @Test

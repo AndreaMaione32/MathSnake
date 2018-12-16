@@ -88,19 +88,6 @@ public class ScoreBoard implements Serializable {
         list = this.readDB().list; //inizializzo la mia lista
     }
     
-    /**
-     * Costruttore della classe che inizializza una linkedlist di score vuota come suo attributo
-     * e prende in ingresso il nome del database (utilizzato per il test della classe)
-     * @param database
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws ClassNotFoundException 
-     */
-    public ScoreBoard(String database) throws IOException, FileNotFoundException, ClassNotFoundException {
-        this.databaseDAT = database + ".dat";
-        list = this.readDB().list; //inizializzo la mia lista
-    }
-    
     public ScoreBoard(LinkedList<Score> list) {
         this.list = list;
     }
