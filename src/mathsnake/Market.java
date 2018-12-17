@@ -48,8 +48,8 @@ public class Market extends JPanel {
     private ImageIcon dirt;
     private JLabel l1 = new JLabel("BLACK SKIN");
     private JLabel l2 = new JLabel("RED SKIN");
-    private JLabel l3 = new JLabel("IN THE CLOUDS");
-    private JLabel l4 = new JLabel("DIRT");
+    private JLabel l3 = new JLabel("IN THE CLOUDS BACKGROUND");
+    private JLabel l4 = new JLabel("DIRTY DIRT BACKGROUND");
     
     public Market() {
         initMarket();
@@ -93,6 +93,9 @@ public class Market extends JPanel {
         c.ipadx = 20;
         c.ipady = 20;
         c.anchor = GridBagConstraints.CENTER;
+        
+        c.weightx = 2;
+        c.gridx = 0;
         
         c.insets = new Insets(0, 0, 5, 40);
         c.gridx = 0;
