@@ -69,6 +69,7 @@ public class Environment {
                 bw.write("base_background.png", 0, "base_background.png".length());
                 bw.newLine();
                 bw.write(Integer.toString(Color.black.getRGB()));
+                WRITECOLOR = Color.black;
                 bw.newLine();
                 bw.write("dot.png", 0, "dot.png".length());
             }

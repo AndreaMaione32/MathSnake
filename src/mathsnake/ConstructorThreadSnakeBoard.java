@@ -411,9 +411,9 @@ public class ConstructorThreadSnakeBoard extends ConstructorThread{
     
     @Override
     protected void createCoins(){
-        if(counterCoins == 3){
+        if(counterCoins == 2){
             int rand = (int)(Math.random()*10);
-            if(rand > 4){  //create coins with probability of 50%
+            if(rand > 3){  //create coins with probability of 60%
                 this.elementManager.addElement(new Coin(this.randomXC(), -280));
             }
             else{
