@@ -35,21 +35,20 @@ public class SnakeBoard extends Board {
         beforeTime = System.currentTimeMillis();
         stop = false;
         while(!stop){
-            if(!pause){
-                if (state == STATE.COUNTDOWN) {
-                if(!countdownTimer.isRunning()) {
-                    countdown();
-                    countdownTimer.start();
-                }
+            if (state == STATE.COUNTDOWN) {
+            if(!countdownTimer.isRunning()) {
+                countdown();
+                countdownTimer.start();
             }
-            if (state == STATE.IN_GAME) {
-                if(!CThread.isAlive()){
-                    super.initialState();
-                    constructorThread = new ConstructorThreadSnakeBoard(this, pauseLock);
-                    CThread = new Thread(constructorThread);
-                    CThread.start();
-                }
-            
+        }
+        if (state == STATE.IN_GAME) {
+            if(!CThread.isAlive()){
+                super.initialState();
+                constructorThread = new ConstructorThreadSnakeBoard(this, pauseLock);
+                CThread = new Thread(constructorThread);
+                CThread.start();
+            }
+            if(!pause){
                 snake.move();
                 super.checkCollision();
                 double ds = determineDownSpeed();
@@ -62,22 +61,23 @@ public class SnakeBoard extends Board {
                     snake.setHorizontalMovement(snakeSpeed);
                 }
             }
-            repaint();
-            }
-            delta = System.currentTimeMillis() - beforeTime;
-            sleep = Environment.getInstance().DELAY - delta;
-
-            if (sleep < 0) {
-                sleep = 2;
-            }
-
-            try {
-                Thread.sleep(sleep);
-            } catch (InterruptedException e) {
-                System.out.println("interrupted");
-            }            
-            beforeTime = System.currentTimeMillis();
         }
+        repaint();
+
+        delta = System.currentTimeMillis() - beforeTime;
+        sleep = Environment.getInstance().DELAY - delta;
+
+        if (sleep < 0) {
+            sleep = 2;
+        }
+
+        try {
+            Thread.sleep(sleep);
+        } catch (InterruptedException e) {
+            System.out.println("interrupted");
+        }            
+        beforeTime = System.currentTimeMillis();
+    }
     }
     
     @Override
@@ -153,20 +153,32 @@ public class SnakeBoard extends Board {
                 }
                 if (key == KeyEvent.VK_P)
                     if(state == STATE.IN_GAME){
-                        state = STATE.PAUSE;
-                        pause = true;
-                        constructorThread.setPause(true);
-                        CardLayout cl = MathSnake.getInstance().getCardLayout();
-                        cl.show(MathSnake.getInstance().getCardsJPanel(), "pause");
-                    }
-                    else if(state == STATE.PAUSE){
-                        state = STATE.IN_GAME;
-                        pause = false;
-                        constructorThread.setPause(false);
-                        synchronized(pauseLock){
-                            pauseLock.notify();
+                        if(!pause){
+                            pause = true;
+                            constructorThread.setPause(true);
                         }
                     }
+                if(key == KeyEvent.VK_R){
+                    if(pause){
+                            pause = false;
+                            constructorThread.setPause(false);
+                            synchronized(pauseLock){
+                                pauseLock.notify();
+                            }
+                        }
+                    
+                }
+                if(key == KeyEvent.VK_Q){
+                    if(pause){
+                        pause = false;
+                        constructorThread.setPause(false);
+                            synchronized(pauseLock){
+                                pauseLock.notify();
+                            }
+                        state = STATE.GAMEOVER;
+                        gameOver();
+                    }
+                }
             }
             
             @Override

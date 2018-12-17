@@ -1,5 +1,6 @@
 package mathsnake;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -79,61 +80,13 @@ public abstract class Board extends JPanel implements Runnable{
     }
     
     protected void doDrawing(Graphics g) {
-        double[] xVector = snake.getX();
-        double[] yVector = snake.getY();
         //DRAWING BACKGROUND
         this.background.drawBackground(g);
         switch (state) {
             case IN_GAME:
-                //The rendering hints are used to make the drawing smooth
-                RenderingHints rh= new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-                ((Graphics2D) g).setRenderingHints(rh);
-                //DRAWING SNAKE
-                for (int z = 0; z < Environment.getInstance().DOT_NUM - 1; z++){
-                    if(snake.isSpeedUped())
-                        g.drawImage(this.yellow_dot, (int)xVector[z], (int)yVector[z], this);
-                    if(snake.isShielded()){
-                      g.drawImage(this.grey_dot, (int)xVector[z], (int)yVector[z], this);
-                       g.drawImage(this.shield_small, (int)xVector[z], (int)yVector[z], this);
-                    }
-                    if(!(snake.isShielded() || snake.isSpeedUped()))
-                        g.drawImage(this.ball, (int)xVector[z], (int)yVector[z], this);
-                }
-                if(snake.isShielded())
-                    g.drawImage(grey_dot, (int)xVector[Environment.getInstance().DOT_NUM-1], (int)yVector[Environment.getInstance().DOT_NUM - 1], this);
-                if(snake.isSpeedUped())
-                    g.drawImage(yellow_dot, (int)xVector[Environment.getInstance().DOT_NUM-1], (int)yVector[Environment.getInstance().DOT_NUM - 1], this);
-                if(!(snake.isShielded() || snake.isSpeedUped()))
-                    g.drawImage(ball, (int)xVector[Environment.getInstance().DOT_NUM-1], (int)yVector[Environment.getInstance().DOT_NUM - 1], this);
-                g.setFont(new Font("Arial", Font.BOLD, 15));
-                g.setColor(Environment.getInstance().WRITECOLOR);
-                g.drawString(Integer.toString(snake.getLife()), (int)xVector[Environment.getInstance().DOT_NUM-1] + 20, (int)yVector[Environment.getInstance().DOT_NUM - 1] + 10);
-                //DRAW ELEMENT
-                ElementManager elementManager = ElementManager.getInstance();
-                for(DownElement e : elementManager){
-                    e.draw(g);
-                }
-                Font font = new Font("Arial", Font.BOLD, 16);
-                FontMetrics metrics = g.getFontMetrics(font);
-                g.setFont(font);
-                g.setColor(Environment.getInstance().WRITECOLOR);                    
-                String text = "SCORE : " + Integer.toString(gameBest);
-                g.setFont(font);
-                g.setColor(Environment.getInstance().WRITECOLOR);
-                int textX = Environment.getInstance().JP_WIDTH - (10 + metrics.stringWidth(text));
-                int textY = 20 + metrics.getHeight();
-                g.drawString(text, textX, textY);
-                String textCoin = " "+Integer.toString(coinsSaver.getCurrentCoins());
-                font = new Font("Arial", Font.BOLD, 18);
-                g.setFont(font);
-                metrics = g.getFontMetrics(font);
-                int textCoinX = Environment.getInstance().JP_WIDTH - (10 + metrics.stringWidth(textCoin));
-                int imgX = textCoinX - this.small_coins.getWidth(null);;
-                int imgY = textY + 10;
-                int textCoinY = imgY + ((this.small_coins.getHeight(null) - metrics.getHeight()) / 2) + metrics.getAscent();;
-                g.drawString(textCoin, textCoinX, textCoinY);
-                g.drawImage(this.small_coins, imgX, imgY, null);
+                drawAll(g);
+                if(pause)
+                    drawPause(g);
                 break;
             case GAMEOVER:
                 gameOver();
@@ -141,6 +94,83 @@ public abstract class Board extends JPanel implements Runnable{
             default:
                 break;
         }
+    }
+    
+    private void drawPause(Graphics g){
+        g.setColor(new Color(0,0,0,180));
+        int rectX = Environment.getInstance().JP_WIDTH/2 - 160;
+        g.fillRect(rectX, 80, 320, 320);
+        Font font = new Font("Arial", Font.BOLD, 30);
+        FontMetrics metrics = g.getFontMetrics(font);
+        String text = "PAUSE";
+        g.setFont(font);
+        g.setColor(Environment.getInstance().WRITECOLOR);
+        int textX = (Environment.getInstance().JP_WIDTH - metrics.stringWidth(text)) / 2;
+        g.drawString(text, textX, 50);
+        g.setColor(Color.WHITE);
+        font = new Font("Arial", Font.BOLD, 25);
+        g.setFont(font);
+        metrics = g.getFontMetrics(font);
+        text = "PRESS \"R\" TO RESUME";
+        textX = rectX + (320 - metrics.stringWidth(text)) / 2;
+        g.drawString(text, textX, 160);
+        text = "PRESS \"Q\" TO QUIT";
+        textX = rectX + (320 - metrics.stringWidth(text)) / 2;
+        g.drawString(text, textX, 320);
+    }
+    
+    private void drawAll(Graphics g){
+        double[] xVector = snake.getX();
+        double[] yVector = snake.getY();
+        //The rendering hints are used to make the drawing smooth
+        RenderingHints rh= new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        ((Graphics2D) g).setRenderingHints(rh);
+        //DRAWING SNAKE
+        for (int z = 0; z < Environment.getInstance().DOT_NUM - 1; z++){
+            if(snake.isSpeedUped())
+                g.drawImage(this.yellow_dot, (int)xVector[z], (int)yVector[z], this);
+            if(snake.isShielded()){
+              g.drawImage(this.grey_dot, (int)xVector[z], (int)yVector[z], this);
+               g.drawImage(this.shield_small, (int)xVector[z], (int)yVector[z], this);
+            }
+            if(!(snake.isShielded() || snake.isSpeedUped()))
+                g.drawImage(this.ball, (int)xVector[z], (int)yVector[z], this);
+        }
+        if(snake.isShielded())
+            g.drawImage(grey_dot, (int)xVector[Environment.getInstance().DOT_NUM-1], (int)yVector[Environment.getInstance().DOT_NUM - 1], this);
+        if(snake.isSpeedUped())
+            g.drawImage(yellow_dot, (int)xVector[Environment.getInstance().DOT_NUM-1], (int)yVector[Environment.getInstance().DOT_NUM - 1], this);
+        if(!(snake.isShielded() || snake.isSpeedUped()))
+            g.drawImage(ball, (int)xVector[Environment.getInstance().DOT_NUM-1], (int)yVector[Environment.getInstance().DOT_NUM - 1], this);
+        g.setFont(new Font("Arial", Font.BOLD, 15));
+        g.setColor(Environment.getInstance().WRITECOLOR);
+        g.drawString(Integer.toString(snake.getLife()), (int)xVector[Environment.getInstance().DOT_NUM-1] + 20, (int)yVector[Environment.getInstance().DOT_NUM - 1] + 10);
+        //DRAW ELEMENT
+        ElementManager elementManager = ElementManager.getInstance();
+        for(DownElement e : elementManager){
+            e.draw(g);
+        }
+        Font font = new Font("Arial", Font.BOLD, 16);
+        FontMetrics metrics = g.getFontMetrics(font);
+        g.setFont(font);
+        g.setColor(Environment.getInstance().WRITECOLOR);                    
+        String text = "SCORE : " + Integer.toString(gameBest);
+        g.setFont(font);
+        g.setColor(Environment.getInstance().WRITECOLOR);
+        int textX = Environment.getInstance().JP_WIDTH - (10 + metrics.stringWidth(text));
+        int textY = 20 + metrics.getHeight();
+        g.drawString(text, textX, textY);
+        String textCoin = " "+Integer.toString(coinsSaver.getCurrentCoins());
+        font = new Font("Arial", Font.BOLD, 18);
+        g.setFont(font);
+        metrics = g.getFontMetrics(font);
+        int textCoinX = Environment.getInstance().JP_WIDTH - (10 + metrics.stringWidth(textCoin));
+        int imgX = textCoinX - this.small_coins.getWidth(null);;
+        int imgY = textY + 10;
+        int textCoinY = imgY + ((this.small_coins.getHeight(null) - metrics.getHeight()) / 2) + metrics.getAscent();;
+        g.drawString(textCoin, textCoinX, textCoinY);
+        g.drawImage(this.small_coins, imgX, imgY, null);
     }
     
     protected void gameOver() {
@@ -211,7 +241,6 @@ public abstract class Board extends JPanel implements Runnable{
     public enum STATE {
         COUNTDOWN,
         IN_GAME,
-        PAUSE,
         GAMEOVER
     }
     
