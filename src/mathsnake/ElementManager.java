@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 public class ElementManager implements Iterable<DownElement>{
-    private final List<DownElement> elementList;
+    private  List<DownElement> elementList;
     private static ElementManager instance = null;
     
     private ElementManager() {
@@ -46,6 +46,15 @@ public class ElementManager implements Iterable<DownElement>{
     public synchronized void flush() {
         elementList.clear();
     }
+
+    public List<DownElement> getElementList() {
+        return elementList;
+    }
+
+    public void setElementList(List<DownElement> elementList) {
+        this.elementList = elementList;
+    }
+    
     
     //Iterator Pattern used to iterate the elements of element list in a synchronized way 
     

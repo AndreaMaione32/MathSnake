@@ -1,5 +1,7 @@
 package mathsnake;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,37 +21,54 @@ public abstract class ConstructorThread implements Runnable {
     private boolean stop = false;
     private boolean pause = false;
     protected Board board;
+    private Object pauseLock;
     
-    public ConstructorThread(Board board) {
+    public ConstructorThread(Board board, Object pauseLock) {
         super();
         this.elementManager = ElementManager.getInstance();
         this.board = board;
+        this.pauseLock = pauseLock;
     }
     
     @Override
     public void run() {
         while(!stop){
-            createBlocks(); //hook method
-            createPowerUps(); //hook method
-            createCoins(); //hook method
-            try {
-                if (board.getGameBest() < Environment.getInstance().LIFEINCREASING){
-                    Thread.sleep(Environment.getInstance().MINTHREADDELAY);
+            if(!pause){
+                List<DownElement> oldList = new ArrayList<> (ElementManager.getInstance().getElementList());
+                createBlocks(); //hook method
+                createPowerUps(); //hook method
+                createCoins(); //hook method
+                //element list modified during the pause, restore the state
+                if(pause){
+                    ElementManager.getInstance().setElementList(oldList);
                 }
-                else {
-                    int actualShift = (board.getGameBest())/Environment.getInstance().LIFEINCREASING;
-                    if (actualShift > (Environment.getInstance().MAXINCREMENT)){
-                        Thread.sleep(Environment.getInstance().MAXTHREADDELAY);
+                try {
+                    if (board.getGameBest() < Environment.getInstance().LIFEINCREASING){
+                        Thread.sleep(Environment.getInstance().MINTHREADDELAY);
                     }
                     else {
-                        int actualSleep = ((Environment.getInstance().MINTHREADDELAY - Environment.getInstance().MAXTHREADDELAY)/Environment.getInstance().MAXINCREMENT)*actualShift;
-                        Thread.sleep(Environment.getInstance().MINTHREADDELAY - actualSleep);
-                    }
-                }   
-            } catch (InterruptedException ex) {
-                Logger.getLogger(ConstructorThread.class.getName()).log(Level.SEVERE, null, ex);
+                        int actualShift = (board.getGameBest())/Environment.getInstance().LIFEINCREASING;
+                        if (actualShift > (Environment.getInstance().MAXINCREMENT)){
+                            Thread.sleep(Environment.getInstance().MAXTHREADDELAY);
+                        }
+                        else {
+                            int actualSleep = ((Environment.getInstance().MINTHREADDELAY - Environment.getInstance().MAXTHREADDELAY)/Environment.getInstance().MAXINCREMENT)*actualShift;
+                            Thread.sleep(Environment.getInstance().MINTHREADDELAY - actualSleep);
+                        }
+                    }   
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(ConstructorThread.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-            
+            else{
+                synchronized(pauseLock){
+                    try {
+                        pauseLock.wait();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(ConstructorThread.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
         }
         
     }
@@ -66,6 +85,10 @@ public abstract class ConstructorThread implements Runnable {
     
     public void stopThread(){
         stop = true;
+    }
+    
+    public void setPause(boolean pause){
+        this.pause = pause;
     }
    
 }

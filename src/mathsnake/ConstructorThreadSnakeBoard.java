@@ -6,8 +6,8 @@ public class ConstructorThreadSnakeBoard extends ConstructorThread{
     private int counterPowerUps = 0;  //it's used to create power ups every x blocks creation
     private int counterCoins = 0; //it's used to create coins  every y blocks creation
     
-    public ConstructorThreadSnakeBoard(Board board) {
-        super(board);
+    public ConstructorThreadSnakeBoard(Board board, Object pauseLock) {
+        super(board, pauseLock);
     }
     
     @Override

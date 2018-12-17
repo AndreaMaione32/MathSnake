@@ -16,6 +16,7 @@ public class SnakeBoard extends Board {
     
     private Timer countdownTimer;
     private int secondsLeft = 3;
+    private Object pauseLock = new Object();
     private JLabel countdown = new JLabel(Integer.toString(secondsLeft));
     
     public SnakeBoard() {
@@ -44,12 +45,11 @@ public class SnakeBoard extends Board {
             if (state == STATE.IN_GAME) {
                 if(!CThread.isAlive()){
                     super.initialState();
-                    constructorThread = new ConstructorThreadSnakeBoard(this);
+                    constructorThread = new ConstructorThreadSnakeBoard(this, pauseLock);
                     CThread = new Thread(constructorThread);
                     CThread.start();
                 }
-            }
-            if(state == STATE.IN_GAME){
+            
                 snake.move();
                 super.checkCollision();
                 double ds = determineDownSpeed();
@@ -155,14 +155,17 @@ public class SnakeBoard extends Board {
                     if(state == STATE.IN_GAME){
                         state = STATE.PAUSE;
                         pause = true;
-                        constructorThread.stopThread();
+                        constructorThread.setPause(true);
+                        CardLayout cl = MathSnake.getInstance().getCardLayout();
+                        cl.show(MathSnake.getInstance().getCardsJPanel(), "pause");
                     }
                     else if(state == STATE.PAUSE){
                         state = STATE.IN_GAME;
                         pause = false;
-                        constructorThread = new ConstructorThreadSnakeBoard((SnakeBoard)e.getSource());
-                        CThread = new Thread(constructorThread);
-                        CThread.start();
+                        constructorThread.setPause(false);
+                        synchronized(pauseLock){
+                            pauseLock.notify();
+                        }
                     }
             }
             

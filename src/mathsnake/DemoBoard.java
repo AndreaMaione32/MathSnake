@@ -33,13 +33,7 @@ public class DemoBoard extends Board {
             if(state == STATE.IN_GAME){
                 if(!CThread.isAlive()){
                     initialState();
-                    constructorThread = new ConstructorThreadDemoBoard(this);
-                    CThread = new Thread(constructorThread);
-                    CThread.start();
-                }
-                if(!CThread.isAlive()){
-                    initialState();
-                    constructorThread = new ConstructorThreadDemoBoard(this);
+                    constructorThread = new ConstructorThreadDemoBoard(this, new Object());
                     CThread = new Thread(constructorThread);
                     CThread.start();
                 }

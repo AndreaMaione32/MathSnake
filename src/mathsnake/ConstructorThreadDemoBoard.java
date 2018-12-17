@@ -4,8 +4,8 @@ public class ConstructorThreadDemoBoard extends ConstructorThread{
 
     private int blockRow;
     
-    public ConstructorThreadDemoBoard(Board board) {
-        super(board);
+    public ConstructorThreadDemoBoard(Board board, Object pauseLock) {
+        super(board, pauseLock);
         this.blockRow = 0;
     }
 
