@@ -34,6 +34,10 @@ public abstract class ConstructorThread implements Runnable {
     public void run() {
         while(!stop){
             if(!pause){
+                createBlocks(); //hook method
+                createPowerUps(); //hook method
+                createCoins(); //hook method
+                //element list modified during the pause, restore the state
                 try {
                     if (board.getGameBest() < Environment.getInstance().LIFEINCREASING){
                         Thread.sleep(Environment.getInstance().MINTHREADDELAY);
@@ -51,10 +55,6 @@ public abstract class ConstructorThread implements Runnable {
                 } catch (InterruptedException ex) {
                     Logger.getLogger(ConstructorThread.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                createBlocks(); //hook method
-                createPowerUps(); //hook method
-                createCoins(); //hook method
-                //element list modified during the pause, restore the state
             }
             else{
                 synchronized(pauseLock){

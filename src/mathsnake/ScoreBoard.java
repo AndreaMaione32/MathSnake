@@ -32,45 +32,26 @@ public class ScoreBoard implements Serializable {
         private final Date score_date;
         private final String name_player;
         
-        /**
-         * Costruttore che inizializza gli attributi della classe 
-         * @param score
-         * @param score_date
-         * @param name_player 
-         */
+       
         public Score(int score, Date score_date, String name_player) {
             this.score = score;
             this.score_date = score_date;
             this.name_player = name_player;
         }
         
-        /**
-         * 
-         * @return restituisce l'attributo score della classe
-         */
         public int getScore(){
             return this.score;
         }
-        /**
-         * 
-         * @return restituisce l'attributo score_data della classe
-         */
+        
         public Date getDateScore(){
             return this.score_date;
         }
-        /**
-         * 
-         * @return restituisce l'attributo name_player della classe
-         */
+        
         public String getNamePlayer(){
             return this.name_player;
         }
         
-        /**
-         * 
-         * @return 
-         */
-        @Override
+        
         public String toString(){
             DateFormat dateFormat = new SimpleDateFormat();
             String strDate = dateFormat.format(this.score_date);
@@ -78,12 +59,7 @@ public class ScoreBoard implements Serializable {
         }
     }
     
-    /**
-     * Costruttore della classe che inizializza una linkedlist di score vuota come suo attributo
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws ClassNotFoundException 
-     */
+    
     public ScoreBoard() throws IOException, FileNotFoundException, ClassNotFoundException {
         list = this.readDB().list; //inizializzo la mia lista
     }
@@ -92,18 +68,12 @@ public class ScoreBoard implements Serializable {
         this.list = list;
     }
     
-    /**
-     * 
-     * @return restituisce la dimensione della lista
-     */
+    
     public int len(){
         return this.list.size();
     }
     
-    /**
-     * 
-     * @return True se la scoreboard è vuota altrimenti false
-     */
+    
     public boolean isEmpty(){
         return this.list.isEmpty();
     }
@@ -112,14 +82,7 @@ public class ScoreBoard implements Serializable {
         return list;
     }
     
-    /**
-     * Questa funzione permette di poter memorizzare una scoreboard all'interno del file binario,
-     * in più viene invocata la funzione copiDbIntoTxt().
-     * @param board: rappresenta la board che si vuole inserire nel file binario
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws ClassNotFoundException 
-     */
+    
     public void updateDB(ScoreBoard board) throws FileNotFoundException, IOException, ClassNotFoundException {
         ObjectOutputStream fbinarioOut;
         fbinarioOut = new ObjectOutputStream(new FileOutputStream(this.databaseDAT));
@@ -128,14 +91,7 @@ public class ScoreBoard implements Serializable {
         fbinarioOut.close();
     }
     
-    /**
-     * Questa funzione apre un flusso in lettura verso un il file binario database.dat,
-     * legge l'oggetto memorizzato, chiude il flusso e restituisce l'oggetto letto.
-     * @return tmpScoreboard: rappresenta lo ScoreBoard letto dal file binario database.dat
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws ClassNotFoundException 
-     */
+    
     public ScoreBoard readDB() throws IOException, ClassNotFoundException {
         ScoreBoard tmpScoreBoard;
         ObjectInputStream fin = null;
@@ -158,18 +114,8 @@ public class ScoreBoard implements Serializable {
         }
         return tmpScoreBoard;
     }
-    /**
-     * Questa funziona effettua un inserimento in ordine dello score che si vuole inserire nella ScoreBoard, 
-     * il criterio di ordine è dato dallo score migliore che nel nostro caso è l'intervallo di tempo migliore 
-     * quindi per migliore score intendiamo un minor tempo totalizzato.Inoltre questa funzione si interfaccia 
-     * con il database infatti non si memorizzano istanze temporanee degli score di questa scoreboard ma viene 
-     * letta la scoreboard presente nel file binario e a quell'istanza si apportano modifche.Cio è stato sviluppato 
-     * per avere una stato permanente della scoreboard del gioco.
-     * @param score: score da memorizzare all'interno del database.dat
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws ClassNotFoundException 
-     */
+    
+    
     public void insert_score(Score score) throws IOException, FileNotFoundException, ClassNotFoundException {
         if (this.list.isEmpty()){
             this.list.addLast(score);
