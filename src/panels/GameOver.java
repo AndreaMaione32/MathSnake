@@ -1,33 +1,17 @@
 package panels;
 
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.GroupLayout;
-import javax.swing.JPanel;
-import javax.swing.LayoutStyle;
+import javax.swing.*;
 import mathsnake.MathSnake;
 import background.Background;
 import environment.Environment;
 import iofiles.ScoreBoard;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 import panels.snakeboards.SnakeBoard;
 
 public class GameOver extends JPanel {

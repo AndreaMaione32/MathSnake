@@ -4,7 +4,6 @@ import environment.Environment;
 import java.awt.CardLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;

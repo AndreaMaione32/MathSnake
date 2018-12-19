@@ -1,6 +1,3 @@
-import java.lang.reflect.Field;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import downelements.Block;
 import operation.Operation;
 import panels.snakeboards.SnakeBoard;

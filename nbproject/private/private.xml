@@ -3,29 +3,43 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/constructors/ConstructorThreadSnakeBoard.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/downelements/DownElement.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/iofiles/CoinsSaver.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/constructors/ConstructorThread.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/downelements/PowerUpsSpeedUp.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/panels/snakeboards/SnakeBoard.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/downelements/Block.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/downelements/Coin.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/panels/snakeboards/Board.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/ConstructorThreadTest.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/panels/snakeboards/Board.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/PowerUpsSpeedUpTest.java</file>
             <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/MathSnake.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/constructors/ConstructorThreadDemoBoard.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/Environment.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/panels/snakeboards/DemoBoard.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/downelements/PowerUpsShield.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/panels/Market.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/panels/ScoreBoardInterface.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/panels/Menu.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/downelements/PowerUpsIncreaseLife.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/iofiles/GraphicConfiguration.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/iofiles/ScoreBoard.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/panels/FirstPage.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/mathsnake/panels/GameOver.java</file>
-            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/mathsnake/BlockTest.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/constructors/ConstructorThreadSnakeBoard.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/downelements/Block.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/downelements/Coin.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/BackgroundTest.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/elementmanager/ElementManager.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/panels/ScoreBoardInterface.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/panels/snakeboards/DemoBoard.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/panels/FirstPage.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/PowerUpsIncreaseLifeTest.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/environment/Environment.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/downelements/PowerUpsIncreaseLife.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/panels/snakeboards/SnakeBoard.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/constructors/ConstructorThreadDemoBoard.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/panels/GameOver.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/CoinTest.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/constructors/ConstructorThread.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/ScoreBoardTest.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/downelements/PowerUpsShield.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/SnakeTest.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/PowerUpsShieldTest.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/iofiles/CoinsSaver.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/iofiles/ScoreBoard.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/downelements/PowerUpsSpeedUp.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/downelements/DownElement.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/iofiles/GraphicConfiguration.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/operation/Operation.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/animation/Animation.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/background/Background.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/CoinsSaverTest.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/panels/Market.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/test/BlockTest.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/snake/Snake.java</file>
+            <file>file:/Users/andreamaione/NetBeansProjects/MathSnake/src/panels/Menu.java</file>
         </group>
     </open-files>
 </project-private>

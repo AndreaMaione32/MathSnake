@@ -1,7 +1,7 @@
 package operation;
 
 /**
- * Type that rappresents operation type
+ * Type that represents operation type
  */
 public enum Operation {
     ADD, 
