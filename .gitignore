@@ -1,7 +1,6 @@
 *.xml
 *.properties
 
-/dist/
 /build/
 /nbproject/private/
 
@@ -29,6 +28,5 @@
 hs_err_pid*
 
 .DS_Store
-*.properties
 *.xml
 *.txt
