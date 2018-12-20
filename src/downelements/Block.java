@@ -6,6 +6,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import environment.Environment;
+import iofiles.Loader;
 import operation.Operation;
 import panels.snakeboards.Board;
 import snake.Snake;
@@ -16,20 +17,20 @@ public class Block extends DownElement {
     private final Operation op; //indicates the operation
     
     public Block(int value, Operation op, int x, int y){
-        super(x,y,defineBlockPathImage(op));
+        super(x,y,defineBlockImage(op));
         this.value = value;
         this.op = op;
     }
     
-    private static String defineBlockPathImage(Operation op){
-        String pathImage = null;
+    private static String defineBlockImage(Operation op){
+        String nameImg = null;
         if(op == Operation.ADD || op == Operation.MUL)
-            pathImage = Environment.getInstance().PATHIMAGES + "retro_block_p.png";
+            nameImg = "retro_block_p";
         if(op == Operation.DEA)
-            pathImage = Environment.getInstance().PATHIMAGES + "retro_block_d.png";
+            nameImg = "retro_block_d";
         if(op == Operation.DIV || op == Operation.SUB)
-            pathImage = Environment.getInstance().PATHIMAGES + "retro_block_n.png";
-        return pathImage;
+            nameImg = "retro_block_n";
+        return nameImg;
     }
 
     public int getValue() {
@@ -63,7 +64,7 @@ public class Block extends DownElement {
     public void draw(Graphics g){ 
         super.draw(g);
        if(this.op == Operation.DEA){
-          Image img_d = this.loadImage(Environment.getInstance().PATHIMAGES + "retro_skull.png");
+          Image img_d = Loader.getInstance().getImage("retro_skull");
           int img_d_X = (int)x + (Environment.getInstance().BLOCK_WIDTH - img_d.getWidth(null))/2;
           int img_d_Y = (int)y + (Environment.getInstance().BLOCK_HEIGHT - img_d.getHeight(null))/2;
           g.drawImage(img_d, img_d_X, img_d_Y, null);

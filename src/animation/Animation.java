@@ -1,5 +1,6 @@
 package animation;
 
+import iofiles.Loader;
 import java.awt.Image;
 import java.io.File;
 import javax.swing.ImageIcon;
@@ -39,14 +40,7 @@ public class Animation {
     }
     
     public Image getImage() { 
-        return loadImage(directory+nameImg+"_"+currentFrame+".png");
+        return Loader.getInstance().getImage(nameImg+"_"+currentFrame);
     }
     
-    
-    
-    protected Image loadImage(String PATH) {
-        ImageIcon iid = new ImageIcon(PATH);
-        Image icon = iid.getImage();
-        return icon;
-    }
 }

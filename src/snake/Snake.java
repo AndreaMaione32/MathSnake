@@ -45,7 +45,9 @@ public class Snake implements ActionListener {
     }
     
     private void setX(double x) {
+        //MOVE THE SNAKE'S HEAD
         this.x[Environment.getInstance().DOT_NUM - 1] = x;
+        //MOVE THE SNAKE'S TAIL
         for(int z = Environment.getInstance().DOT_NUM - 2; z >= 0; z--) {
             double curr = this.x[z];
             double last = this.x[z+1]; 

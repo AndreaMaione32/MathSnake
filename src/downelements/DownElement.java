@@ -3,8 +3,8 @@ package downelements;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
-import javax.swing.ImageIcon;
 import environment.Environment;
+import iofiles.Loader;
 import panels.snakeboards.Board;
 
 /**
@@ -22,17 +22,11 @@ public abstract class DownElement {
     protected double y;
     protected final Rectangle rectangle;
     
-        public DownElement(int x, int y, String pathImage){
+        public DownElement(int x, int y, String nameImage){
         this.x = x;
         this.y = y;
-        this.img = this.loadImage(pathImage);
+        this.img = Loader.getInstance().getImage(nameImage);
         this.rectangle = new Rectangle((int)x,(int)y,this.img.getWidth(null), this.img.getHeight(null));
-    }
-    
-    protected Image loadImage(String PATH) {
-        ImageIcon iid = new ImageIcon(PATH);
-        Image icon = iid.getImage();
-        return icon;
     }
     
     private void setX(double x) {

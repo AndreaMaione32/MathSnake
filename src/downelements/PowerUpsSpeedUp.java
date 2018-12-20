@@ -6,7 +6,7 @@ import panels.snakeboards.Board;
 public class PowerUpsSpeedUp extends DownElement {
 
     public PowerUpsSpeedUp(int x, int y) {
-        super(x, y, Environment.getInstance().PATHIMAGES+"speed_up.png");
+        super(x, y, "speed_up");
     }
     
     @Override

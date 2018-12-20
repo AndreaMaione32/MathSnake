@@ -15,7 +15,7 @@ public class Coin extends DownElement{
     private Animation animation;
     
     public Coin(int x, int y){
-        super(x,y,Environment.getInstance().PATHIMAGES+"coin_animation/coin_animation_1.png" );
+        super(x,y,"coin_animation_1" );
         this.animation = new Animation(Environment.getInstance().PATHIMAGES+"coin_animation/","coin_animation", 7, 1, 6);
     }
 

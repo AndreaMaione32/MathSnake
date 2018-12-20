@@ -6,7 +6,7 @@ import panels.snakeboards.Board;
 public class PowerUpsShield extends DownElement {
 
     public PowerUpsShield(int x, int y) {
-        super(x, y, Environment.getInstance().PATHIMAGES+"shield.png");
+        super(x, y, "shield");
     }
     
     @Override

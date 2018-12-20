@@ -6,7 +6,7 @@ import panels.snakeboards.Board;
 public class PowerUpsIncreaseLife extends DownElement {
    
     public PowerUpsIncreaseLife(int x, int y){
-        super(x, y, Environment.getInstance().PATHIMAGES+"heart.png");
+        super(x, y, "heart");
     }
     
     @Override
